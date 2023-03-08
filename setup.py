@@ -9,13 +9,13 @@ long_description = (this_directory / "README.md").read_text()
 install_requires = (this_directory / "requirements.txt").read_text().splitlines()
 
 setup(
-    name="cool_ocf_project",
+    name="oil_storage_tanks",
     version="0.0.3",
     license="MIT",
-    description="Super cool OCF Repo",
-    author="Jacob Bieker, Jack Kelly, Peter Dudfield",
-    author_email="info@openclimatefix.org",
-    company="Open Climate Fix Ltd",
+    description="Dissertation regarding Oil Storage Tanks",
+    author="Raj Modi",
+    author_email="vardhan609@gmail.com", "vrym2@student.le.ac.uk
+    company="Gaia Research Ltd",
     install_requires=install_requires,
     long_description=long_description,
     long_description_content_type="text/markdown",
