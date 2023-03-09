@@ -1,1 +1,10 @@
-ocf_blosc2
+pandas
+numpy
+xarray
+zarr
+rasterio
+sentinelsat
+geopandas
+rasterstats
+earthpy
+earthengine-api

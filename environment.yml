@@ -1,7 +1,10 @@
-name: ocf_template
+name: oiltanks
 channels:
   - pytorch
   - conda-forge
   - defaults
 dependencies:
   - pip
+  - gdal
+  -pip:
+    - git+https://github.com/eogit/pyeo.git
