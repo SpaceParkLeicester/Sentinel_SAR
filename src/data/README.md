@@ -14,6 +14,8 @@
 * Azimuths - [link](https://www.nwcg.gov/course/ffm/location/62-azimuths#:~:text=An%20azimuth%20is%20the%20direction,and%200%20degrees%20mark%20north.)
 * Incident and Viewing angle - [link](https://www.nwcg.gov/course/ffm/location/62-azimuths#:~:text=An%20azimuth%20is%20the%20direction,and%200%20degrees%20mark%20north.)
 
+### Paper2 - Optical-Enhanced Oil Tank Detection in High-Resolution SAR Images - [link](https://ieeexplore.ieee.org/document/9924205)
+
 ### Google CLI authentication
 * In order to authenticate gcloud cli in the remote machine, you have to have the [google cloud project](https://developers.google.com/workspace/marketplace/create-gcp-project) setup on the GCP platform.
 * Make sure to install [gcloud sdk](https://cloud.google.com/sdk/docs/install) in bot the local and remote machine
