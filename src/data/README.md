@@ -11,6 +11,8 @@
 ### Paper1 - Structural projection points estimation and context priors for oil tank storage estimation in SAR image - [link](https://www.sciencedirect.com/science/article/pii/S0924271622002842)
 * HRNet - [link](https://paperswithcode.com/method/hrnet)
 * Visualising filters and feature maps in CNN tutorial - [link](https://debuggercafe.com/visualizing-filters-and-feature-maps-in-convolutional-neural-networks-using-pytorch/)
+* Azimuths - [link](https://www.nwcg.gov/course/ffm/location/62-azimuths#:~:text=An%20azimuth%20is%20the%20direction,and%200%20degrees%20mark%20north.)
+* Incident and Viewing angle - [link](https://www.nwcg.gov/course/ffm/location/62-azimuths#:~:text=An%20azimuth%20is%20the%20direction,and%200%20degrees%20mark%20north.)
 
 ### Google CLI authentication
 * In order to authenticate gcloud cli in the remote machine, you have to have the [google cloud project](https://developers.google.com/workspace/marketplace/create-gcp-project) setup on the GCP platform.
