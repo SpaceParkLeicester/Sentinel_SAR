@@ -13,6 +13,7 @@
 * Visualising filters and feature maps in CNN tutorial - [link](https://debuggercafe.com/visualizing-filters-and-feature-maps-in-convolutional-neural-networks-using-pytorch/)
 * Azimuths - [link](https://www.nwcg.gov/course/ffm/location/62-azimuths#:~:text=An%20azimuth%20is%20the%20direction,and%200%20degrees%20mark%20north.)
 * Incident and Viewing angle - [link](https://www.nwcg.gov/course/ffm/location/62-azimuths#:~:text=An%20azimuth%20is%20the%20direction,and%200%20degrees%20mark%20north.)
+* Sentine1 SAR data download through a python package - [asf_search](https://medium.com/geekculture/bulk-download-sentinel-1-sar-data-d180ec0bfac1)
 
 ### Paper2 - Optical-Enhanced Oil Tank Detection in High-Resolution SAR Images - [link](https://ieeexplore.ieee.org/document/9924205)
 * test
