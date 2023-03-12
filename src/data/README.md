@@ -29,3 +29,8 @@ In a remote machine, without access to a browser, there is a way to authenticate
 * First of all, make sure EarthEngine API is enabled for your project by clicking this [link](https://console.cloud.google.com/apis/library/earthengine.googleapis.com?project=gy7720)
 * Go the [IAM & Admin](https://console.cloud.google.com/iam-admin/iam?project=gy7720) page, and go the `Service Accounts` section on the side panel. 
 * Click on the `+ Create Service Account` and give necessary details. Make sure to Copy the `Service account email`. In the Keys section, create a new key and download the key in `JSON` to your workspace main directory with name `gcp_key.json`. Path to the key is, and the `Service email account` is needed for the initiation process, which you can find in `/Oil-Storage-Tanks/src/data/utils.py`
+
+### Random
+Microsoft edge installation in Centos
+* Centos already has `flatpak` installed in its distribution by default `flatpak --help`, now you need to add flathub repository to your system in order to search and install `Edge`
+* Download `flathub` from with this command `wget https://flathub.org/repo/flathub.flatpakrepo` and add it the system with this command `flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo`
