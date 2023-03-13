@@ -5,6 +5,7 @@ import numpy as np
 from shapely.geometry import Polygon
 from shapely.wkt import dumps
 import json
+import asf_search as asf
 
 log = logging.getLogger(__name__)
 
