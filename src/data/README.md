@@ -36,3 +36,8 @@ Microsoft edge installation in Centos
 * Download `flathub` from with this command `wget https://flathub.org/repo/flathub.flatpakrepo` and add it the system with this command `flatpak remote-add --user flathub https://flathub.org/repo/flathub.flatpakrepo`
 * you can install Microsoft Edge from Flathub by running this command: `flatpak install flathub com.microsoft.Edge`
 * This will download and install Microsoft Edge on your system. You can then run it by typing: `flatpak run com.microsoft.Edge`
+
+Add custom commands in linux
+* Create a shell script file and make sure it is executable `chmod u+x,g+x script.sh`
+* Create a `.bash_aliases` file in the root dir and add `alias 'customcommand'='/home/user/script.sh'`
+* Run `source ~/.bash_aliases` and `customcommand` is ready to go
