@@ -14,11 +14,11 @@ setup(
     license="MIT",
     description="Dissertation regarding Oil Storage Tanks",
     author="Raj Modi",
-    author_email="vardhan609@gmail.com", "vrym2@student.le.ac.uk
+    author_email="vardhan609@gmail.com",
     company="Gaia Research Ltd",
     install_requires=install_requires,
     long_description=long_description,
     long_description_content_type="text/markdown",
     include_package_data=True,
-    packages=find_packages(),
+    packages=find_packages(),    
 )

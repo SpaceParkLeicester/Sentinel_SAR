@@ -111,7 +111,9 @@ def oil_terminals(
         terminal_file_path: File path to terminal information
     """
     # Load the csv file
-    df = pd.read_csv(terminal_file_path, skiprows = 2)
+    df = pd.read_excel(
+        terminal_file_path, 
+        skiprows = 1)
 
     # Lat, lon list
     lat_lon = list(zip(df['Lat'], df['Lon']))

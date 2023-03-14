@@ -43,11 +43,11 @@ class DownloadS1DataIterDatapipe(IterDataPipe):
                 center_lon = lon
                 )            
             s1_data = s1_data_download(wkt_aoi = wkt_aoi)
-            s1_meta = s1_data.s1_metadata()
+            s1_data.s1_metadata()
             if self.commence_download:
                 # Downloading the data
                 s1_data.download_data(
                     download_path = self.download_path,
                     path_to_cred_file = self.path_to_cred_file)
-            yield s1_meta
+            
             

@@ -9,3 +9,4 @@ rasterstats
 earthpy
 earthengine-api
 asf_search
+openpyxl
