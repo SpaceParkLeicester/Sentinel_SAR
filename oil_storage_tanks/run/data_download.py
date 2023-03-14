@@ -1,8 +1,7 @@
 """Datapipe for the data download"""
 from typing import Optional
 from oil_storage_tanks.data import (
-    s1_data_download, 
-    earthdata_authentication,
+    s1_data_download,
     oil_terminals
 )
 from oil_storage_tanks.data import bounding_box as bbox
