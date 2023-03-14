@@ -2,6 +2,7 @@ import ee
 import logging
 import math
 import numpy as np
+import pandas as pd
 from shapely.geometry import Polygon
 from shapely.wkt import dumps
 import json
@@ -13,10 +14,12 @@ def ee_initiate(
         service_account: str = 'storage-tank@gy7720.iam.gserviceaccount.com',
         private_key:str = None
         )-> None:
-    """Function to authenticate Earth Engine
+    """
+    Function to authenticate Earth Engine
 
-        service_account = Name of the service account
-        private_key = Path to the downloaded service account private key
+    Args:
+        service_account: Name of the service account
+        private_key: Path to the downloaded service account private key
     """
     credentials = ee.ServiceAccountCredentials(service_account, private_key)
 
@@ -28,12 +31,14 @@ def ee_initiate(
 def bounding_box(
         center_lat: np.float64, 
         center_lon: np.float64, 
-        half_side: np.int64):
-    """Function that gives WKT of a polygin from a center lon, lat
+        half_side: np.int64 = 50):
+    """
+    Function that gives WKT of a polygin from a center lon, lat
 
-        center_lat = Centre Latitude
-        center_lon = Center Longitude
-        half_side = Length from center to side of the bounding ox in Km
+    Args:
+        center_lat: Centre Latitude
+        center_lon: Center Longitude
+        half_side: Length from center to side of the bounding ox in Km
     """
     # Sanity check
     assert half_side > 0
@@ -80,8 +85,11 @@ def bounding_box(
 def earthdata_authentication(
         cred_file_path: str
         ):
-    """Function to authenticate Eartdata login
-        cred_file_path = Path to the credential file
+    """
+    Function to authenticate Eartdata login
+
+    Args:
+        cred_file_path: Path to the credential file
     """
     # Opening the credential file and reading the data
     with open(cred_file_path, "r") as f:
@@ -93,4 +101,24 @@ def earthdata_authentication(
     
     return session
 
+def oil_terminals(
+        terminal_file_path: str
+        ):
+    """
+    Function to get the lat, lon of oi termianls
 
+    Args:
+        terminal_file_path: File path to terminal information
+    """
+    # Load the csv file
+    df = pd.read_csv(terminal_file_path, skiprows = 2)
+
+    # Lat, lon list
+    lat_lon = list(zip(df['Lat'], df['Lon']))
+
+    # create a dictionary of of lat lon with location names
+    terminal_dict = {}
+    for index, row in df.iterrows():
+        terminal_dict[row['Name']] = lat_lon[index]
+
+    return terminal_dict
