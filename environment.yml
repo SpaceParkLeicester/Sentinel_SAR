@@ -6,5 +6,7 @@ channels:
 dependencies:
   - pip
   - gdal
-  -pip:
+  - pytorch
+  - torchdata
+  - pip:
     - git+https://github.com/eogit/pyeo.git
