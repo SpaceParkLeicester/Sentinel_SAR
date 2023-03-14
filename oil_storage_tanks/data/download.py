@@ -1,5 +1,5 @@
-from utils import earthdata_authentication as auth
-from utils import bounding_box as bbox
+from .utils import earthdata_authentication as auth
+from .utils import bounding_box as bbox
 
 import asf_search as asf
 import geopandas as gpd

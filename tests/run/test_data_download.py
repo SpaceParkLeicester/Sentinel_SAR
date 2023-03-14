@@ -1,5 +1,5 @@
 # Test to download the data
-from oil_storage_tanks.run import DownloadS1Data
+from oil_storage_tanks import DownloadS1Data
 
 def test_download_s1_data():
     """Testing ASF download data"""

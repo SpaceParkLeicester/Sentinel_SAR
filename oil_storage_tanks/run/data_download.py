@@ -14,9 +14,9 @@ class DownloadS1DataIterDatapipe(IterDataPipe):
     def __init__(
             self,
             path_to_terminals: str,
-            download_path:str,
             path_to_cred_file:str,
-            commence_download: Optional[bool] = False) -> None:
+            commence_download: Optional[bool] = False,
+            download_path:Optional[str] = None) -> None:
         """
         Declare the variables
 
