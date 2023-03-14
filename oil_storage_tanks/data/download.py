@@ -9,7 +9,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
-class s1_data():
+class s1_data_download():
     """Download the Sentinel1 data"""
     def __init__(
             self,
