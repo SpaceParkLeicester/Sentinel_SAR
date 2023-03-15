@@ -20,6 +20,7 @@ def test_oilterminals():
 def test_earthdata_login_auth():    
     """Testing authentication"""
     pass
+
 # def test_download_s1_data():
 #     """Testing ASF download data"""
 #     # Source - https://github.com/asfadmin/Discovery-asf_search
