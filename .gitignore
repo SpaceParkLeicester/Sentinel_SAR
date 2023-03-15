@@ -129,7 +129,6 @@ dmypy.json
 .pyre/
 
 # Project stuff
-pyproject.toml
 gcp_key.json
 earthdata_cred.json
 Oil-Storage-Tanks/tests/data
