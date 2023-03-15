@@ -43,3 +43,11 @@ Add custom commands in linux
 * Create a shell script file and make sure it is executable `chmod u+x,g+x script.sh`
 * Create a `.bash_aliases` file in the root dir and add `alias 'customcommand'='/home/user/script.sh'`
 * Run `source ~/.bash_aliases` and `customcommand` is ready to go
+
+Installation and Pytest Commands
+* Run `python setup.py install` from the root directory of the project.
+    * This will install all the required libraries, packages, and dependencies in an environment.
+* Run `pip install -e .`
+    * This will make the project editable to be able to develop and run tests.
+* To test the fucntions, datapipe lines, etc. jusing `pytest` package
+    * Run `pytest tests/run/test_data_download.py --log-cli-level=INFO --log-cli=true -s`

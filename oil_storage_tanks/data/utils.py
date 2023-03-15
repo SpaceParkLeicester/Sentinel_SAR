@@ -122,5 +122,5 @@ def oil_terminals(
     terminal_dict = {}
     for index, row in df.iterrows():
         terminal_dict[row['Name']] = lat_lon[index]
-
+        
     return terminal_dict

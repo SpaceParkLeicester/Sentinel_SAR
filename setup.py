@@ -9,7 +9,7 @@ long_description = (this_directory / "README.md").read_text()
 install_requires = (this_directory / "requirements.txt").read_text().splitlines()
 
 setup(
-    name="oil_storage_tanks",
+    name="Oil-Storage-Tanks",
     version="0.0.3",
     license="MIT",
     description="Dissertation regarding Oil Storage Tanks",
