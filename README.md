@@ -52,3 +52,5 @@ Installation and Pytest Commands
     * This will make the project editable to be able to develop and run tests.
 * To test the fucntions, datapipe lines, etc. jusing `pytest` package
     * Run `pytest tests/run/test_data_download.py --log-cli-level=INFO --log-cli=true -s`
+
+Bypass UoL Group policy - [link](https://medium.com/tenable-techblog/bypass-windows-10-user-group-policy-and-more-with-this-one-weird-trick-552d4bc5cc1b)
