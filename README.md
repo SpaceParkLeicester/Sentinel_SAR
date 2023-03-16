@@ -19,6 +19,7 @@ Dissertation on automate detection and volume estimation of Storage Oil Tank
 * Sentine1 SAR data download through a python package - [asf_search](https://medium.com/geekculture/bulk-download-sentinel-1-sar-data-d180ec0bfac1)
 
 ### Paper2 - Optical-Enhanced Oil Tank Detection in High-Resolution SAR Images - [link](https://ieeexplore.ieee.org/document/9924205)
+* test
 
 ### Google CLI authentication
 * In order to authenticate gcloud cli in the remote machine, you have to have the [google cloud project](https://developers.google.com/workspace/marketplace/create-gcp-project) setup on the GCP platform.
