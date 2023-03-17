@@ -33,6 +33,7 @@ Dissertation on automate detection and volume estimation of Storage Oil Tank
 * Run `gcloud auth login --no-browser` on the remote machine terminal, and copy the `gcloud auth login --remote-bootstrap=......` link in the local machine with web browser, after choosing an account, copy the link `https://localhost:......` on to the remote machine to complete the authentication process.
 * After authentication you can see the active accounts using the command `gcloud auth list`, in which there is a `*` on the active account. Along with this you can see projects using `gcloud projects list`, and set a default project using `gcloud config set project 'PROJECT_ID'`
 * To set GCP SSH in config, you need to have [Google SDK](https://cloud.google.com/sdk/docs/install) installed in your system first, after installing open Google SDK console and follow the instructions, then set Google VM SSH in `config` by running `gcloud compute config-ssh`.
+* Run `ssh-keygen -t rsa -f C:\Users\WINDOWS_USER\.ssh\KEY_FILENAME -C USERNAME -b 2048` to generate public and private keys, replace `USERNAME` and `KEY_FILENAME` with your username and `google_compute_engine` respectively.
 
 ### Earth Engine authentication
 In a remote machine, without access to a browser, there is a way to authenticate earthengine.
