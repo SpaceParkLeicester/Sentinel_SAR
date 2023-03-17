@@ -3,7 +3,7 @@ import os
 from oil_storage_tanks import DownloadS1Data
 from oil_storage_tanks.data import bounding_box as bbox
 from oil_storage_tanks.data import oil_terminals
-from oil_storage_tanks.data import project_dir
+from oil_storage_tanks.data import earthdata_authentication
 
 def test_oilterminals():
     """Testing the oil terminal file"""
@@ -12,11 +12,15 @@ def test_oilterminals():
     # Reading the data
     data = oil_terminals(
         terminal_file_path = terminal_file_path)
-    assert data is not None
+    for key, value in data.items():
+        assert key is not None
+        assert value is not None
 
-def test_earthdata_login_auth():    
-    """Testing authentication"""
-    pass
+# def test_earthdata_login_auth():    
+#     """Testing authentication"""
+#     # Path to the credential file
+#     session = earthdata_authentication()
+#     assert session is not None
 
 # def test_download_s1_data():
 #     """Testing ASF download data"""

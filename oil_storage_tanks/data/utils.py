@@ -83,23 +83,12 @@ def bounding_box(
     # Convert the polygon object to WKT string
     return dumps(poly)
 
-def earthdata_authentication(
-        cred_file_path: str
-        ):
-    """
-    Function to authenticate Eartdata login
-
-    Args:
-        cred_file_path: Path to the credential file
-    """
+def earthdata_authentication():
+    """Function to authenticate Eartdata login"""
     # Opening the credential file and reading the data
-    with open(cred_file_path, "r") as f:
-        data = json.load(f)
-        username = data.username
-        password = data.password
-        session = asf.ASFSession().auth_with_creds(username, password)
-        f.close()
-    
+    username = os.environ['USERNAME']
+    password = os.environ['PASSWORD']
+    session = asf.ASFSession().auth_with_creds(username, password)
     return session
 
 def oil_terminals(
@@ -126,10 +115,3 @@ def oil_terminals(
         
     return terminal_dict
 
-
-def project_dir():
-    """Functions to determine working dir"""
-    # Getting the full path of current directory
-    current_dir = os.path.dirname(__file__)
-    project_dir = os.path.dirname(os.path.abspath(current_dir))
-    return project_dir    

@@ -131,4 +131,3 @@ dmypy.json
 # Project stuff
 gcp_key.json
 earthdata_cred.json
-Oil-Storage-Tanks/tests/data
