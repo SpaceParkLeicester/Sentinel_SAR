@@ -3,5 +3,5 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "Oil-Storage-Tanks"
+name = "oiltanks"
 version="0.0.3"
