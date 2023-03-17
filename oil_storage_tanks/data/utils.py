@@ -86,8 +86,8 @@ def bounding_box(
 def earthdata_authentication():
     """Function to authenticate Eartdata login"""
     # Opening the credential file and reading the data
-
-    credentials = json.loads(os.environ.get('EARTHDATA_CRED'))
+    earthdata_cred = os.environ['EARTDATA_CRED']
+    credentials = json.loads(earthdata_cred)
 
     username = credentials['username']
     password = credentials['password']
