@@ -1,14 +1,20 @@
-name: OilTanks Workflow
+name: Run tests
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  my_job:
+  test:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -18,5 +24,7 @@ jobs:
         conda install -c conda-forge torchdata
       
     - name: Run tests
+      env:
+        EARTHDATA_CRED: ${{ secrets.EARTHDATA_CRED }}    
       run: |
-        pytest test_*.py
+        pytest tests/run -v $EARTHDATA_CRED

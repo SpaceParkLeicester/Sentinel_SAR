@@ -86,8 +86,11 @@ def bounding_box(
 def earthdata_authentication():
     """Function to authenticate Eartdata login"""
     # Opening the credential file and reading the data
-    username = os.environ['USERNAME']
-    password = os.environ['PASSWORD']
+
+    credentials = json.loads(os.environ.get('EARTHDATA_CRED'))
+
+    username = credentials['username']
+    password = credentials['password']
     session = asf.ASFSession().auth_with_creds(username, password)
     return session
 

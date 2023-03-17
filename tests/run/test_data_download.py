@@ -16,11 +16,11 @@ def test_oilterminals():
         assert key is not None
         assert value is not None
 
-# def test_earthdata_login_auth():    
-#     """Testing authentication"""
-#     # Path to the credential file
-#     session = earthdata_authentication()
-#     assert session is not None
+def test_earthdata_login_auth():    
+    """Testing authentication"""
+    # Path to the credential file
+    session = earthdata_authentication()
+    assert session is not None
 
 # def test_download_s1_data():
 #     """Testing ASF download data"""
