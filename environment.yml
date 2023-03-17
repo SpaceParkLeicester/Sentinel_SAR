@@ -11,4 +11,4 @@ dependencies:
   - pytorch
   - torchdata
   - pip:
-    - git+https://github.com/eogit/pyeo.git
+    - git+git://github.com/eogit/pyeo.git

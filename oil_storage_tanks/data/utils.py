@@ -1,4 +1,5 @@
 import ee
+import os
 import logging
 import math
 import numpy as np
@@ -124,3 +125,9 @@ def oil_terminals(
         terminal_dict[row['Name']] = lat_lon[index]
         
     return terminal_dict
+
+def current_dir():
+    """Functions to determine working dir"""
+    # Getting the full path of current directory
+    current_dir = os.path.dirname(__file__)
+    parent_dir = os.path.dirname(os.path.abspath(current_dir))     
