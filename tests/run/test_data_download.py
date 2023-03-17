@@ -3,15 +3,12 @@ import os
 from oil_storage_tanks import DownloadS1Data
 from oil_storage_tanks.data import bounding_box as bbox
 from oil_storage_tanks.data import oil_terminals
+from oil_storage_tanks.data import project_dir
 
 def test_oilterminals():
     """Testing the oil terminal file"""
     # Getting the full path of current directory
-    current_dir = os.path.dirname(__file__)
-    parent_dir = os.path.dirname(os.path.abspath(current_dir)) 
-    file_path = "data/uk_oil_terminals.xlsx"
-    terminal_file_path = os.path.join(parent_dir, file_path)
-    
+    terminal_file_path = "tests/data/uk_oil_terminals.xlsx"    
     # Reading the data
     data = oil_terminals(
         terminal_file_path = terminal_file_path)
