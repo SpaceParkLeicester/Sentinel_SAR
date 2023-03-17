@@ -83,17 +83,6 @@ def bounding_box(
     # Convert the polygon object to WKT string
     return dumps(poly)
 
-def earthdata_authentication():
-    """Function to authenticate Eartdata login"""
-    # Opening the credential file and reading the data
-    earthdata_cred = os.environ['EARTDATA_CRED']
-    credentials = json.loads(earthdata_cred)
-
-    username = credentials['username']
-    password = credentials['password']
-    session = asf.ASFSession().auth_with_creds(username, password)
-    return session
-
 def oil_terminals(
         terminal_file_path: str
         ):
