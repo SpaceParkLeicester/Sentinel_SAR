@@ -6,7 +6,6 @@ Dissertation on automate detection and volume estimation of Storage Oil Tank
 * Run the `setup.py` to install the required packages and dependencies
     * `python setup.py install`
 * Run `pip install -e .` to make the package ediatble.
-test
 
 ## SAR Storage Oil Tank Datasets
 
