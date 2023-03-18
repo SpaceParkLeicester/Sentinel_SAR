@@ -16,16 +16,9 @@ jobs:
         python-version: '3.9'
 
     - name: Install dependencies
-      run: |
-        # Install the wait-for-it package
-        apt-get update && apt-get install -y wait-for-it        
+      run: |     
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        conda install -c conda-forge gdal
-        conda install -c pytorch pytorch
-        conda install -c conda-forge torchdata
-        # Wait for packages to finish downloading and installing
-        wait-for http://localhost:80        
+        pip install -r requirements.txt      
       
     - name: Run tests
       env:
