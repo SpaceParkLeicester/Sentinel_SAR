@@ -20,6 +20,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt      
       
-    - name: Run tests  
+    - name: Run tests
+      env:
+        EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+        EARTDATA_PASSWORD: ${{ secrets.EARTDATA_PASSWORD }}      
       run: |
         pytest tests/run/test_*.py

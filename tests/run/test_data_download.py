@@ -17,3 +17,10 @@ def test_oilterminals():
         assert key is not None
         assert value is not None
 
+def test_earthdata_login_auth():    
+    """Testing authentication"""
+    username = os.environ['EARTHDATA_USERNAME']
+    password = os.environ['EARTHDATA_PASSWORD']    
+    session = asf.ASFSession().auth_with_creds(username, password)
+    assert session is not None
+
