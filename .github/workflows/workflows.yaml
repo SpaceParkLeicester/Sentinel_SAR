@@ -22,6 +22,8 @@ jobs:
         conda install -c conda-forge gdal
         conda install -c pytorch pytorch
         conda install -c conda-forge torchdata
+        # Wait for packages to finish downloading and installing
+        wait-for http://localhost:80        
       
     - name: Run tests
       env:
