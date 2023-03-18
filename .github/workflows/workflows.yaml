@@ -22,12 +22,12 @@ jobs:
 
     - name: Test Git secret variables
       run: |
-        if [ "$EARTHDATA_USERNAME" == "vardhan609@gmail.com"]
-        then
+        if [ "$EARTHDATA_USERNAME" == "vardhan609@gmail.com" ]; then
           echo "username is correct"
         fi
       env:
-        EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}     
+        EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+        EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_PASSWORD}}  
       
     - name: Run tests     
       run: |
