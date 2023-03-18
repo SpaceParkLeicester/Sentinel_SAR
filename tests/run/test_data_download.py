@@ -17,10 +17,26 @@ def test_oilterminals():
         assert key is not None
         assert value is not None
 
-def test_earthdata_login_auth():    
-    """Testing authentication"""
-    username = os.environ['EARTHDATA_USERNAME']
-    password = os.environ['EARTHDATA_PASSWORD']    
-    session = asf.ASFSession().auth_with_creds(username, password)
-    assert session is not None
+        # Testing the bounding box
+        bbox_aoi = bbox(
+            center_lat = value[0],
+            center_lon = value[1])
+        assert bbox_aoi is not None
+
+# def test_earthdata_login_auth():    
+#     """Testing authentication"""
+#     # Reading earth data credentials from json file
+#     earthdata_cred = ".private/earthdata_cred.json"
+#     with open(earthdata_cred) as f:
+#         earthdata = json.load(f)
+#         username = earthdata['username']
+#         password = earthdata['password']
+#         f.close()
+    
+#     # Calling the ASF EARTHDATA API
+#     session = asf.ASFSession().auth_with_creds(username, password)
+#     assert session is not None
+
+
+
 

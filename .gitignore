@@ -131,4 +131,7 @@ dmypy.json
 # Project stuff
 gcp_key.json
 earthdata_cred.json
+.gitsecret/
 .private/
+.gitsecret/keys/random_seed
+!*.secret
