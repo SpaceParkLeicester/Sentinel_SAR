@@ -30,7 +30,8 @@ def ee_authenticate(
     session = AuthorizedSession(scoped_credentials)
 
     url = 'https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/LANDSAT'
-
+    
+    log.info("Starting the session for authentication")
     response = session.get(url)
     json_format = json.loads(response.content)
     if json_format is not None:

@@ -7,8 +7,8 @@ from oil_storage_tanks.data import bounding_box as bbox
 from oil_storage_tanks.data import oil_terminals
 from oil_storage_tanks.data import ee_authenticate
 
-def test_oilterminals():
-    """Testing the oil terminal file"""
+def test_oilterminals_bbox():
+    """Testing the oil terminal file and bounding box"""
     # Getting the full path of current directory
     terminal_file_path = "tests/data/uk_oil_terminals.xlsx"    
     # Reading the data
@@ -52,7 +52,3 @@ def test_ee_authenticate():
         ee_response = ee_authenticate(service_acc_key = service_acc_key)
     
     assert ee_response is not None
-
-
-
-

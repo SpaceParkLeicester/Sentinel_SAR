@@ -11,3 +11,4 @@ earthengine-api
 asf_search
 openpyxl
 pytest
+colorlog
