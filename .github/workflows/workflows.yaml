@@ -20,15 +20,22 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Test Git secret variables
+    - name: Getting Earth data username and password
       run: |
         if [ "$EARTHDATA_USERNAME" == "vardhan609@gmail.com" ]; then
           echo "username is correct"
         fi
       env:
         EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
-        EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD}}  
-      
+        EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD}}
+    
+    -name: Getting GCP service account key
+      run: |
+        echo "$SERVICE_ACC_KEY" > serice_acc_key.json
+        export SERVICE_ACC_KEY=$(realpath service_acc_key.json)  
+      env:
+        SERVICE_ACC_KEY: ${{ secrets.GCP_SERVICE_ACC_KEY}}
+
     - name: Run tests     
       run: |
         pytest tests/run/test_*.py

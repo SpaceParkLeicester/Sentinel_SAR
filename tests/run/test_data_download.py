@@ -5,6 +5,7 @@ import asf_search as asf
 # from oil_storage_tanks import DownloadS1Data
 from oil_storage_tanks.data import bounding_box as bbox
 from oil_storage_tanks.data import oil_terminals
+from oil_storage_tanks.data import ee_authenticate
 
 def test_oilterminals():
     """Testing the oil terminal file"""
@@ -40,6 +41,17 @@ def test_earthdata_login_auth():
     # Calling the ASF EARTHDATA API
     session = asf.ASFSession().auth_with_creds(username, password)
     assert session is not None
+
+def test_ee_authenticate():
+    """Testing Earth Engine authentication"""
+    service_acc_key = ".private/service_acc_key.json"
+    if os.path.exists(service_acc_key):
+        ee_response = ee_authenticate(service_acc_key = service_acc_key)
+    else:
+        service_acc_key = os.environ.get('SERVICE_ACC_KEY')
+        ee_response = ee_authenticate(service_acc_key = service_acc_key)
+    
+    assert ee_response is not None
 
 
 

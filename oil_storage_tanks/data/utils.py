@@ -7,9 +7,30 @@ import pandas as pd
 from shapely.geometry import Polygon
 from shapely.wkt import dumps
 import json
-import asf_search as asf
+from google.auth.transport.requests import AuthorizedSession
+from google.oauth2 import service_account
 
 log = logging.getLogger(__name__)
+
+def ee_authenticate(
+        service_acc_key: str
+        ):
+    """Authenticating Earth Engine
+
+    Args:
+        service_acc_key: Path to the service account key JSON file
+    """
+    credentials = service_account.Credentials.from_service_account_file(service_acc_key)
+    scoped_credentials = credentials.with_scopes(
+        ['https://www.googleapis.com/auth/cloud-platform'])
+
+    session = AuthorizedSession(scoped_credentials)
+
+    url = 'https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/LANDSAT'
+
+    response = session.get(url)
+    json_format = json.loads(response.content)
+    return json_format
 
 def ee_initiate(
         service_account: str = 'storage-tank@gy7720.iam.gserviceaccount.com',
