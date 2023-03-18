@@ -27,7 +27,7 @@ jobs:
         fi
       env:
         EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
-        EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_PASSWORD}}  
+        EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD}}  
       
     - name: Run tests     
       run: |
