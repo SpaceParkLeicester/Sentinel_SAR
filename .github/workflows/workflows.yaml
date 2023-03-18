@@ -27,4 +27,4 @@ jobs:
       env:
         EARTHDATA_CRED: ${{ secrets.EARTHDATA_CRED }}    
       run: |
-        pytest tests/run -v --secret EARTDATA_CRED
+        pytest tests/run/test_*.py

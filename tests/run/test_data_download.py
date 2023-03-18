@@ -1,5 +1,6 @@
 # Test to download the data
 import os
+import json
 import asf_search as asf
 from oil_storage_tanks import DownloadS1Data
 from oil_storage_tanks.data import bounding_box as bbox
@@ -16,10 +17,17 @@ def test_oilterminals():
         assert key is not None
         assert value is not None
 
-def test_earthdata_login_auth(my_secret):    
+def test_earthdata_login_auth():    
     """Testing authentication"""
-    username = my_secret['username']
-    password = my_secret['password']
+    # Read the value of the MY_SECRET environment variable
+    earthdata_cred = os.environ.get('EARTHDATA_CRED')
+
+    # Parse the JSON data
+    earthdata_cred_json = json.loads(earthdata_cred)
+
+    # Access the username and password variables
+    username = earthdata_cred_json['username']
+    password = earthdata_cred_json['password']
     session = asf.ASFSession().auth_with_creds(username, password)
     assert session is not None
 
