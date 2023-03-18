@@ -1,4 +1,4 @@
-name: Run tests
+name: Run Pytest Workflow
 
 on: [push, pull_request]
 
@@ -17,6 +17,8 @@ jobs:
 
     - name: Install dependencies
       run: |
+        # Install the wait-for-it package
+        apt-get update && apt-get install -y wait-for-it        
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         conda install -c conda-forge gdal
