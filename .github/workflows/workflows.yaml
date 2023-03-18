@@ -32,7 +32,7 @@ jobs:
     - name: Getting GCP service account key
       run: |
         echo "$SERVICE_ACC_KEY" > serice_acc_key.json
-        export SERVICE_ACC_KEY=$(realpath service_acc_key.json)  
+        export SERVICE_ACC_KEY_PATH=$(realpath service_acc_key.json)  
       env:
         SERVICE_ACC_KEY: ${{ secrets.GCP_SERVICE_ACC_KEY}}
 

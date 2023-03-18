@@ -1,16 +1,17 @@
 import ee
 import os
-import logging
 import math
 import numpy as np
 import pandas as pd
 from shapely.geometry import Polygon
 from shapely.wkt import dumps
 import json
+from oil_storage_tanks.utils import logger
 from google.auth.transport.requests import AuthorizedSession
 from google.oauth2 import service_account
 
-log = logging.getLogger(__name__)
+# Getting the logger function
+log = logger()
 
 def ee_authenticate(
         service_acc_key: str
@@ -20,6 +21,8 @@ def ee_authenticate(
     Args:
         service_acc_key: Path to the service account key JSON file
     """
+    # Reading the credentials
+    log.info("Reading the credentials from the service key json file")
     credentials = service_account.Credentials.from_service_account_file(service_acc_key)
     scoped_credentials = credentials.with_scopes(
         ['https://www.googleapis.com/auth/cloud-platform'])
@@ -30,6 +33,8 @@ def ee_authenticate(
 
     response = session.get(url)
     json_format = json.loads(response.content)
+    if json_format is not None:
+        log.info("Authentication successful!")
     return json_format
 
 def ee_initiate(
@@ -47,7 +52,7 @@ def ee_initiate(
 
     ee.Initialize(credentials)
 
-    log.info("Earth Engine Initiation successful")
+    log.info("Earth Engine Initiation successful!")
 
 
 def bounding_box(
@@ -114,6 +119,7 @@ def oil_terminals(
         terminal_file_path: File path to terminal information
     """
     # Load the csv file
+    log.info(f"Reading the xlsx file:{terminal_file_path}")
     df = pd.read_excel(
         terminal_file_path, 
         skiprows = 1)
@@ -125,6 +131,7 @@ def oil_terminals(
     terminal_dict = {}
     for index, row in df.iterrows():
         terminal_dict[row['Name']] = lat_lon[index]
-        
+    if terminal_dict is not None:
+        log.info("Reading the xlsx file is successful!")
     return terminal_dict
 

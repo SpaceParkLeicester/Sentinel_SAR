@@ -48,7 +48,7 @@ def test_ee_authenticate():
     if os.path.exists(service_acc_key):
         ee_response = ee_authenticate(service_acc_key = service_acc_key)
     else:
-        service_acc_key = os.environ.get('SERVICE_ACC_KEY')
+        service_acc_key = os.environ.get('SERVICE_ACC_KEY_PATH')
         ee_response = ee_authenticate(service_acc_key = service_acc_key)
     
     assert ee_response is not None
