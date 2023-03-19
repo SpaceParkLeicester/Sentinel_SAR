@@ -27,16 +27,8 @@ def test_oilterminals_bbox():
 def test_earthdata_login_auth():    
     """Testing authentication"""
     # Reading earth data credentials from json file
-    earthdata_cred = ".private/earthdata_cred.json"
-    if os.path.exists(earthdata_cred):
-        with open(earthdata_cred) as f:
-            earthdata = json.load(f)
-            username = earthdata['username']
-            password = earthdata['password']
-            f.close()
-    else:
-        username = os.environ.get('EARTHDATA_USERNAME')
-        password = os.environ.get('EARTHDATA_PASSWORD')
+    username = os.environ.get('EARTHDATA_USERNAME')
+    password = os.environ.get('EARTHDATA_PASSWORD')
     
     # Calling the ASF EARTHDATA API
     session = asf.ASFSession().auth_with_creds(username, password)

@@ -8,7 +8,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -24,17 +24,17 @@ jobs:
       run: |
         if [ "$EARTHDATA_USERNAME" == "vardhan609@gmail.com" ]; then
           echo "username is correct"
-        fi
+        fi  
       env:
         EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
         EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD}}
-    
-    - name: Getting GCP service account key
-      run: |
-        echo "$SERVICE_ACC_KEY" > serice_acc_key.json
-        export SERVICE_ACC_KEY_PATH=$(realpath service_acc_key.json)  
+
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
       env:
-        SERVICE_ACC_KEY: ${{ secrets.GCP_SERVICE_ACC_KEY}}
+        
+      with:
+        credentials_json: '${{ secrets.GCP_SERVICE_ACC_KEY }}'
 
     - name: Run tests     
       run: |

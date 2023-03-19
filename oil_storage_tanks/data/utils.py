@@ -1,14 +1,19 @@
 import ee
 import os
+import json
 import math
 import numpy as np
 import pandas as pd
-from shapely.geometry import Polygon
+
+import asf_search as asf
+
 from shapely.wkt import dumps
-import json
+from shapely.geometry import Polygon
+
 from oil_storage_tanks.utils import logger
-from google.auth.transport.requests import AuthorizedSession
+
 from google.oauth2 import service_account
+from google.auth.transport.requests import AuthorizedSession
 
 # Getting the logger function
 log = logger()
@@ -59,7 +64,7 @@ def ee_initiate(
 def bounding_box(
         center_lat: np.float64, 
         center_lon: np.float64, 
-        half_side: np.int64 = 50):
+        half_side: np.int64 = 100):
     """
     Function that gives WKT of a polygin from a center lon, lat
 
@@ -136,3 +141,4 @@ def oil_terminals(
         log.info("Reading the xlsx file is successful!")
     return terminal_dict
 
+         

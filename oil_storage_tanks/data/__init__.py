@@ -3,4 +3,5 @@
 from .utils import (
     bounding_box, 
     oil_terminals,
-    ee_authenticate)
+    ee_authenticate,
+    ee_initiate)
