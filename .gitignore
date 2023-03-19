@@ -132,7 +132,6 @@ dmypy.json
 gcp_key.json
 earthdata_cred.json
 .private/
-data/
 
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json

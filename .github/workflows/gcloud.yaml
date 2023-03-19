@@ -1,0 +1,19 @@
+name: gcloud authentication
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Google Cloud SDK
+        uses: google-gcloud/setup-gcloud@v0.2.0
+        with:
+          project_id: gy7720
+          service_account_key: ${{ secrets.GCP_SERVICE_ACC_KEY }}

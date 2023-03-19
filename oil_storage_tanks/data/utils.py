@@ -1,65 +1,12 @@
-import ee
-import os
-import json
 import math
+import logging
 import numpy as np
 import pandas as pd
-
-import asf_search as asf
-
 from shapely.wkt import dumps
 from shapely.geometry import Polygon
 
-from oil_storage_tanks.utils import logger
-
-from google.oauth2 import service_account
-from google.auth.transport.requests import AuthorizedSession
-
-# Getting the logger function
-log = logger()
-
-def ee_authenticate(
-        service_acc_key: str
-        ):
-    """Authenticating Earth Engine
-
-    Args:
-        service_acc_key: Path to the service account key JSON file
-    """
-    # Reading the credentials
-    log.info("Reading the credentials from the service key json file")
-    credentials = service_account.Credentials.from_service_account_file(service_acc_key)
-    scoped_credentials = credentials.with_scopes(
-        ['https://www.googleapis.com/auth/cloud-platform'])
-
-    session = AuthorizedSession(scoped_credentials)
-
-    url = 'https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/LANDSAT'
-    
-    log.info("Starting the session for authentication")
-    response = session.get(url)
-    json_format = json.loads(response.content)
-    if json_format is not None:
-        log.info("Authentication successful!")
-    return json_format
-
-def ee_initiate(
-        service_account: str = 'storage-tank@gy7720.iam.gserviceaccount.com',
-        private_key:str = None
-        )-> None:
-    """
-    Function to authenticate Earth Engine
-
-    Args:
-        service_account: Name of the service account
-        private_key: Path to the downloaded service account private key
-    """
-    credentials = ee.ServiceAccountCredentials(service_account, private_key)
-
-    ee.Initialize(credentials)
-
-    log.info("Earth Engine Initiation successful!")
-
+# Setting the log file
+log = logging.getLogger(__name__)
 
 def bounding_box(
         center_lat: np.float64, 

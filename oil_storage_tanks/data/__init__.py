@@ -2,6 +2,5 @@
 # from .download import s1_data_download 
 from .utils import (
     bounding_box, 
-    oil_terminals,
-    ee_authenticate,
-    ee_initiate)
+    oil_terminals)
+from .download import s1_data_download

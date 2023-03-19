@@ -29,13 +29,6 @@ jobs:
         EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
         EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD}}
 
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v1'
-      env:
-        
-      with:
-        credentials_json: '${{ secrets.GCP_SERVICE_ACC_KEY }}'
-
     - name: Run tests     
       run: |
         pytest tests/run/test_*.py

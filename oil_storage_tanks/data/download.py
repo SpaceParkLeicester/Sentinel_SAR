@@ -8,17 +8,12 @@ import numpy as np
 import argparse
 from oil_storage_tanks.data import bounding_box as bbox
 
-# Custom logger function
 log = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
-
 
 class s1_data_download():
     """Download the Sentinel1 data"""
     def __init__(
             self,
-            center_coords_lat: np.float64 = None,
-            center_coords_lon: np.float64 = None,
             wkt_aoi: Optional[str] = None,            
             start_date:str = "2023-01-01",
             end_date:str = "2023-03-17"
@@ -26,15 +21,11 @@ class s1_data_download():
         """Declaring the variables
             start_date: Start date of the search
             end_date: End date of the search
-            wkt_aoi: Bounding box of the polygon
-            center_coords_lat: Center Latitude of AOI
-            center_coords_lon: Center Longitude of AOI      
+            wkt_aoi: Bounding box of the polygon     
         """
         self.start_date = start_date
         self.end_date = end_date
         self.wkt_aoi = wkt_aoi
-        self.center_coords_lat = center_coords_lat
-        self.center_coords_lon =center_coords_lon
 
     def earthdata_auth(
             self,
@@ -47,25 +38,42 @@ class s1_data_download():
         """
         # Reading earth data credentials from json file
         if os.path.exists(earthdata_cred):
+            log.info("Getting info from the credential file")
             with open(earthdata_cred) as f:
                 earthdata = json.load(f)
                 username = earthdata['username']
                 password = earthdata['password']
             # Calling the ASF EARTHDATA API
+            log.info("Starting the ASF session auth with")
+            log.info(f"username:{username} and password:{password}")
             self.session = asf.ASFSession().auth_with_creds(username, password)
             f.close()
+            if self.session is not None:
+                log.info("Authentication successful!")
         else:
             log.debug("Please add crednetial JSON file")
 
-    def s1_metadata(self):
-        """Getting the meta data of the scene"""
+    def s1_metadata(
+            self,
+            center_coords_lat: np.float64 = None,
+            center_coords_lon: np.float64 = None
+            ):
+        """Getting the meta data of the scene
+        
+        Args:
+            center_coords_lat: Center Latitude of AOI
+            center_coords_lon: Center Longitude of AOI         
+        """
         # Getting the WKT from center coordinates
+        log.info(f"WKT of AOI is {self.wkt_aoi}")
+        log.info(f"Looking data for the coords:{center_coords_lat},{center_coords_lon}")
         if self.wkt_aoi is None:
             self.wkt_aoi = bbox(
-                center_lat = self.center_coords_lat,
-                center_lon = self.center_coords_lon)
+                center_lat = center_coords_lat,
+                center_lon = center_coords_lon)
         
         # Date objects
+        log.info(f"Searching data for the dates between {self.start_date}:{self.end_date}")
         start = datetime.strptime(self.start_date, "%Y-%m-%d")
         end = datetime.strptime(self.end_date, "%Y-%m-%d")
 
@@ -85,7 +93,7 @@ class s1_data_download():
     
     def download_data(
             self,
-            download_path: str = "data") -> None:
+            download_path: str = "data/") -> None:
         """
         Downloads the data
         
@@ -94,6 +102,7 @@ class s1_data_download():
             path_to_cred_file: Path to the credential file
         """
         # Start the download
+        log.info(f"The download path is {download_path}")
         self.results.download(
             path = download_path,
             session = self.session, 
@@ -125,8 +134,8 @@ if __name__ == "__main__":
     log.setLevel(getattr(logging, args.log_level.upper()))    
 
     log.info("Initiating the EarthData seach with ASF")
-    earthdata = s1_data_download(
+    earthdata = s1_data_download()
+    metadata = earthdata.s1_metadata(
         center_coords_lat = args.center_lat,
-        center_coords_lon = args.center_lon
+        center_coords_lon = args.center_lon        
     )
-    metadata = earthdata.s1_metadata()
