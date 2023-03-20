@@ -8,7 +8,7 @@ Dissertation on automate detection and volume estimation of Storage Oil Tank
 * Run `pip install -e .`
     * This will make the project editable to be able to develop and run tests.
 * To test the fucntions, datapipe lines, etc. using `pytest` package
-    * Run `pytest -rA -v tests/run/test_data_download.py`
+    * Run `pytest -rA -s tests/run/test_data_download.py`
 * If not added, add project folder path to `sys.path` in order to use the relative paths while developing and testing
     * In python
     ```

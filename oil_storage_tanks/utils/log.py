@@ -7,9 +7,11 @@ def logger():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
 
+    # Remove the default handler
+    logger.handlers = []
+
     # Create a stream handler
     sh = logging.StreamHandler()
-    sh.setLevel(logging.DEBUG)
 
     # Set the log format
     formatter = colorlog.ColoredFormatter(
@@ -32,6 +34,9 @@ def logger():
     # Add the file handler and stream handler to the logger
     logger.addHandler(sh)
 
+    # Disable propagation of messages to the root logger
+    logger.propagate = False
+    
     # Log messages
     logger.debug('Debug message')
     logger.info('Info message')

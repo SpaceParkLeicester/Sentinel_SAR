@@ -1,18 +1,25 @@
 """Functions relating to search"""
 import os
 import numpy as np
-import asf_search as asf
 from datetime import datetime
 from typing import Dict
-from oil_storage_tanks.utils import logger, stitch_strings
-from oil_storage_tanks.data import bounding_box as bbox
+
+try:
+    import asf_search as asf
+    from oil_storage_tanks.utils import stitch_strings, logger
+    from oil_storage_tanks.data import bounding_box as bbox
+except ImportError as e:
+    import logging
+    logging.debug(f"Import error: {e}")
+
 
 class asf_search():
     """Refine Search results from ASF EARTH DATA"""
     def __init__(
             self,
             start_date:str = "2023-03-10",
-            end_date:str = "2023-03-18",            
+            end_date:str = "2023-03-18",
+            location_name:str = "flotta",            
             center_coords_lat: np.float64 = 58.83834793,
             center_coords_lon: np.float64 = -3.121350468) -> None:
         """Getting the meta data of the scene
@@ -20,16 +27,18 @@ class asf_search():
         Args:
             start_date: Start date of the search
             end_date: End date of the search
+            location_name: Location name of the oil terminal
             center_coords_lat: Center Latitude of AOI
             center_coords_lon: Center Longitude of AOI         
         """
         self.start_date = start_date
         self.end_date = end_date
+        self.location_name = location_name
         self.center_coords_lat = center_coords_lat
         self.center_coords_lon = center_coords_lon
         self.log = logger()
     
-    def metadata(self) -> Dict:
+    def metadata(self):
         # Getting the WKT from center coordinates
         self.log.info(f"Looking data for the coords:{self.center_coords_lat},{self.center_coords_lon}")
         self.wkt_aoi = bbox(
@@ -37,7 +46,7 @@ class asf_search():
             center_lon = self.center_coords_lon)
 
         # Date objects
-        self.log.info(f"Searching data for the dates between {self.start_date}:{self.end_date}")
+        self.log.info(f"Searching data for the dates between {self.start_date} : {self.end_date}")
         self.start = datetime.strptime(self.start_date, "%Y-%m-%d")
         self.end = datetime.strptime(self.end_date, "%Y-%m-%d")
 
@@ -48,16 +57,20 @@ class asf_search():
             start = self.start,
             end = self.end,
             intersectsWith = self.wkt_aoi
-            )  
-        self.log.info(f'Total Images Found: {len(self.results)}')
-
-        ### Save Metadata to a Dictionary
-        self.metadata = self.results.geojson()
-
-        # Sanity check
-        assert self.metadata is not None
+            )
         
-        return self.metadata
+        # Sanity check
+        try:
+            total_results = len(self.results)
+            assert total_results > 0
+            self.log.info(f'Total Images Found: {len(self.results)}')
+            ### Save Metadata to a Dictionary
+            self.metadata = self.results.geojson()
+            return self.metadata 
+                   
+        except AssertionError:    
+            self.log.debug("No images are found for the given criteria!")
+            return None
     
     def save_search(
             self,
@@ -66,9 +79,9 @@ class asf_search():
         # Definig the filename and the path
         start_date = self.start_date.replace('-', '')
         end_date = self.end_date.replace('-', '')
-        filename = ["s1", start_date, end_date]
+        filename = ["s1", self.location_name, start_date, end_date]
         filename = stitch_strings(filename, "_")
-        filepath = os.path.join(file_save_path,filename + ".csv")
+        filepath = os.path.join(file_save_path, filename, filename + ".csv")
 
         # Writing the file
         if not os.path.exists(filepath):
