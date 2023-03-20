@@ -5,6 +5,8 @@ import json
 import pandas as pd
 from typing import Optional
 from getpass import getpass
+from oil_storage_tanks.data.asf_data.auth import earthdata_auth
+from oil_storage_tanks.utils.download_bar import progress_bar
 try:
     import asf_search as asf
     from oil_storage_tanks.utils import logger
@@ -13,94 +15,68 @@ except ImportError as e:
     logging.debug(f"Import error: {e}")
 
 
-class download_asf():
+class download_asf(earthdata_auth):
     """Functions relating to download data from ASF"""
-    def __init__(
-            self,
-            path_to_cred_file: str = None) -> None:
-        """Declaring variables
-        
-        Args:
-            path_to_cred_file: Path to the crednetial file
-        """
-        self.path_to_cred_file = path_to_cred_file
+    def __init__(self, path_to_cred_file: str = None) -> None:
+        """ Initialising the logger"""        
+        super().__init__(path_to_cred_file)
+        self.user_pass_session = super().auth()
         self.log = logger()
     
-    def earthdata_auth(self) -> np.int64:
-        """Authenticating the EARTHDATA login details"""
-        # Checking the path to the credential file
-        if not os.path.exists(self.path_to_cred_file):
-            # Setting up the username and password
-            earthdata_link = "https://www.earthdata.nasa.gov/"
-            self.log.debug(f"For details, visit: {earthdata_link}")
-            self.log.info("Enter you EARTHDATA username")
-            username = input("Username:")
-            self.log.info("Enter your EARTHDATA password")
-            password = getpass("Password:")
-        else:
-            self.log.info("Getting info from the credential file")
-            with open(self.path_to_cred_file) as f:
-                earthdata = json.load(f)
-                username = earthdata['username']
-                password = earthdata['password']
-                f.close()          
-
-        try:
-            self.user_pass_session = asf.ASFSession().auth_with_creds(
-                username = username,
-                password = password
-            )
-        except asf.ASFAuthenticationError as e:
-            self.log.debug(f"Authentication failed:\n{e}")
-            return 401
-        else:
-            self.log.info("User Authentication Successful!")
-            return 235
+    def check_files(
+            self,
+            search_results_path:str = None) -> bool:
+        """Check if the file exists"""
+        check = os.path.isfile(search_results_path) 
+        if not check:
+            self.log.debug("The search results csv does not exists!")
+            self.log.debug("Check '~/oil_storage_tanks/data/asf_data/search.py'")
+        
+        return check
 
     def download_data(
             self,
-            search_results_path: str,
-            download_path: str,
-            download_single_file: Optional[bool] = True) -> None:
+            download_path: str = None) -> None:
         """Function to download the data"""
-        # Getting the URL's of the search result
-        if not os.path.exists(search_results_path):
-            self.log.debug("The search results csv does not exists!")
-            self.log.debug("Check '~/oil_storage_tanks/data/asf_data/search.py'")
+
+        # Getting the required info from the CSV file
+        search_results_df = pd.read_csv(search_results_path, header = 0)
+        urls_df = search_results_df["URL"] # URL
+        granules_df = search_results_df["Granule Name"] # Granule name
+        file_sizes_df = search_results_df["Size (MB)"]
+        self.log.info(f"Total number of URL's available are : {urls_df.shape[0]}")
+
+        # Converting the individual data into lists
+        urls_list = urls_df.values.tolist()
+        granules_list = granules_df.values.tolist()
+        file_sizes_list = file_sizes_df.values.tolist()
+
+        # Checking if the file exists
+        # Downloading the first Granule in the search list
+        filename = granules_list[0] + ".zip"
+        if not os.path.exists(os.path.join(download_path, filename)):
+            self.log.info(f"Commencing download of the file: {filename}")
+            url = urls_list[0]
+            file_size = file_sizes_list[0]
+
+            # Starting the download session
+            asf.download_url(
+                url = url,
+                path = download_path,
+                filename = filename,
+                session = self.user_pass_session)
+            
         else:
-            search_results_df = pd.read_csv(search_results_path, header = 0)
-            urls_df = search_results_df["URL"]
-            granules_df = search_results_df["Granule Name"]
-            self.log.info(f"Total number of URL's available are : {urls_df.shape[0]}")
-
-            # Download the data of given urls
-            urls_list = urls_df.values.tolist()
-            granules_list = granules_df.values.tolist()
-
-            # Download a single file
-            if download_single_file:
-                # Checking if the file exists
-                filename = granules_list[0] + ".zip"
-                if not os.path.exists(download_path, filename):
-                    self.log.info(f"Commencing download of the file: {filename}")
-                    url = urls_list[0]
-                    asf.download_url(
-                        url = url,
-                        path = download_path,
-                        filename = filename,
-                        session = self.user_pass_session)
-                else:
-                    self.log.debug(f"{filename} already exists!")
+            self.log.debug(f"{filename} already exists!")
 
 if __name__ == "__main__":
-    path_to_cred_file = "oiltanks/.private/earthdata_cred.json"
-    search_results_path = "oiltanks/data/s1_data/s1_flotta_20230310_20230318.csv"
-    download_path = "oiltanks/data/s1_data"
+    path_to_cred_file = ".private/earthdata_cred.json"
+    search_results_path = "data/s1_data/s1_flotta_20230310_20230318.csv"
+    download_path = "data/s1_data/SAFE"
 
-    download = download_asf(
-        path_to_cred_file = path_to_cred_file
-    )
-    download.earthdata_auth()
-    download.download_data()
-
+    download = download_asf(path_to_cred_file = path_to_cred_file)
+    if download.check_files(
+        search_results_path = search_results_path):
+        download.download_data(
+            download_path = download_path)
 

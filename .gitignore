@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # Project stuff
-data/s1_data/*
+data/s1_data/SAFE/*
 
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json
