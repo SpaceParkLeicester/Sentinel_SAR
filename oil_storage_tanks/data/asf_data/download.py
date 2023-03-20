@@ -1,12 +1,8 @@
 """Function to download the ASFDATA"""
 import os
-import numpy as np
-import json
 import pandas as pd
-from typing import Optional
-from getpass import getpass
 from oil_storage_tanks.data.asf_data.auth import earthdata_auth
-from oil_storage_tanks.utils.download_bar import progress_bar
+
 try:
     import asf_search as asf
     from oil_storage_tanks.utils import logger
@@ -43,21 +39,19 @@ class download_asf(earthdata_auth):
         search_results_df = pd.read_csv(search_results_path, header = 0)
         urls_df = search_results_df["URL"] # URL
         granules_df = search_results_df["Granule Name"] # Granule name
-        file_sizes_df = search_results_df["Size (MB)"]
         self.log.info(f"Total number of URL's available are : {urls_df.shape[0]}")
 
         # Converting the individual data into lists
         urls_list = urls_df.values.tolist()
         granules_list = granules_df.values.tolist()
-        file_sizes_list = file_sizes_df.values.tolist()
 
         # Checking if the file exists
         # Downloading the first Granule in the search list
         filename = granules_list[0] + ".zip"
-        if not os.path.exists(os.path.join(download_path, filename)):
+        filepath = os.path.join(download_path, filename)
+        if not os.path.exists(filepath):
             self.log.info(f"Commencing download of the file: {filename}")
             url = urls_list[0]
-            file_size = file_sizes_list[0]
 
             # Starting the download session
             asf.download_url(
@@ -65,8 +59,10 @@ class download_asf(earthdata_auth):
                 path = download_path,
                 filename = filename,
                 session = self.user_pass_session)
-            
+            self.log.info("Download is finished!")
+        
         else:
+            # If the file already exists
             self.log.debug(f"{filename} already exists!")
 
 if __name__ == "__main__":
