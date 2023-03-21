@@ -16,9 +16,13 @@ class download_asf(earthdata_auth):
     def __init__(
             self, 
             path_to_cred_file: str = None,
+            download_path: str = None,
+            csv_search_results_path:str = None,          
             log = None) -> None:
         """ Initialising the logger"""        
         super().__init__(path_to_cred_file)
+        self.download_path = download_path
+        self.csv_search_results_path = csv_search_results_path
 
         # Defining the log function
         try:
@@ -34,60 +38,61 @@ class download_asf(earthdata_auth):
         except AssertionError as e:
             self.log.debug(f"Resolve the bug: {e}")
 
-    def check_files(
-            self,
-            search_results_path:str = None) -> bool:
+    def check_files(self) -> bool:
         """Check if the file exists"""
-        check = os.path.isfile(search_results_path) 
+        check = os.path.isfile(self.csv_search_results_path) 
         if not check:
             self.log.debug("The search results csv does not exists!")
             self.log.debug("Check '~/oil_storage_tanks/data/asf_data/search.py'")
-        
-        return check
+        else:
+            basename = os.path.basename(self.csv_search_results_path)
+            self.loc_name = os.path.splitext(basename)[0]
+            self.loc_name = self.loc_name.split('_')[1]
 
-    def download_data(
-            self,
-            download_path: str = None) -> None:
+    def get_download_path(self) -> None:
         """Function to download the data"""
-
         # Getting the required info from the CSV file
-        search_results_df = pd.read_csv(search_results_path, header = 0)
-        urls_df = search_results_df["URL"] # URL
-        granules_df = search_results_df["Granule Name"] # Granule name
-        self.log.info(f"Total number of URL's available are : {urls_df.shape[0]}")
+        search_results_df = pd.read_csv(self.csv_search_results_path, header = 0)
+        self.urls_df = search_results_df["URL"] # URL
+        self.granules_df = search_results_df["Granule Name"] # Granule name
+        self.log.info(f"Total number of URL's available are : {self.urls_df.shape[0]}")
 
         # Converting the individual data into lists
-        urls_list = urls_df.values.tolist()
-        granules_list = granules_df.values.tolist()
+        self.urls_list = self.urls_df.values.tolist()
+        self.granules_list = self.granules_df.values.tolist()
 
         # Checking if the file exists
         # Downloading the first Granule in the search list
-        filename = granules_list[0] + ".zip"
-        filepath = os.path.join(download_path, filename)
-        if not os.path.exists(filepath):
-            self.log.info(f"Commencing download of the file: {filename}")
-            url = urls_list[0]
+        self.filename = self.loc_name + self.granules_list[0] + ".zip"
+        self.filepath = os.path.join(self.download_path, self.filename)
+    
+    def download_data(self):
+        """Commencing the download"""
+        if not os.path.exists(self.filepath):
+            self.log.info(f"Commencing download of the file: {self.filename}")
+            url = self.urls_list[0]
 
             # Starting the download session
             asf.download_url(
                 url = url,
-                path = download_path,
-                filename = filename,
+                path = self.download_path,
+                filename = self.filename,
                 session = self.user_pass_session)
             self.log.info("Download is finished!")
         
         else:
             # If the file already exists
-            self.log.debug(f"{filename} already exists!")
+            self.log.debug(f"{self.filename} already exists!")
 
 if __name__ == "__main__":
     path_to_cred_file = ".private/earthdata_cred.json"
-    search_results_path = "data/s1_data/s1_flotta_20230310_20230318/s1_flotta_20230310_20230318.csv"
-    download_path = "data/s1_data/SAFE"
+    csv_search_results_path = "data/s1_data_search_results/s1_Bantry_20230310_20230318.csv"
+    download_path = "data/SAFE"
 
-    download = download_asf(path_to_cred_file = path_to_cred_file)
-    if download.check_files(
-        search_results_path = search_results_path):
-        download.download_data(
-            download_path = download_path)
-
+    download = download_asf(
+        path_to_cred_file = path_to_cred_file,
+        download_path = download_path,
+        csv_search_results_path = csv_search_results_path)
+    if download.check_files():
+        download.get_download_path()
+        download.download_data()

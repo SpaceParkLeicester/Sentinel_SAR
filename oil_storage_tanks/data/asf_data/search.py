@@ -80,31 +80,32 @@ class search_earthdata():
     
     def save_search(
             self,
-            file_save_path: str):
+            csv_file_save_path: str):
         """Fucntion to save the search results"""
         # Definig the filename and the path
         start_date = self.start_date.replace('-', '')
         end_date = self.end_date.replace('-', '')
         filename = ["s1", self.location_name, start_date, end_date]
         filename = stitch_strings(filename, "_")
-        filepath = os.path.join(file_save_path, filename)
+        self.csv_filepath = os.path.join(csv_file_save_path, filename + ".csv")
 
         # Writing the file
-        if not os.path.exists(filepath):
-            os.makedirs(filepath)
-            with open(os.path.join(filepath, filename + ".csv"), "w") as f:
+        if not os.path.isfile(self.csv_filepath):
+            with open(self.csv_filepath, "w") as f:
                 f.writelines(self.results.csv())
                 f.close()
-                self.log.info(f"The file is saved to: {filepath}")
+                self.log.info(f"The file is saved to: {self.csv_filepath}")
         else:
-            self.log.debug(f"The file already exists: {filepath}")
+            self.log.debug(f"The file already exists: {self.csv_filepath}")
+        
+        return self.csv_filepath
 
 
 if __name__ == "__main__":
     # Calling above functions
-    file_save_path = "data/s1_data"
+    csv_file_save_path = "data/s1_data_search_results"
     asf_earthdata = search_earthdata()
     asf_earthdata.metadata()
     asf_earthdata.save_search(
-        file_save_path = file_save_path
+        csv_file_save_path = csv_file_save_path
     )
