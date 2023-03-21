@@ -1,5 +1,6 @@
 """Function to download the ASFDATA"""
 import os
+import logging
 import pandas as pd
 from oil_storage_tanks.data.asf_data.auth import earthdata_auth
 
@@ -7,18 +8,32 @@ try:
     import asf_search as asf
     from oil_storage_tanks.utils import logger
 except ImportError as e:
-    import logging
     logging.debug(f"Import error: {e}")
 
 
 class download_asf(earthdata_auth):
     """Functions relating to download data from ASF"""
-    def __init__(self, path_to_cred_file: str = None) -> None:
+    def __init__(
+            self, 
+            path_to_cred_file: str = None,
+            log = None) -> None:
         """ Initialising the logger"""        
         super().__init__(path_to_cred_file)
-        self.user_pass_session = super().auth()
-        self.log = logger()
-    
+
+        # Defining the log function
+        try:
+            self.log = logger()
+        except NameError as e:
+            self.log = logging.getLogger(__name__)
+            self.log.debug(f"Resolve the bug: {e}")        
+
+        # Sanity check
+        try:
+            self.user_pass_session = super().auth()
+            assert type(self.user_pass_session) == asf.ASFSession
+        except AssertionError as e:
+            self.log.debug(f"Resolve the bug: {e}")
+
     def check_files(
             self,
             search_results_path:str = None) -> bool:
@@ -67,7 +82,7 @@ class download_asf(earthdata_auth):
 
 if __name__ == "__main__":
     path_to_cred_file = ".private/earthdata_cred.json"
-    search_results_path = "data/s1_data/s1_flotta_20230310_20230318.csv"
+    search_results_path = "data/s1_data/s1_flotta_20230310_20230318/s1_flotta_20230310_20230318.csv"
     download_path = "data/s1_data/SAFE"
 
     download = download_asf(path_to_cred_file = path_to_cred_file)

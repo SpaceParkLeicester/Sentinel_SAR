@@ -6,21 +6,29 @@ import logging
 from getpass import getpass
 try:
     import asf_search as asf
+    from oil_storage_tanks.utils import logger
 except ImportError as e:
     logging.debug(f"Import error: {e}")
+
 
 class earthdata_auth():
     """Authenticating crednetials"""
     def __init__(
             self,
-            path_to_cred_file: str = None) -> None:
+            path_to_cred_file: str = None,
+            log = None) -> None:
         """Declaring variables
         
         Args:
             path_to_cred_file: Path to the crednetial file
+            log: Custom logging configuration
         """
         self.path_to_cred_file = path_to_cred_file
-        self.log = logging.getLogger(__name__)
+        try:
+            self.log = logger()
+        except NameError as e:
+            self.log = logging.getLogger(__name__)
+            self.log.debug(f"Resolve the bug: {e}")
     
     def auth(self) -> np.int64:
         """Authenticating the EARTHDATA login details"""

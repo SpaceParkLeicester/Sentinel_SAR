@@ -1,6 +1,7 @@
 """Functions relating to search"""
 import os
 import numpy as np
+import logging
 from datetime import datetime
 from typing import Dict
 
@@ -9,11 +10,10 @@ try:
     from oil_storage_tanks.utils import stitch_strings, logger
     from oil_storage_tanks.data import bounding_box as bbox
 except ImportError as e:
-    import logging
     logging.debug(f"Import error: {e}")
 
 
-class asf_search():
+class search_earthdata():
     """Refine Search results from ASF EARTH DATA"""
     def __init__(
             self,
@@ -21,7 +21,8 @@ class asf_search():
             end_date:str = "2023-03-18",
             location_name:str = "flotta",            
             center_coords_lat: np.float64 = 58.83834793,
-            center_coords_lon: np.float64 = -3.121350468) -> None:
+            center_coords_lon: np.float64 = -3.121350468,
+            log = None) -> None:
         """Getting the meta data of the scene
         
         Args:
@@ -29,15 +30,20 @@ class asf_search():
             end_date: End date of the search
             location_name: Location name of the oil terminal
             center_coords_lat: Center Latitude of AOI
-            center_coords_lon: Center Longitude of AOI         
+            center_coords_lon: Center Longitude of AOI 
+            log: Custom logger function        
         """
         self.start_date = start_date
         self.end_date = end_date
         self.location_name = location_name
         self.center_coords_lat = center_coords_lat
         self.center_coords_lon = center_coords_lon
-        self.log = logger()
-    
+        try:
+            self.log = logger()
+        except NameError as e:
+            self.log = logging.getLogger(__name__)
+            self.log.debug(f"Resolve the bug: {e}")
+
     def metadata(self):
         # Getting the WKT from center coordinates
         self.log.info(f"Looking data for the coords:{self.center_coords_lat},{self.center_coords_lon}")
@@ -81,11 +87,12 @@ class asf_search():
         end_date = self.end_date.replace('-', '')
         filename = ["s1", self.location_name, start_date, end_date]
         filename = stitch_strings(filename, "_")
-        filepath = os.path.join(file_save_path, filename, filename + ".csv")
+        filepath = os.path.join(file_save_path, filename)
 
         # Writing the file
         if not os.path.exists(filepath):
-            with open(filepath, "w") as f:
+            os.makedirs(filepath)
+            with open(os.path.join(filepath, filename + ".csv"), "w") as f:
                 f.writelines(self.results.csv())
                 f.close()
                 self.log.info(f"The file is saved to: {filepath}")
@@ -96,7 +103,7 @@ class asf_search():
 if __name__ == "__main__":
     # Calling above functions
     file_save_path = "data/s1_data"
-    asf_earthdata = asf_search()
+    asf_earthdata = search_earthdata()
     asf_earthdata.metadata()
     asf_earthdata.save_search(
         file_save_path = file_save_path
