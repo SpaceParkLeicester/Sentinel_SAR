@@ -63,7 +63,7 @@ class download_asf(earthdata_auth):
 
         # Checking if the file exists
         # Downloading the first Granule in the search list
-        self.filename = self.loc_name + self.granules_list[0] + ".zip"
+        self.filename = self.loc_name + "_" + self.granules_list[0] + ".zip"
         self.filepath = os.path.join(self.download_path, self.filename)
     
     def download_data(self):
