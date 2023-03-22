@@ -8,5 +8,6 @@ dependencies:
   - gdal
   - pytorch
   - torchdata
+  - google-cloud-storage
   - pip:
     - git+git://github.com/eogit/pyeo.git

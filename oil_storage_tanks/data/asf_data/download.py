@@ -1,5 +1,7 @@
 """Function to download the ASFDATA"""
 import os
+import subprocess
+import time 
 import logging
 import pandas as pd
 from oil_storage_tanks.data.asf_data.auth import earthdata_auth
@@ -74,6 +76,24 @@ class download_asf(earthdata_auth):
                 filename = self.filename,
                 session = self.user_pass_session)
             self.log.info("Download is finished!")
+
+            # Moving the file to GCP bucket
+            # Bash script to move files to GCP
+            time.sleep(5)
+            bash_script = "oil_storage_tanks/utils/move_to_gc.sh"
+            subprocess.run(["bash", bash_script])
+
+            # Remove the file
+            time.sleep(5)
+            self.log.info(f"Removing the file: {self.filename} from folder")
+            os.remove(self.filepath)
+            
+            # Sanity check
+            try:
+                check = os.path.exists(self.filepath)
+                assert check == False
+            except AssertionError as e:
+                self.log.debug(f"{self.filename} has not be completely removed!")
         
         else:
             # If the file already exists

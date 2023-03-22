@@ -2,27 +2,21 @@
 
 # Setting the source and destination folders
 SOURCE_DIR="/home/vardh/oiltanks/oiltanks/data/SAFE"
-for FILE_PATH in "$SOURCE_DIR"*
+for FILE_PATH in "$SOURCE_DIR"/*
   do
     # Extract the filename
-    FILE_NAME=$(basename "$FILE_PATH")
+    FILE_NAME=$(basename "$FILE_PATH")    
 
-    # Set the IFS to underscore
-    IFS="_"
+    # Checking the bucket folder exists
+    GCP_FILE_PATH=gs://s1-data/$FILE_NAME
+    gsutil -q stat $GCP_FILE_PATH
 
-    # Get the location on file name
-    read -ra FILE_NAME_PARTS <<< "$FILE_NAME"
-    LOC_NAME="${FILE_NAME_PARTS[0]}"    
-
-    # CHecking the bucket folder exists
-    gsutil ls gs://s1-data/$LOC_NAME/
-    if [ $? -ne 0 ]; then
-      echo "$LOC_NAME folder does not exist!"
-      # Creating the folder
-      echo "Creating $LOC_NAME folder"
-      gsutil cp -r $FILE_PATH gs://s1-data/$LOC_NAME/
+    if [ $? == 0 ]; then
+      echo "$FILE_NAME exists!"
     else
-      echo "$LOC_NAME exists!"
+      echo "$FILE_NAME does not exists!"
+      echo "Moving file to GCP"
+      gsutil cp $FILE_PATH gs://s1-data
     fi
   done
 
