@@ -43,7 +43,6 @@ def logger():
     logger.warning('Warning message')
     logger.error('Error message')
     logger.critical('Critical message')
-    logger.info('======================================================================================')
 
     return logger
 
