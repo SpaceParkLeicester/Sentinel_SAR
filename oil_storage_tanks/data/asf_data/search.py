@@ -38,11 +38,7 @@ class search_earthdata():
         self.location_name = location_name
         self.center_coords_lat = center_coords_lat
         self.center_coords_lon = center_coords_lon
-        try:
-            self.log = logger()
-        except NameError as e:
-            self.log = logging.getLogger(__name__)
-            self.log.debug(f"Resolve the bug: {e}")
+        self.log = log
 
     def metadata(self):
         # Getting the WKT from center coordinates
@@ -99,13 +95,3 @@ class search_earthdata():
             self.log.debug(f"The file already exists: {self.csv_filepath}")
         
         return self.csv_filepath
-
-
-if __name__ == "__main__":
-    # Calling above functions
-    csv_file_save_path = "data/s1_data_search_results"
-    asf_earthdata = search_earthdata()
-    asf_earthdata.metadata()
-    asf_earthdata.save_search(
-        csv_file_save_path = csv_file_save_path
-    )

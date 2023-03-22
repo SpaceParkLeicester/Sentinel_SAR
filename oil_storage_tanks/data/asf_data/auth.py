@@ -24,13 +24,12 @@ class earthdata_auth():
             log: Custom logging configuration
         """
         self.path_to_cred_file = path_to_cred_file
-        try:
-            self.log = logger()
-        except NameError as e:
+        if log is None:
             self.log = logging.getLogger(__name__)
-            self.log.debug(f"Resolve the bug: {e}")
+        else:
+            self.log = log
     
-    def auth(self) -> np.int64:
+    def auth(self):
         """Authenticating the EARTHDATA login details"""
         # Checking the path to the credential file
         if not os.path.exists(self.path_to_cred_file):
@@ -60,9 +59,3 @@ class earthdata_auth():
         else:
             self.log.info("User Authentication Successful!")
             return self.user_pass_session
-
-if __name__ == "__main__":
-   path_to_cred_file = ".private/earthdata_cred.json"
-   earthdata = earthdata_auth(
-       path_to_cred_file = path_to_cred_file)
-   earthdata.auth()

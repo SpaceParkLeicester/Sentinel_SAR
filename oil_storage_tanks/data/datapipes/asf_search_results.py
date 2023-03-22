@@ -10,17 +10,15 @@ class search_results_datapipe():
     def __init__(
             self, 
             path_to_cred_file: str = None, 
-            log=None,
+            log = None,
             path_to_uk_terminals: str = None,
-            csv_file_save_path: str = None,
-            download_path: str = None) -> None:
+            csv_file_save_path: str = None) -> None:
         
         """Defining the variables"""    
         self.path_to_cred_file = path_to_cred_file
         self.path_to_uk_terminals = path_to_uk_terminals
         self.csv_file_save_path = csv_file_save_path
-        self.download_path = download_path
-        self.log = logger()
+        self.log = log
     
     def get_dictionary(self) -> None:
         """Loading the data into a dictionary"""
@@ -65,11 +63,10 @@ if __name__ == "__main__":
     path_to_cred_file = ".private/earthdata_cred.json"
     path_to_uk_terminal = "data/uk_oil_terminals.xlsx"
     csv_file_save_path = "data/s1_data_search_results"
-    download_path = "data/SAFE"
     datapipe = search_results_datapipe(
         path_to_cred_file = path_to_cred_file,
         path_to_uk_terminals = path_to_uk_terminal,
         csv_file_save_path = csv_file_save_path,
-        download_path = download_asf)
+        log = logger())
     datapipe.get_dictionary()
     datapipe.write_search()

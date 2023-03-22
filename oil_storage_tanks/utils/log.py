@@ -15,7 +15,7 @@ def logger():
 
     # Set the log format
     formatter = colorlog.ColoredFormatter(
-    '%(asctime)s - %(log_color)s%(levelname)s: %(message)s',
+    '%(asctime)s - %(filename)s- %(log_color)s%(levelname)s: %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
     log_colors={
         'DEBUG': 'blue',
@@ -47,5 +47,3 @@ def logger():
 
     return logger
 
-if __name__ == "__main__":
-    logger()

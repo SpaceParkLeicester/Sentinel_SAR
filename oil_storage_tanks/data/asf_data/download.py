@@ -20,16 +20,11 @@ class download_asf(earthdata_auth):
             csv_search_results_path:str = None,          
             log = None) -> None:
         """ Initialising the logger"""        
-        super().__init__(path_to_cred_file)
+        super().__init__(
+            path_to_cred_file, log)
+        self.log = log
         self.download_path = download_path
-        self.csv_search_results_path = csv_search_results_path
-
-        # Defining the log function
-        try:
-            self.log = logger()
-        except NameError as e:
-            self.log = logging.getLogger(__name__)
-            self.log.debug(f"Resolve the bug: {e}")        
+        self.csv_search_results_path = csv_search_results_path      
 
         # Sanity check
         try:
@@ -83,16 +78,3 @@ class download_asf(earthdata_auth):
         else:
             # If the file already exists
             self.log.debug(f"{self.filename} already exists!")
-
-if __name__ == "__main__":
-    path_to_cred_file = ".private/earthdata_cred.json"
-    csv_search_results_path = "data/s1_data_search_results/s1_Bantry_20230310_20230318.csv"
-    download_path = "data/SAFE"
-
-    download = download_asf(
-        path_to_cred_file = path_to_cred_file,
-        download_path = download_path,
-        csv_search_results_path = csv_search_results_path)
-    if download.check_files():
-        download.get_download_path()
-        download.download_data()
