@@ -1,1 +1,1 @@
-# Docs relating to the disseration thesis!
+# Documents relating to the disseration thesis!
