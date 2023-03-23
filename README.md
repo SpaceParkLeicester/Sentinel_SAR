@@ -16,29 +16,6 @@ Dissertation on automate detection and volume estimation of Storage Oil Tank
     sys.path.append(path/to/oiltanks)
     ```
 
-## SAR Storage Oil Tank Datasets
-
-### ASF EARTDATA
-* ASF along with NASA's EARTHDATA provides a visual interface [dashboard](https://search.earthdata.nasa.gov/search?fdc=Alaska%20Satellite%20Facility) to download the data
-
-### UK Oil refineries datasets
-. [Refinerymaps.com](https://www.refinerymaps.com/) provides a refinery dataset but it is expensive to download
-. List of oil terminals manually collected in a [wikipedia article](https://en.wikipedia.org/wiki/Oil_terminals_in_the_United_Kingdom)
-. An [article](https://fueloilnews.co.uk/2022/11/the-uks-refineries-past-present-and-future/) from Nov 2022 detailing past, present UK oil refineries
-
-
-## Research summary
-
-### Paper1 - Structural projection points estimation and context priors for oil tank storage estimation in SAR image - [link](https://www.sciencedirect.com/science/article/pii/S0924271622002842)
-* HRNet - [link](https://paperswithcode.com/method/hrnet)
-* Visualising filters and feature maps in CNN tutorial - [link](https://debuggercafe.com/visualizing-filters-and-feature-maps-in-convolutional-neural-networks-using-pytorch/)
-* Azimuths - [link](https://www.nwcg.gov/course/ffm/location/62-azimuths#:~:text=An%20azimuth%20is%20the%20direction,and%200%20degrees%20mark%20north.)
-* Incident and Viewing angle - [link](https://www.nwcg.gov/course/ffm/location/62-azimuths#:~:text=An%20azimuth%20is%20the%20direction,and%200%20degrees%20mark%20north.)
-* Sentine1 SAR data download through a python package - [asf_search](https://medium.com/geekculture/bulk-download-sentinel-1-sar-data-d180ec0bfac1)
-
-### Paper2 - Optical-Enhanced Oil Tank Detection in High-Resolution SAR Images - [link](https://ieeexplore.ieee.org/document/9924205)
-* test
-
 ### Google CLI authentication
 * In order to authenticate gcloud cli in the remote machine, you have to have the [google cloud project](https://developers.google.com/workspace/marketplace/create-gcp-project) setup on the GCP platform.
 * Make sure to install [gcloud sdk](https://cloud.google.com/sdk/docs/install) in bot the local and remote machine
