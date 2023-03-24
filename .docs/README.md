@@ -10,6 +10,9 @@
 * Sentine1 SAR data download through a python package - [asf_search](https://medium.com/geekculture/bulk-download-sentinel-1-sar-data-d180ec0bfac1)
 
 ### Paper2 - [Optical-Enhanced Oil Tank Detection in High-Resolution SAR Images](https://ieeexplore.ieee.org/document/9924205)
+### Paper3 - [Res2-Unet+, a Practical Oil Tank Detection Network for Large-Scale High Spatial Resolution Images](https://www.mdpi.com/2072-4292/13/23/4740)
+### Paper4 - [Accurate localisation of oil tanks](https://www.mdpi.com/2072-4292/13/22/4646)
+### Paper5 - [Target Detection Based on Edge-Aware and Cross-Coupling Attention for SAR Images](https://ieeexplore-ieee-org.ezproxy3.lib.le.ac.uk/document/9627688)
 
 ### Paper3 - [A deep learning based oil spill detector using Sentinel-1 SAR imagery](https://www.tandfonline.com/doi/full/10.1080/01431161.2022.2109445)
 
