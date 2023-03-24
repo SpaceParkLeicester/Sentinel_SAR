@@ -1,4 +1,6 @@
 # Test to download the data
+from oil_storage_tanks.utils import logger
+from oil_storage_tanks.utils import gcp_earthdata
 from oil_storage_tanks.data import bounding_box as bbox
 from oil_storage_tanks.data import oil_terminals
 
@@ -18,3 +20,18 @@ def test_oilterminals_bbox():
             center_lat = value[0],
             center_lon = value[1])
         assert bbox_aoi is not None
+
+def test_read_gcp():
+    """Testing the function to read from GCP"""
+    bucket_name = "s1-data"
+    filename = "test.csv"
+    log = logger()
+    gcp_data = gcp_earthdata(
+        bucket_name = bucket_name,
+        log = log
+        )
+    data = gcp_data.read_from_gcp(
+        filename = filename
+    )
+    assert data is not None
+    
