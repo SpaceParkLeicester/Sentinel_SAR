@@ -1,9 +1,12 @@
 """Function to download the ASFDATA"""
 import os
+from tqdm import tqdm
 import subprocess
 import time 
 import logging
 import pandas as pd
+from google.cloud import storage
+import zipfile
 from oil_storage_tanks.data.asf_data.auth import earthdata_auth
 
 try:
@@ -19,12 +22,14 @@ class download_asf(earthdata_auth):
             self, 
             path_to_cred_file: str = None,
             download_path: str = None,
+            bucket_name:str = None,            
             csv_search_results_path:str = None,          
             log = None) -> None:
         """ Initialising the logger"""        
         super().__init__(
             path_to_cred_file, log)
         self.log = log
+        self.bucket_name = bucket_name
         self.download_path = download_path
         self.csv_search_results_path = csv_search_results_path      
 
@@ -40,7 +45,7 @@ class download_asf(earthdata_auth):
         check = os.path.isfile(self.csv_search_results_path) 
         if not check:
             self.log.debug("The search results csv does not exists!")
-            self.log.debug("Check '~/oil_storage_tanks/data/asf_data/search.py'")
+            self.log.debug("Run '~/oil_storage_tanks/data/asf_data/search.py'")
         else:
             basename = os.path.basename(self.csv_search_results_path)
             self.loc_name = os.path.splitext(basename)[0]
@@ -60,41 +65,63 @@ class download_asf(earthdata_auth):
 
         # Checking if the file exists
         # Downloading the first Granule in the search list
-        self.filename = self.loc_name + "_" + self.granules_list[0] + ".zip"
-        self.filepath = os.path.join(self.download_path, self.filename)
+        self.filename = self.loc_name + "_" + self.granules_list[0] 
+        self.filename_ext = self.filename + ".zip"
+        self.filepath = os.path.join(self.download_path, self.filename_ext)
     
-    def download_data(self):
+    def download_data(self)-> None:
         """Commencing the download"""
-        if not os.path.exists(self.filepath):
-            self.log.info(f"Commencing download of the file: {self.filename}")
+        # Checking if the file already exists in GCP bucket
+        self.client = storage.Client()
+        blobs = self.client.list_blobs(self.bucket_name)
+        folder_list = [blob.name.split('/')[0] for blob in blobs]
+        self.check = self.filename in folder_list
+        if not self.check: 
+            # If it does not exist in GCP bucket
+            self.log.info(f"Commencing download of the file: {self.filename_ext}")
             url = self.urls_list[0]
 
             # Starting the download session
             asf.download_url(
                 url = url,
                 path = self.download_path,
-                filename = self.filename,
+                filename = self.filename_ext,
                 session = self.user_pass_session)
+            time.sleep(5)
             self.log.info("Download is finished!")
-
-            # Moving the file to GCP bucket
-            # Bash script to move files to GCP
-            time.sleep(5)
-            bash_script = "oil_storage_tanks/utils/move_to_gc.sh"
-            subprocess.run(["bash", bash_script])
-
-            # Remove the file
-            time.sleep(5)
-            self.log.info(f"Removing the file: {self.filename} from folder")
-            os.remove(self.filepath)
-            
-            # Sanity check
-            try:
-                check = os.path.exists(self.filepath)
-                assert check == False
-            except AssertionError as e:
-                self.log.debug(f"{self.filename} has not be completely removed!")
-        
         else:
-            # If the file already exists
-            self.log.debug(f"{self.filename} already exists!")
+            self.log.debug(f"{self.filename} already exists in {self.bucet_name} bucket")
+    
+    def zip_extract_earthdata(self)-> None:
+        """Extract the zipped data"""
+        if not zipfile.is_zipfile(self.filepath):
+            self.log.debug(f"{self.filepath} is not a zip file")
+        else:
+            with zipfile.ZipFile(self.filepath, 'r', allowZip64 = True) as zip_ref:
+            # Extracting each member of the zip file
+                self.log.info(f"Extracting data from {self.filename_ext}")                
+                for file in tqdm(iterable = zip_ref.namelist(), total = len(zip_ref.namelist())):
+                    zip_ref.extract(member = file, path = self.download_path)
+                self.log.info("Extaction complete")
+                zip_ref.close()
+
+            # Deleting the zip file
+            self.log.info(f"Removing the zip file: {self.filename_ext}")
+            time.sleep(5)
+            os.remove(self.filepath)
+    
+    def upload_files_to_gcp(self)-> None:
+        """Upload files from local to GCP"""
+        if os.path.exists(self.filename_ext):
+            self.log.debug(f"{self.filename_ext} has not been completely removed!")
+            self.log.debug("Make sure to remove the file to clear memory for other downloads")
+        if not self.check:
+            filepath = os.path.join(self.download_path, self.filename)
+            self.log.info("Commencing upload to the bucket")
+            subprocess.check_call(f'gsutil cp -r $PWD/{filepath} gs://{self.bucket_name}/')
+            time.sleep(5)
+            self.log.info("Upload finished!")
+        else:
+            self.log.debug(f"{self.filename} already exists in the bucket!")
+
+        

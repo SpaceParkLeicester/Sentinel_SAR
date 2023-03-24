@@ -48,7 +48,7 @@ class gcp_earthdata():
             # Write the data into the the bucket
             self.log.info("Commencing the upload to the bucket")
             blob = self.bucket.blob(self.filename)
-            blob.upload_from_filename(file_path)
+            blob.upload_from_file(file_path)
             self.log.info("upload finished!")
 
     def read_from_gcp(
