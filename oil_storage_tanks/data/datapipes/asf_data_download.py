@@ -2,7 +2,7 @@ from glob import glob
 from oil_storage_tanks.utils import logger
 from oil_storage_tanks.data.asf_data import download_asf
 
-class download_all():
+class download_data():
     """Function to download all available csv files"""
     def __init__(
             self, 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     bucket_name = "s1-data"
     download_path = "data/SAFE"    
     csv_folder = "data/s1_data_search_results"
-    download = download_all(
+    download = download_data(
         path_to_cred_file = path_to_cred_file,
         bucket_name = bucket_name,
         path_to_uk_terminals = path_to_uk_terminal,

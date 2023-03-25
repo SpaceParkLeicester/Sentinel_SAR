@@ -112,9 +112,10 @@ class download_asf(earthdata_auth):
     
     def upload_files_to_gcp(self)-> None:
         """Upload files from local to GCP"""
-        if os.path.exists(self.filename_ext):
+        if os.path.exists(self.filepath):
             self.log.debug(f"{self.filename_ext} has not been completely removed!")
             self.log.debug("Make sure to remove the file to clear memory for other downloads")
+            os.remove(self.filepath)
         if not self.check:
             filepath = os.path.join(self.download_path, self.filename)
             self.log.info("Commencing upload to the bucket")

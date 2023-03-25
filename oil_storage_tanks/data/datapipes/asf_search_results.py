@@ -8,14 +8,12 @@ from oil_storage_tanks.data.asf_data import download_asf
 class search_results_datapipe():
     """Datapipe to download and save search results"""
     def __init__(
-            self, 
-            path_to_cred_file: str = None, 
+            self,
             log = None,
             path_to_uk_terminals: str = None,
             csv_file_save_path: str = None) -> None:
         
         """Defining the variables"""    
-        self.path_to_cred_file = path_to_cred_file
         self.path_to_uk_terminals = path_to_uk_terminals
         self.csv_file_save_path = csv_file_save_path
         self.log = log
@@ -60,11 +58,9 @@ class search_results_datapipe():
             
 
 if __name__ == "__main__":
-    path_to_cred_file = ".private/earthdata_cred.json"
     path_to_uk_terminal = "data/uk_oil_terminals.xlsx"
     csv_file_save_path = "data/s1_data_search_results"
     datapipe = search_results_datapipe(
-        path_to_cred_file = path_to_cred_file,
         path_to_uk_terminals = path_to_uk_terminal,
         csv_file_save_path = csv_file_save_path,
         log = logger())
