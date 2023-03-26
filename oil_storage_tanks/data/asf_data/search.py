@@ -83,9 +83,16 @@ class search_earthdata():
         end_date = self.end_date.replace('-', '')
         filename = ["s1", self.location_name, start_date, end_date]
         filename = stitch_strings(filename, "_")
-        self.csv_filepath = os.path.join(csv_file_save_path, filename + ".csv")
+        self.csv_folderpath = os.path.join(csv_file_save_path, self.location_name)
+        self.csv_filepath = os.path.join(self.csv_folderpath, filename + ".csv")
 
         # Writing the file
+        if not os.path.exists(self.csv_folderpath):
+            self.log.info(f"Creating the folder {self.location_name}")
+            os.makedirs(self.csv_folderpath)
+        else:
+            self.log.debug(f"The folder{self.location_name} exists!")
+
         if not os.path.isfile(self.csv_filepath):
             with open(self.csv_filepath, "w") as f:
                 f.writelines(self.results.csv())
