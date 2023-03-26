@@ -91,7 +91,7 @@ class search_earthdata():
             self.log.info(f"Creating the folder {self.location_name}")
             os.makedirs(self.csv_folderpath)
         else:
-            self.log.debug(f"The folder{self.location_name} exists!")
+            self.log.debug(f"The folder '{self.location_name}' exists!")
 
         if not os.path.isfile(self.csv_filepath):
             with open(self.csv_filepath, "w") as f:
