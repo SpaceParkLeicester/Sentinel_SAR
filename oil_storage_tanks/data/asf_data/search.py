@@ -9,12 +9,11 @@ try:
     import asf_search as asf
     from oil_storage_tanks.utils import stitch_strings, logger
     from oil_storage_tanks.data import bounding_box as bbox
-    from oil_storage_tanks.data.asf_data.auth import earthdata_auth
 except ImportError as e:
     logging.debug(f"Import error: {e}")
 
 
-class search_earthdata(earthdata_auth):
+class search_earthdata():
     """Refine Search results from ASF EARTH DATA"""
     def __init__(
             self,
@@ -23,7 +22,6 @@ class search_earthdata(earthdata_auth):
             location_name:str = "flotta",            
             center_coords_lat: np.float64 = 58.83834793,
             center_coords_lon: np.float64 = -3.121350468,           
-            path_to_cred_file: str = None, 
             log=None) -> None:
         """Getting the meta data of the scene
         
@@ -34,21 +32,13 @@ class search_earthdata(earthdata_auth):
             center_coords_lat: Center Latitude of AOI
             center_coords_lon: Center Longitude of AOI 
             log: Custom logger function        
-        """
-        super().__init__(path_to_cred_file, log)        
+        """       
         self.start_date = start_date
         self.end_date = end_date
         self.location_name = location_name
         self.center_coords_lat = center_coords_lat
         self.center_coords_lon = center_coords_lon
-        self.log = log
-
-        # Sanity check
-        try:
-            self.user_pass_session = super().auth()
-            assert type(self.user_pass_session) == asf.ASFSession
-        except AssertionError as e:
-            self.log.debug(f"Resolve the bug: {e}")        
+        self.log = log     
 
     def metadata(self):
         # Getting the WKT from center coordinates
