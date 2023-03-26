@@ -9,6 +9,7 @@
 * Incident and Viewing angle - [link](https://www.nwcg.gov/course/ffm/location/62-azimuths#:~:text=An%20azimuth%20is%20the%20direction,and%200%20degrees%20mark%20north.)
 * Sentine1 SAR data download through a python package - [asf_search](https://medium.com/geekculture/bulk-download-sentinel-1-sar-data-d180ec0bfac1)
 
+### Paper of the concern - [Dense Oil Tank Detection and Classification via YOLOX-TR Network in Large-Scale SAR Images](https://www.mdpi.com/2072-4292/14/14/3246)
 ### Paper2 - [Optical-Enhanced Oil Tank Detection in High-Resolution SAR Images](https://ieeexplore.ieee.org/document/9924205)
 ### Paper3 - [Res2-Unet+, a Practical Oil Tank Detection Network for Large-Scale High Spatial Resolution Images](https://www.mdpi.com/2072-4292/13/23/4740)
 ### Paper4 - [Accurate localisation of oil tanks](https://www.mdpi.com/2072-4292/13/22/4646)
