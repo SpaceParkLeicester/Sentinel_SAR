@@ -10,12 +10,14 @@ class search_results_datapipe():
     """Datapipe to download and save search results"""
     def __init__(
             self,
+            path_to_cred_file:str = None,
             path_to_uk_terminals: str = None,
             csv_file_save_path: str = None,
             start_date:str = None,
             end_date:str = None) -> None:
         
         """Defining the variables"""    
+        self.path_to_cred_file = path_to_cred_file
         self.path_to_uk_terminals = path_to_uk_terminals
         self.csv_file_save_path = csv_file_save_path
         self.start_date = start_date
@@ -46,6 +48,7 @@ class search_results_datapipe():
             lat, lon = coords
             # Getting the search results into a file.csv
             search = search_earthdata(
+                path_to_cred_file = self.path_to_cred_file,
                 location_name = filename,
                 center_coords_lat = lat,
                 center_coords_lon = lon,
@@ -67,12 +70,15 @@ class search_results_datapipe():
 @click.option('--end_date')
 @click.option('--path_to_uk_terminals', type=click.Path(exists=True), default = 'data/uk_oil_terminals.xlsx')
 @click.option('--csv_file_save_path', type=click.Path(exists=True), default = 'data/s1_data_search_results')
+@click.option('--path_to_cred_file', type = click.Path(exists=True), default = '.private/earthdata_cred.json')
 def search(
+    path_to_cred_file,
     path_to_uk_terminals,
     csv_file_save_path,
     start_date, 
     end_date):
     datapipe = search_results_datapipe(
+        path_to_cred_file = path_to_cred_file,
         path_to_uk_terminals = path_to_uk_terminals,
         csv_file_save_path = csv_file_save_path,
         start_date = start_date,

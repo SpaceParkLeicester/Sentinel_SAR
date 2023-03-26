@@ -40,7 +40,6 @@ class download_data():
 if __name__ == "__main__":
     path_to_cred_file = ".private/earthdata_cred.json"
     path_to_uk_terminal = "data/uk_oil_terminals.xlsx"
-    csv_folder = "data/s1_data_search_results"
     bucket_name = "s1-data"
     download_path = "data/SAFE"    
     csv_folder = "data/s1_data_search_results"
