@@ -22,19 +22,21 @@ class download_data():
     
     def commence_download(self) -> None:
         """Downloading data"""
-        csv_file_paths = glob(self.csv_folder + '/*.csv')
-        for csv_file in csv_file_paths:
-            data = download_asf(
-                path_to_cred_file = self.path_to_cred_file,
-                download_path = self.download_path,
-                bucket_name = bucket_name,
-                csv_search_results_path = csv_file,
-                log = self.log)
-            data.check_files()
-            data.get_download_path()
-            data.download_data()
-            data.zip_extract_earthdata()
-            data.upload_files_to_gcp()
+        csv_folders = glob(f'{csv_folder}/*/')
+        for loc in csv_folders:
+            csv_search_results_path = glob(loc+'/*.csv')
+            for csv_file in csv_search_results_path:
+                data = download_asf(
+                    path_to_cred_file = self.path_to_cred_file,
+                    download_path = self.download_path,
+                    bucket_name = bucket_name,
+                    csv_search_results_path = csv_file,
+                    log = self.log)
+                data.check_files()
+                data.get_download_path()
+                data.download_data()
+                data.zip_extract_earthdata()
+                data.upload_to_gcp()
 
 
 if __name__ == "__main__":
