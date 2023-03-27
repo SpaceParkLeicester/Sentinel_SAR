@@ -3,8 +3,11 @@ name: Run Pytest Workflow
 on: [push, pull_request]
 
 jobs:
-  test:
+  GitHub-Tests:
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'    
 
     steps:
     - name: Checkout code
