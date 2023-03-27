@@ -1,19 +1,20 @@
 from glob import glob
+import asf_search as asf
 from oil_storage_tanks.utils import logger
-from oil_storage_tanks.data.asf_data import download_asf
+from oil_storage_tanks.data.asf_data import download_asf, earthdata_auth
 
 class download_data():
     """Function to download all available csv files"""
     def __init__(
             self, 
-            path_to_cred_file: str = None, 
+            user_pass_session:asf.ASFSession = None, 
             bucket_name:str = None,            
             log=None, 
             path_to_uk_terminals: str = None, 
             csv_folder: str = None, 
             download_path: str = None) -> None:
         """Declaring variables"""
-        self.path_to_cred_file = path_to_cred_file
+        self.user_pass_session = user_pass_session
         self.bucket_name = bucket_name
         self.path_to_uk_terminals = path_to_uk_terminals
         self.csv_folder = csv_folder
@@ -27,7 +28,7 @@ class download_data():
             csv_search_results_path = glob(loc+'/*.csv')
             for csv_file in csv_search_results_path:
                 data = download_asf(
-                    path_to_cred_file = self.path_to_cred_file,
+                    user_pass_session = self.user_pass_session,
                     download_path = self.download_path,
                     bucket_name = bucket_name,
                     csv_search_results_path = csv_file,
@@ -45,8 +46,16 @@ if __name__ == "__main__":
     bucket_name = "s1-data"
     download_path = "data/SAFE"    
     csv_folder = "data/s1_data_search_results"
-    download = download_data(
+    
+    # Getting the session
+    session = earthdata_auth(
         path_to_cred_file = path_to_cred_file,
+        log = logger())
+    user_pass_session = session.auth()
+
+    # Downloading the data
+    download = download_data(
+        user_pass_session = user_pass_session,
         bucket_name = bucket_name,
         path_to_uk_terminals = path_to_uk_terminal,
         download_path = download_path,

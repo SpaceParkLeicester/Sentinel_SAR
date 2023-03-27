@@ -8,7 +8,7 @@ import logging
 import pandas as pd
 from google.cloud import storage
 import zipfile
-from oil_storage_tanks.data.asf_data.auth import earthdata_auth
+import asf_search as asf
 
 try:
     import asf_search as asf
@@ -17,32 +17,21 @@ except ImportError as e:
     logging.debug(f"Import error: {e}")
 
 
-class download_asf(earthdata_auth):
+class download_asf():
     """Functions relating to download data from ASF"""
     def __init__(
             self, 
-            path_to_cred_file: str = None,
+            user_pass_session: asf.ASFSession = None,
             download_path: str = None,
             bucket_name:str = None,            
-            csv_search_results_path:str = None,
-            location_name:str = None,
-            start_date:str = None,
-            end_date:str = None,          
+            csv_search_results_path:str = None,         
             log = None) -> None:
         """ Initialising the logger"""        
-        super().__init__(
-            path_to_cred_file, log)
         self.log = log
+        self.user_pass_session = user_pass_session
         self.bucket_name = bucket_name
         self.download_path = download_path
-        self.csv_search_results_path = csv_search_results_path      
-
-        # Sanity check
-        try:
-            self.user_pass_session = super().auth()
-            assert type(self.user_pass_session) == asf.ASFSession
-        except AssertionError as e:
-            self.log.debug(f"Resolve the bug: {e}")
+        self.csv_search_results_path = csv_search_results_path
 
     def check_files(self) -> bool:
         """Check if the file exists"""

@@ -1,16 +1,13 @@
 import math
-import logging
 import numpy as np
 import pandas as pd
 from shapely.wkt import dumps
 from shapely.geometry import Polygon
-
-# Setting the log file
-log = logging.getLogger(__name__)
+from .log import logger
 
 def bounding_box(
-        center_lat: np.float64, 
-        center_lon: np.float64, 
+        center_lat: np.float64 = 58.83834793,          
+        center_lon: np.float64 = -3.121350468, 
         half_side: np.int64 = 100):
     """
     Function that gives WKT of a polygin from a center lon, lat
@@ -63,7 +60,8 @@ def bounding_box(
     return dumps(poly)
 
 def oil_terminals(
-        terminal_file_path: str
+        terminal_file_path: str,
+        log = logger()
         ):
     """
     Function to get the lat, lon of oi termianls
@@ -72,7 +70,6 @@ def oil_terminals(
         terminal_file_path: File path to terminal information
     """
     # Load the csv file
-    log.info(f"Reading the xlsx file:{terminal_file_path}")
     df = pd.read_excel(
         terminal_file_path, 
         skiprows = 1)
@@ -84,8 +81,6 @@ def oil_terminals(
     terminal_dict = {}
     for index, row in df.iterrows():
         terminal_dict[row['Name']] = lat_lon[index]
-    if terminal_dict is not None:
-        log.info("Reading the xlsx file is successful!")
     return terminal_dict
 
          

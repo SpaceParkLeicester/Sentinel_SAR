@@ -1,6 +1,5 @@
 """Function to Authenticate EARTH DATA credentials"""
 import os
-import numpy as np
 import json
 import logging
 from getpass import getpass

@@ -32,3 +32,4 @@ jobs:
     - name: Run tests     
       run: |
         pytest tests/data/test_*.py
+        pytest tests/utils/test_*.py

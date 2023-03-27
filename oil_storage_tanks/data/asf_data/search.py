@@ -8,7 +8,7 @@ from typing import Dict
 try:
     import asf_search as asf
     from oil_storage_tanks.utils import stitch_strings, logger
-    from oil_storage_tanks.data import bounding_box as bbox
+    from oil_storage_tanks.utils import bounding_box as bbox
 except ImportError as e:
     logging.debug(f"Import error: {e}")
 

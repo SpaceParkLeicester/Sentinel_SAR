@@ -4,7 +4,6 @@ import pandas as pd
 from oil_storage_tanks.utils import logger
 from oil_storage_tanks.data.asf_data import search_earthdata
 
-
 class search_results_datapipe():
     """Datapipe to download and save search results"""
     def __init__(
