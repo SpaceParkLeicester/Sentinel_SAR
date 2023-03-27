@@ -1,7 +1,8 @@
 """Function to download the ASFDATA"""
 import os
 from tqdm import tqdm
-import subprocess
+import shutil
+import subprocess as sp
 import time 
 import logging
 import pandas as pd
@@ -23,7 +24,10 @@ class download_asf(earthdata_auth):
             path_to_cred_file: str = None,
             download_path: str = None,
             bucket_name:str = None,            
-            csv_search_results_path:str = None,          
+            csv_search_results_path:str = None,
+            location_name:str = None,
+            start_date:str = None,
+            end_date:str = None,          
             log = None) -> None:
         """ Initialising the logger"""        
         super().__init__(
@@ -90,7 +94,7 @@ class download_asf(earthdata_auth):
             time.sleep(5)
             self.log.info("Download is finished!")
         else:
-            self.log.debug(f"{self.filename} already exists in {self.bucet_name} bucket")
+            self.log.debug(f"{self.filename} already exists in {self.bucket_name} bucket")
     
     def zip_extract_earthdata(self)-> None:
         """Extract the zipped data"""
@@ -98,10 +102,16 @@ class download_asf(earthdata_auth):
             self.log.debug(f"{self.filepath} is not a zip file")
         else:
             with zipfile.ZipFile(self.filepath, 'r', allowZip64 = True) as zip_ref:
-            # Extracting each member of the zip file
+                
+                # Creating the folder if it does not exists
+                self.folder_path = os.path.join(self.download_path, self.loc_name)
+                if not os.path.isdir(self.folder_path):
+                    os.makedirs(self.folder_path)
+                
+                # Extracting each member of the zip file
                 self.log.info(f"Extracting data from {self.filename_ext}")                
                 for file in tqdm(iterable = zip_ref.namelist(), total = len(zip_ref.namelist())):
-                    zip_ref.extract(member = file, path = self.download_path)
+                    zip_ref.extract(member = file, path = self.folder_path)
                 self.log.info("Extaction complete")
                 zip_ref.close()
 
@@ -110,19 +120,32 @@ class download_asf(earthdata_auth):
             time.sleep(5)
             os.remove(self.filepath)
     
-    def upload_files_to_gcp(self)-> None:
-        """Upload files from local to GCP"""
-        if os.path.exists(self.filepath):
-            self.log.debug(f"{self.filename_ext} has not been completely removed!")
-            self.log.debug("Make sure to remove the file to clear memory for other downloads")
-            os.remove(self.filepath)
-        if not self.check:
-            filepath = os.path.join(self.download_path, self.filename)
-            self.log.info("Commencing upload to the bucket")
-            subprocess.check_call(f'gsutil cp -r $PWD/{filepath} gs://{self.bucket_name}/')
-            time.sleep(5)
-            self.log.info("Upload finished!")
-        else:
-            self.log.debug(f"{self.filename} already exists in the bucket!")
+    def upload_to_gcp(self)-> None:
+        """Upload files to GCP"""
+        # Uploading the file
+        self.log.info(f"Commecning the upload for the file {self.filename}")
+        abs_folder_path = os.path.join(os.getcwd(), self.folder_path)
+        sp.check_call(f'gsutil cp -r {abs_folder_path} gs://s1-data/', shell = True, stdout = sp.PIPE)
+        self.log.info("Upload finished!")
 
-        
+        # Removing the file after upload
+        self.log.info(f'Removing the file {self.filename} after the upload')
+        shutil.rmtree(self.folder_path, ignore_errors = True)
+
+if __name__ == "__main__":
+    path_to_cred_file = '.private/earthdata_cred.json'
+    download_path = 'data/SAFE'
+    bucket_name = 's1-data/flotta'
+    csv_seach_results_path = 'data/s1_data_search_results/Flotta/s1_Flotta_20230101_20230115.csv'
+    download = download_asf(
+        path_to_cred_file = path_to_cred_file,
+        download_path = download_path,
+        bucket_name = bucket_name,
+        csv_search_results_path = csv_seach_results_path,
+        log = logger()
+        )
+    download.check_files()
+    download.get_download_path()
+    download.download_data()
+    download.zip_extract_earthdata()
+    download.upload_to_gcp()
