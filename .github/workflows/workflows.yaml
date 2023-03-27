@@ -20,14 +20,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Getting Earth data username and password
-      run: |
-        if [ "$EARTHDATA_USERNAME" == "vardhan609@gmail.com" ]; then
-          echo "username is correct"
-        fi  
-      env:
-        EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
-        EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD}}
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        service_account: 'storage-tank@gy7720.iam.gserviceaccount.com'
 
     - name: Run tests   
       env: 
