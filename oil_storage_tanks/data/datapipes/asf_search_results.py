@@ -3,7 +3,6 @@ import click
 import pandas as pd
 from oil_storage_tanks.utils import logger
 from oil_storage_tanks.data.asf_data import search_earthdata
-from oil_storage_tanks.data.asf_data import download_asf
 
 
 class search_results_datapipe():
@@ -29,7 +28,7 @@ class search_results_datapipe():
         else:
             self.uk_terminal_df = pd.read_excel(self.path_to_uk_terminals, skiprows=1)
             # Getting data in a dcitionary
-            self.regions = self.uk_terminal_df["Region"].tolist()
+            self.regions = self.uk_terminal_df["Region"].apply(str.lower).tolist()
             self.coords = list(zip(
                 self.uk_terminal_df['Lat'],
                 self.uk_terminal_df['Lon']))
@@ -63,8 +62,8 @@ class search_results_datapipe():
         return self.csv_path_list
 
 @click.command()
-@click.option('--start_date')
-@click.option('--end_date')
+@click.option('--start_date', type = str, default = '2023-03-01')
+@click.option('--end_date', type = str, default = '2023-03-10')
 @click.option('--path_to_uk_terminals', type=click.Path(exists=True), default = 'data/uk_oil_terminals.xlsx')
 @click.option('--csv_file_save_path', type=click.Path(exists=True), default = 'data/s1_data_search_results')
 def search(
