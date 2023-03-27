@@ -15,6 +15,8 @@ Dissertation on automate detection and volume estimation of Storage Oil Tank
     import sys
     sys.path.append(path/to/oiltanks)
     ```
+### GitHub Action Workflow
+* Github actions google cloud auth - [link](https://github.com/google-github-actions/auth)
 
 ### Google CLI authentication
 * In order to authenticate gcloud cli in the remote machine, you have to have the [google cloud project](https://developers.google.com/workspace/marketplace/create-gcp-project) setup on the GCP platform.
@@ -23,6 +25,7 @@ Dissertation on automate detection and volume estimation of Storage Oil Tank
 * After authentication you can see the active accounts using the command `gcloud auth list`, in which there is a `*` on the active account. Along with this you can see projects using `gcloud projects list`, and set a default project using `gcloud config set project 'PROJECT_ID'`
 * To set GCP SSH in config, you need to have [Google SDK](https://cloud.google.com/sdk/docs/install) installed in your system first, after installing open Google SDK console and follow the instructions, then set Google VM SSH in `config` by running `gcloud compute config-ssh`.
 * Run `ssh-keygen -t rsa -f C:\Users\WINDOWS_USER\.ssh\KEY_FILENAME -C USERNAME -b 2048` to generate public and private keys, replace `USERNAME` and `KEY_FILENAME` with your username and `google_compute_engine` respectively.
+
 
 ### Earth Engine authentication
 In a remote machine, without access to a browser, there is a way to authenticate earthengine.

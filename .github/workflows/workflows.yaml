@@ -24,7 +24,7 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
-        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        workload_identity_provider: 'projects/565535431/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
         service_account: 'storage-tank@gy7720.iam.gserviceaccount.com'
 
     - name: Run tests   
