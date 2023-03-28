@@ -12,3 +12,4 @@ asf_search
 openpyxl
 pytest
 colorlog
+rioxarray

@@ -1,6 +1,6 @@
 name: Run Pytest Workflow
 
-on: [push, pull_request]
+on: push
 
 jobs:
   GitHub-Tests:
@@ -32,7 +32,7 @@ jobs:
 
     - name: Run tests   
       env: 
-        PYTHONPATH : ${{ github.workspace}}  
+        PYTHONPATH : ${{ github.workspace }}  
       run: |
         pytest tests/data/test_*.py
         pytest tests/utils/test_*.py
