@@ -37,10 +37,8 @@ def test_gcp_bucket():
     granule = 'S1A_IW_SLC__1SDV_20230315T062256_20230315T062324_047651_05B91D_320D.SAFE'
     gcp = gcp_bucket(
         bucket_name = bucket_name,
-        log = logger()
-        )
-    data = gcp.read_asf_earth_data(
         location_name = location_name,
-        granule = granule
+        granule = granule        
         )
+    data = gcp.access_earthdata()
     assert data is not None

@@ -11,11 +11,11 @@ required_tiff_file = 's1a-iw1-slc-vh-20230315t062257-20230315t062322-047651-05b9
 def test_read_earthdata_bucket():
     """Testing to read earth data from GCP bucket"""
     # Initialising the function
-    gcp = gcp_bucket(bucket_name = bucket_name)
-    granule_blobs = gcp.access_earthdata(
+    gcp = gcp_bucket(
+        bucket_name = bucket_name,
         location_name = location_name,
-        granule = granule
-    )
+        granule = granule)
+    granule_blobs = gcp.access_earthdata()
     assert granule_blobs is not None
 
     # Checking if it is  a tiff file
