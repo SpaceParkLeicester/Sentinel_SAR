@@ -18,6 +18,9 @@ Dissertation on automate detection and volume estimation of Storage Oil Tank
 ### GitHub Action Workflow
 * Github actions google cloud auth - [link](https://github.com/google-github-actions/auth)
 
+### GCP storage
+* Articles that help for large data download from cloud - [link](https://towardsdatascience.com/streaming-big-data-files-from-cloud-storage-634e54818e75)
+
 ### Google CLI authentication
 * In order to authenticate gcloud cli in the remote machine, you have to have the [google cloud project](https://developers.google.com/workspace/marketplace/create-gcp-project) setup on the GCP platform.
 * Make sure to install [gcloud sdk](https://cloud.google.com/sdk/docs/install) in bot the local and remote machine

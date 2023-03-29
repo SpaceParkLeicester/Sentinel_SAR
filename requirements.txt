@@ -13,3 +13,5 @@ openpyxl
 pytest
 colorlog
 rioxarray
+gcsfs
+Pillow
