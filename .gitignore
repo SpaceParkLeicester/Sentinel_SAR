@@ -130,6 +130,6 @@ dmypy.json
 
 # Project stuff
 data/SAFE/
-
+oiltanks.code-workspace
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json
