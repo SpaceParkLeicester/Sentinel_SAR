@@ -1,20 +1,20 @@
 #!bin/bash
 
+# Inspired from here: https://javahelps.com/install-oracle-jdk-8-on-linux
 # Install the following packages
 echo "Installing libc6-i386 package"
 sudo apt-get install libc6-i386
 
 # Checking if the /usr/lib/jvm exists
-jvm=/usr/lib/jvm
-if [ -d $jvm ]; then
-    echo "$jvm exists!"
-    echo "$(ls -la $jvm)"
+jvm_usr_folder=/usr/lib/jvm
+if [ -d $jvm_usr_folder ]; then
+    echo "$jvm_usr_folder exists!"
+    echo "$(ls -la $jvm_usr_folder)"
 else
-    echo "$jvm does not exist"
-    echo "Creating the $jvm with sudo, make sure you have sudo priviliges"
-    echo "Going back to root"
+    echo "$jvm_usr_folder does not exist"
+    echo "Creating $jvm_usr_folder with sudo, make sure you have sudo priviliges"
     cd
-    sudo mkdir $jvm
+    sudo mkdir $jvm_usr_folder
 fi
 
 # Download the Oracle distribution from 
@@ -22,15 +22,15 @@ fi
 # Direct download is not possible as you need to accept the license agreements
 
 jdk8_tar=/usr/lib/jvm/jdk-8u351-linux-i586.tar.gz
-jdk8_folder=/usr/lib/jvm/jdk1.8.0_351
+jdk8_usr_folder=/usr/lib/jvm/jdk1.8.0_351
 
 if [ -f $jdk8_tar ]; then
 
     # Checking if jdk8 folder exists
     # if not extract from the tar file
     echo "JDK8 tar $jdk8_tar file exists"
-    if [ -d "$jdk8_folder" ]; then
-        echo "$jdk8_folder folder exists!"
+    if [ -d "$jdk8_usr_folder" ]; then
+        echo "$jdk8_usr_folder folder exists!"
     else
         sudo tar -zxvf $jdk8_tar --directory $jvm
     fi
