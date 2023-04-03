@@ -1,22 +1,16 @@
 # [ESA SNAP application](https://earth.esa.int/eogateway/tools/snap)
 
-## Instructions
-This folder consists of instructions and shell scripts to install ESA's SNAP with `snappy` python configuration in a Linux (Ubuntu) distribution.
-* [ESA STEP FORUM](https://forum.step.esa.int/t/snappy-installation-in-ubuntu/37788) is a good place to for techincal discussions concenring ESA data and applications. The instructions are taken from there.
-*  To install ESA SNAP
-```
-wget -P $HOME/apps/tmp https://download.esa.int/step/snap/9.0/installers/esa-snap_sentinel_unix_9_0_0.sh
-sudo chmod +x $HOME/apps/tmp/esa-snap_sentinel_unix_9_0_0.sh
-bash $HOME/apps/tmp/esa-snap_sentinel_unix_9_0_0.sh
+This folder consists of instructions and shell scripts to install ESA's SNAP with `snappy` python configuration in a Linux (Ubuntu) distribution. [ESA STEP FORUM](https://forum.step.esa.int/t/snappy-installation-in-ubuntu/37788) is a good place to for techincal discussions concenring ESA data and applications. The instructions are taken from there.
 
-```
+## Instructions to install ESA SNAP and configure `snappy` in Ubuntu x86_64 system
 
-Add this line to the `.bashrc`
+* Create a conda environment with `python3.9`. Later versions such as `python3.10` are not compatable with ESA SNAP yet.
+* Make sure JAVA is installed in the system by runnig the below command. Specifically JDK8.```diff - Note: Download the JDK8 that fits the system specifications exactly```
 ```
-source .profile
+# JDK8 Installation
+$ sudo chmod +x $HOME/oiltanks/installs/esa_snap/jdk.sh
+$ bash $HOME/oiltanks/installs/esa_snap/jdk.sh
 ```
-
-### JDK8 Installation
 Add the following to the `$HOME/.profile`
 ```
 # Set PATH to the JAVA
@@ -25,9 +19,17 @@ if [ -d $JAVA_HOME ]; then
         PATH="$JAVA_HOME/bin:$PATH"
 fi
 ```
+Add this to the `$HOME/.bashrc`
+```
+# JAVA HOME
+export JAVA_HOME="/usr/lib/jvm/jdk1.8.0_351" # With the specific version
+```
 
-### Maven Installation
-Add the following to the `$HOME/.profile`
+* Type `java -version` to confirm the installation of JAVA in the system. Now install `Maven` by running the following commands. And also add the path to `$HOME/.profile`
+```
+$ sudo chmod +x $HOME/oiltanks/installs/esa_snap/maven.sh
+$ bash $HOME/oiltanks/installs/esa_snap/maven.sh
+```
 ```
 # Set PATH to the MAVEN
 M2_HOME='/opt/apache-maven-3.9.1'
@@ -36,10 +38,31 @@ if [ -d $M2_HOME ]; then
 fi
 ```
 
-Run the following:
+* Run the following commands to download ESA SNAP application with their shell script, and follow the instructions.
 ```
-sudo chmod +x installs/esa_snap/jdk.sh 
-sudo chmod +x installs/esa_snap/maven.sh
-bash installs/esa_snap/run.sh
+$ wget -P $HOME/apps/tmp https://download.esa.int/step/snap/9.0/installers/esa-snap_sentinel_unix_9_0_0.sh
+$ sudo chmod +x $HOME/apps/tmp/esa-snap_sentinel_unix_9_0_0.sh
+$ bash $HOME/apps/tmp/esa-snap_sentinel_unix_9_0_0.sh
 ```
 
+* Install `jpy`, a bi-direction java-python package by running the follwing commands.
+```
+$ git -C $HOME/apps/tmp clone https://github.com/jpy-consortium/jpy.git
+$ python $HOME/apps/tmp/jpy setup.py build maven bdist_wheel 
+# If there is any error, seacrh for solutions in the STEP forum, add `LD_LIBRARY_PATH` tp point out JDK8 in .bashrc
+$ cp $HOME/apps/tmp/jpy/dist/jpy-0.9.0-cp39-cp39-linux_x86_64.whl $HOME/.snap/snap-python/snappy
+```
+
+* Configuring ESA SNAP for `snappy` and add the snappy package to `PYTHONPATH` in `.bashrc`
+```
+$ which python # Copy current conda env executable python
+$ ./snap/bin/snappy-conf <paste python executable path>
+```
+```
+# ESA snappy
+export PYTHONPATH="${PYTHONPATH}:${HOME}/.snap/snap-python/"
+```
+* Check out the `snappy` python package 
+```
+$ python -c "from snappy import ProductIO" # If no error, installation is successful
+```

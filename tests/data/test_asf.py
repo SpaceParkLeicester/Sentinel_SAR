@@ -1,4 +1,5 @@
 import asf_search as asf
+from pprint import pprint
 from oil_storage_tanks.utils import logger
 from oil_storage_tanks.data.asf_data import (
     search_earthdata, 
@@ -13,6 +14,7 @@ def test_search():
     
     # Getting the metadata into a variable
     metadata = asf_data.metadata()
+    pprint(metadata)
 
     assert metadata is not None
 
