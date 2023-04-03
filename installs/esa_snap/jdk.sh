@@ -27,7 +27,7 @@ fi
 # Direct download is not possible as you need to accept the license agreements
 # Run the script after downloading the file into $HOME/apps/tmp
 
-jdk8_file=apps/tmp/jdk-8u351-linux-i586.tar.gz
+jdk8_file=apps/tmp/jdk-8u351-linux-x64.tar.gz
 cd
 if [ -f $jdk8_file ]; then
     echo "$jdk8_file file exists"
