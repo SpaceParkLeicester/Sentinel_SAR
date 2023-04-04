@@ -4,11 +4,13 @@ import pandas as pd
 from shapely.wkt import dumps
 from shapely.geometry import Polygon
 from .log import logger
+from typing import Optional
 
 def bounding_box(
         center_lat: np.float64 = 58.83834793,          
         center_lon: np.float64 = -3.121350468, 
-        half_side: np.int64 = 100):
+        half_side: np.int64 = 100,
+        just_coords: Optional[bool] = False):
     """
     Function that gives WKT of a polygin from a center lon, lat
 
@@ -56,8 +58,11 @@ def bounding_box(
     # Create a polygon object from the coordinates
     poly = Polygon(coords)
 
-    # Convert the polygon object to WKT string
-    return dumps(poly)
+    if just_coords:
+        return coords
+    else:
+        # Convert the polygon object to WKT string
+        return dumps(poly)
 
 def oil_terminals(
         terminal_file_path: str,

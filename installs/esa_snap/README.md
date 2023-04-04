@@ -5,6 +5,22 @@ This folder consists of instructions and shell scripts to install ESA's SNAP wit
 ## Instructions to install ESA SNAP and configure `snappy` in Ubuntu x86_64 system
 
 * Create a conda environment with `python3.9`. Later versions such as `python3.10` are not compatable with ESA SNAP yet.
+
+*  Install GDAL in Ubuntu by running the follwing commands.
+```
+$ sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
+$ sudo apt-get install gdal-bin
+$ sudo apt-get install libgdal-dev
+$ export CPLUS_INCLUDE_PATH=/usr/include/gdal
+$ export C_INCLUDE_PATH=/usr/include/gdal
+$ pip install GDAL
+```
+If you encounter an error while running `pip install GDAL`, try the following.
+```
+$ ogrinfo --version # Copy the version number to the command below
+$ pip install 'gdal==<version-number>'
+```
+
 * Make sure JAVA is installed in the system by runnig the below command. Specifically JDK8.```diff - Note: Download the JDK8 that fits the system specifications exactly```
 ```
 # JDK8 Installation
