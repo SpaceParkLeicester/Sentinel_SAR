@@ -23,7 +23,7 @@ class download_asf():
             self, 
             user_pass_session: asf.ASFSession = None,
             download_path: str = None,
-            bucket_name:str = None,            
+            bucket_name:str = 's1-data',            
             csv_search_results_path:str = None,         
             log = None) -> None:
         """ Initialising the logger"""        
@@ -33,7 +33,7 @@ class download_asf():
         self.download_path = download_path
         self.csv_search_results_path = csv_search_results_path
 
-    def check_files(self) -> bool:
+    def check_files(self) -> None:
         """Check if the file exists"""
         check = os.path.isfile(self.csv_search_results_path) 
         if not check:
@@ -44,7 +44,7 @@ class download_asf():
             self.loc_name = os.path.splitext(basename)[0]
             self.loc_name = self.loc_name.split('_')[1]
 
-    def get_download_path(self) -> None:
+    def get_download_path(self):
         """Function to download the data"""
         # Getting the required info from the CSV file
         search_results_df = pd.read_csv(self.csv_search_results_path, header = 0)
@@ -61,6 +61,7 @@ class download_asf():
         self.filename = self.loc_name + "_" + self.granules_list[0] 
         self.filename_ext = self.filename + ".zip"
         self.filepath = os.path.join(self.download_path, self.filename_ext)
+        return self.filepath
     
     def download_data(self)-> None:
         """Commencing the download"""
