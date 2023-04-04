@@ -6,7 +6,7 @@ This folder consists of instructions and shell scripts to install ESA's SNAP wit
 
 * Create a conda environment with `python3.9`. Later versions such as `python3.10` are not compatable with ESA SNAP yet.
 
-*  Install GDAL in Ubuntu by running the follwing commands.
+*  Install GDAL in Ubuntu by running the following commands.
 ```
 $ sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
 $ sudo apt-get install gdal-bin
@@ -18,7 +18,14 @@ $ pip install GDAL
 If you encounter an error while running `pip install GDAL`, try the following.
 ```
 $ ogrinfo --version # Copy the version number to the command below
-$ pip install 'gdal==<version-number>'
+$ pip install GDAL==<version-number>
+```
+Make sure to check that you can import `gdal` from `osgeo`. Run the following.
+```
+# Activate the conda environemnt
+$ python -c 'from osgeo import gdal' # If there is an error saying 'version `GLIBCXX_3.4.30' not found'
+# Run the following
+$ ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /home/<user>/anaconda3/envs/<conda env>/lib/libstdc++.so.6 # Making a sym link
 ```
 
 * Make sure JAVA is installed in the system by runnig the below command. Specifically JDK8.```diff - Note: Download the JDK8 that fits the system specifications exactly```
