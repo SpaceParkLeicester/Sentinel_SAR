@@ -5,11 +5,11 @@ output_folder: data/process_nc
 region:
   lr:
     lat: 53.554366239408125
-    lon: -0.2542006543283411
+    lon: -0.25415302967165887
   subset: 'no'
   ul:
     lat: 53.73423056059187
-    lon: -0.25415302967165887
+    lon: -0.2542006543283411
 single_file: 'yes'
 speckle_filter:
   multi_temporal:

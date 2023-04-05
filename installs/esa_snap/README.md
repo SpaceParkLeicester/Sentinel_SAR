@@ -61,9 +61,9 @@ if [ -d $M2_HOME ]; then
 fi
 ```
 
-* Run the following commands to download ESA SNAP application with their shell script, and follow the instructions.
+* Run the following commands to download ESA SNAP application with their shell script, and follow the instructions. Note: This pre-processing works on ESA SANP version 8.0
 ```
-$ wget -P $HOME/apps/tmp https://download.esa.int/step/snap/9.0/installers/esa-snap_sentinel_unix_9_0_0.sh
+$ wget -P $HOME/apps/tmp https://download.esa.int/step/snap/8.0/installers/esa-snap_sentinel_unix_8_0.sh
 $ sudo chmod +x $HOME/apps/tmp/esa-snap_sentinel_unix_9_0_0.sh
 $ bash $HOME/apps/tmp/esa-snap_sentinel_unix_9_0_0.sh
 ```

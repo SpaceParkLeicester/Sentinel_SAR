@@ -58,9 +58,9 @@ class yaml_config():
         """
         # Getting the coords
         lower_lat = bbox_coords[0][1]
-        lower_lon = bbox_coords[0][0]
+        lower_lon = bbox_coords[2][0]
         upper_lat = bbox_coords[2][1]
-        upper_lon = bbox_coords[2][0]
+        upper_lon = bbox_coords[0][0]
 
         # Configuring the test config file with Lat and Lon
         with open(self.test_config_path) as stream:
