@@ -17,7 +17,8 @@ def bounding_box(
     Args:
         center_lat: Centre Latitude
         center_lon: Center Longitude
-        half_side: Length from center to side of the bounding ox in Km
+        half_side: Length from center to side of the bounding box in Km.
+        just_coords: If True, gives the list of four corner corrdinates.
     """
     # Sanity check
     assert half_side > 0

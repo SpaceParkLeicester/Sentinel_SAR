@@ -1,3 +1,4 @@
+from oil_storage_tanks.utils import logger
 from sar_pre_processing.sar_pre_processor import *
 import warnings
 warnings.filterwarnings("ignore")
@@ -30,3 +31,11 @@ class steps():
         processing.add_netcdf_information()
         self.log.info('start create netcdf stack')
         processing.create_netcdf_stack()
+
+if __name__ == "__main__":
+    test_config_path = 'data/config/test_config_file.yaml'
+    preprocess = steps(
+        test_config_path = test_config_path,
+        log = logger()
+    )
+    preprocess.preprocessor()

@@ -43,7 +43,7 @@ class earthdata_auth():
             self.log.info("Getting info from the credential file")
             with open(self.path_to_cred_file) as f:
                 earthdata = json.load(f)
-                username = earthdata['username']
+                username = earthdata['username_email']
                 password = earthdata['password']
                 f.close()          
 

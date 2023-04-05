@@ -37,7 +37,7 @@ class yaml_config():
             self.data = yaml.safe_load(stream)
             self.data['input_folder'] = self.path_to_download
             self.data['output_folder'] = self.pre_process_output
-            self.data['gpt_location'] = self.gpt_location
+            self.data['gpt'] = self.gpt_location
             stream.close()
         
         self.test_config_path = os.path.join(test_config_folder, 'test_config_file.yaml')
@@ -85,7 +85,10 @@ if __name__ == "__main__":
     pre_process_output = 'data/process_nc'
     gpt_location = os.path.expanduser('~/snap/bin/gpt')
     test_config_folder = 'data/config'
-    bbox_coords = bbox(half_side = 10, just_coords = True)
+    bbox_coords = bbox(
+        center_lat = 53.6442984,
+        center_lon = -0.254176842,
+        half_side = 10, just_coords = True)
     yml = yaml_config(
         path_to_download = path_to_download,
         pre_process_output = pre_process_output,
