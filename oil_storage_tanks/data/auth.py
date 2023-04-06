@@ -91,3 +91,5 @@ class auth_credentials():
             else:
                 self.log.info("Authentication successful!")
                 return self.api
+        else:
+            pass
