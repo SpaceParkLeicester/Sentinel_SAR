@@ -49,7 +49,7 @@ class auth_credentials():
 
     def earthdata_auth(self):
         """Earthdata authentication with credentials"""
-        if self.path_to_cred_file is None:
+        if self.path_to_cred_file is not None:
             self.username = self.earthdata_username
             self.password = self.earthdata_password
         try:
@@ -69,7 +69,7 @@ class auth_credentials():
     
     def scihub_auth(self):
         """Copernicus scihub authentication"""
-        if self.path_to_cred_file is None:
+        if self.path_to_cred_file is not None:
             self.username = self.scihub_username
             self.password = self.scihub_password
          
