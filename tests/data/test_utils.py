@@ -11,6 +11,7 @@ def test_oilterminls_dict():
     )
     assert type(data) is dict
     assert data is not None
+    print(data)
 
 def test_bounding_box():
     """Testing the bounding box"""

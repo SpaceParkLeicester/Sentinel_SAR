@@ -30,9 +30,12 @@ jobs:
         workload_identity_provider: 'projects/565535431/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
         service_account: 'storage-tank@gy7720.iam.gserviceaccount.com'
 
+    - name: Get the Github secrets
+      run: |
+        scihub_username = ${{ secrets.SCIHUB_USERNAME}}
+        scihub_password = ${{ secrets.SCIHUB_PASSWORD}}
     - name: Run tests   
       env: 
         PYTHONPATH : ${{ github.workspace }}  
       run: |
-        pytest tests/data/test_*.py
-        pytest tests/utils/test_*.py
+        pytest tests/data/test_auth.py

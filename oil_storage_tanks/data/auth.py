@@ -56,8 +56,20 @@ class auth_credentials():
             self.log.info("User Authentication Successful!")
             return self.user_pass_session
     
-    def scihub_auth(self):
-        """Copernicus scihub authentication"""
+    def scihub_auth(
+            self,
+            username: str = None,
+            password:str = None):
+        """Copernicus scihub authentication
+        
+        Args:
+            username: Enter Copernicus scihub username
+            password: Enter Copernicus scihub password
+        """
+        if not username and password is None:
+            self.username = username
+            self.psword = password
+        
         if os.path.exists(self.path_to_cred_file):
             # Reading the credential file
             self.log.info("Getting info from the credential file")

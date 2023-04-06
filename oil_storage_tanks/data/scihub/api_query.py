@@ -29,24 +29,31 @@ class search_data(auth_credentials):
             terminal_file_path: Path to the oil terminal data file
         """
         if not os.path.exists(terminal_file_path):
+            self.foot_print = None
             self.log.error(f"{terminal_file_path} is not filepath or does not exist")
         else:
             # Getting the coordinates of the location
             terminal_dict = oil_terminals(
                 terminal_file_path = terminal_file_path)
             for loc_name, coords in terminal_dict.items():
-                if loc_name == location_name:
+                if location_name == loc_name:
                     self.center_coords_lat = coords[0]
                     self.center_coords_lon = coords[1]
+
+                    # Getting the footprint polygon
+                    self.foot_print = bbox(
+                        half_side = half_side,
+                        center_lat = self.center_coords_lat,
+                        center_lon = self.center_coords_lon
+                        )
+                    break                   
                 else:
+                    self.foot_print = None
                     self.log.error(f"{location_name} is not in {terminal_file_path}")
-            # Getting the footprint polygon
-            self.foot_print = bbox(
-                half_side = half_side,
-                center_lat = self.center_coords_lat,
-                center_lon = self.center_coords_lon
-                )
+        
+        return self.foot_print
     
+
     def query(
             self,
             start_date:str = None,
@@ -67,12 +74,10 @@ class search_data(auth_credentials):
         self.aoi = loads(self.foot_print)
 
         # Getting the products
-        self.products = self.api.query(self.footprint,
+        self.products = self.api.query(self.aoi,
                      date=(startdate, enddate),
                      platformname='Sentinel-1',
                      producttype='SLC')
-        self.log.info('Following products are available')
-        self.log.info(self.api.to_dataframe(self.products).title.values)
 
     def swath_aoi_check(self)-> None:
         """This function helps to filter swaths which has our AOI"""
@@ -85,6 +90,7 @@ class search_data(auth_credentials):
             if self.aoi.within(multi_polygon):
                 self.log.info("Desired swath has been identified!")
                 self.uuid = self.products_df['uuid'][i]
+                self.title = self.products_df['title'][i]
                 break
             else:
                 self.log.debug("No desired swath has been indentified!")
@@ -92,4 +98,6 @@ class search_data(auth_credentials):
                 self.log.debug("and mkae sure the foot print is on the land")
                 self.uuid = None
         
-        return self.products_df, self.uuid
+        return self.title, self.uuid 
+        # Returns the title S1A_IW__XXX_XXXXXX
+        # Returns uuid 3ae4b23xxxxxxxxxxxxxxxx
