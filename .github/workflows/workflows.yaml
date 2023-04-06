@@ -32,8 +32,8 @@ jobs:
 
     - name: Get the Github secrets
       run: |
-        scihub_username : ${{ secrets.SCIHUB_USERNAME}}
-        scihub_password : ${{ secrets.SCIHUB_PASSWORD}}
+        echo "::set-env name=SCIHUB_USERNAME::${{ secrets.SCIHUB_USERNAME}}"
+        echo "::set-env name=SCIHUB_PASSWORD::${{ secrets.SCIHUB_PASSWORD}}""
     - name: Run tests   
       env: 
         PYTHONPATH : ${{ github.workspace }}  
