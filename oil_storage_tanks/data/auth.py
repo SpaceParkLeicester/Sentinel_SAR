@@ -70,26 +70,27 @@ class auth_credentials():
             self.username = username
             self.psword = password
         
-        if os.path.exists(self.path_to_cred_file):
-            # Reading the credential file
-            self.log.info("Getting info from the credential file")
-            with open(self.path_to_cred_file) as f:
-                scihub = json.load(f)
-                self.username = scihub['scihub_user']
-                self.password = scihub['password']
-                f.close()
-            
-            try:
-                # Initiate Sentinel API
-                schihub_link = 'https://scihub.copernicus.eu/dhus'
-                self.api = SentinelAPI(
-                    self.username, self.password,
-                    schihub_link)
-            except SentinelAPIError as e:
-                self.log.error(f"Authentication error: {e}")
-                return e
-            else:
-                self.log.info("Authentication successful!")
-                return self.api
-        else:
-            pass
+        try:
+            if os.path.exists(self.path_to_cred_file):
+                # Reading the credential file
+                self.log.info("Getting info from the credential file")
+                with open(self.path_to_cred_file) as f:
+                    scihub = json.load(f)
+                    self.username = scihub['scihub_user']
+                    self.password = scihub['password']
+                    f.close()
+                
+                try:
+                    # Initiate Sentinel API
+                    schihub_link = 'https://scihub.copernicus.eu/dhus'
+                    self.api = SentinelAPI(
+                        self.username, self.password,
+                        schihub_link)
+                except SentinelAPIError as e:
+                    self.log.error(f"Authentication error: {e}")
+                    return e
+                else:
+                    self.log.info("Authentication successful!")
+                    return self.api
+        except TypeError as e:
+            self.log.error(f"Check the error: {e}")
