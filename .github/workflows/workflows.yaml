@@ -31,9 +31,10 @@ jobs:
         service_account: 'storage-tank@gy7720.iam.gserviceaccount.com'
 
     - name: Get the Github secrets
-      run: |
-        echo "::set-env name=SCIHUB_USERNAME::${{ secrets.SCIHUB_USERNAME }}"
-        echo "::set-env name=SCIHUB_PASSWORD::${{ secrets.SCIHUB_PASSWORD }}""
+      env: 
+        SCIHUB_USERNAME: ${{ secrets.SCIHUB_USERNAME }}
+        SCIHUB_PASSWORD: ${{ secrets.SCIHUB_PASSWORD }}
+    
     - name: Run tests   
       env: 
         PYTHONPATH : ${{ github.workspace }}  
