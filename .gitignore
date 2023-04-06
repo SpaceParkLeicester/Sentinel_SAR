@@ -129,9 +129,9 @@ dmypy.json
 .pyre/
 
 # Project stuff
-data/SAFE/
-data/process_nc
+data/SAFE/*
+data/process_nc/*
 oiltanks.code-workspace
-.private/
+.private/*
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json

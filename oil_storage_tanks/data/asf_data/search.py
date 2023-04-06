@@ -8,7 +8,8 @@ from typing import Dict
 try:
     import asf_search as asf
     from oil_storage_tanks.utils import stitch_strings
-    from oil_storage_tanks.utils import bounding_box as bbox
+    from oil_storage_tanks.data import bounding_box as bbox
+    from oil_storage_tanks.data import oil_terminals
 except ImportError as e:
     logging.debug(f"Import error: {e}")
 
@@ -19,9 +20,7 @@ class search_earthdata():
             self,
             start_date:str = "2023-03-10",
             end_date:str = "2023-03-18",
-            location_name:str = "flotta",            
-            center_coords_lat: np.float64 = 58.83834793,
-            center_coords_lon: np.float64 = -3.121350468,           
+            location_name:str = "flotta",                      
             log=None) -> None:
         """Getting the meta data of the scene
         
@@ -29,16 +28,29 @@ class search_earthdata():
             start_date: Start date of the search
             end_date: End date of the search
             location_name: Location name of the oil terminal
-            center_coords_lat: Center Latitude of AOI
-            center_coords_lon: Center Longitude of AOI 
             log: Custom logger function        
         """       
         self.start_date = start_date
         self.end_date = end_date
         self.location_name = location_name
-        self.center_coords_lat = center_coords_lat
-        self.center_coords_lon = center_coords_lon
-        self.log = log     
+        self.log = log
+
+    def region_coords(
+            self,
+            oil_terminal_path: str = None)-> None:
+        """Getting the coordinates"""
+        if not os.path.exists(oil_terminal_path):
+            self.log.error(f"{oil_terminal_path} does not exist!")
+            self.log.debug("Add correct path to the oil terminal file")
+        else:
+            oil_terminal_data = oil_terminals(
+                terminal_file_path = oil_terminal_path)
+            try:
+                self.center_coords_lat = oil_terminal_data[self.location_name][0]
+                self.center_coords_lon = oil_terminal_data[self.location_name][1]
+            except IndexError:
+                self.log.error(f"{self.location_name} is not in the file")
+                self.log.debug("Choose an appropriate location name!")
 
     def metadata(self):
         # Getting the WKT from center coordinates

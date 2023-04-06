@@ -6,7 +6,7 @@ from shapely.geometry import Polygon, MultiPolygon
 from shapely.wkt import loads
 from oil_storage_tanks.utils import bounding_box as bbox
 from oil_storage_tanks.data.asf_data import earthdata_auth, download_asf
-from  sentinelsat import SentinelAPI
+from sentinelsat import SentinelAPI
 
 class download_data(earthdata_auth):
     """Function to download single scene"""

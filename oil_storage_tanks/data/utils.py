@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from shapely.wkt import dumps
 from shapely.geometry import Polygon
-from .log import logger
 from typing import Optional
 
 def bounding_box(
@@ -65,12 +64,8 @@ def bounding_box(
         # Convert the polygon object to WKT string
         return dumps(poly)
 
-def oil_terminals(
-        terminal_file_path: str,
-        log = logger()
-        ):
-    """
-    Function to get the lat, lon of oi termianls
+def oil_terminals(terminal_file_path: str):
+    """Function to get the lat, lon of oil termianls
 
     Args:
         terminal_file_path: File path to terminal information
@@ -86,7 +81,9 @@ def oil_terminals(
     # create a dictionary of of lat lon with location names
     terminal_dict = {}
     for index, row in df.iterrows():
-        terminal_dict[row['Name']] = lat_lon[index]
+        location = row['Region']
+        location = location.split(',')[0].lower()
+        terminal_dict[location] = lat_lon[index]
     return terminal_dict
 
          
