@@ -33,7 +33,9 @@ jobs:
     - name: Run tests   
       env: 
         SCIHUB_USERNAME: ${{ secrets.SCIHUB_USERNAME }}
-        SCIHUB_PASSWORD: ${{ secrets.SCIHUB_PASSWORD }}      
+        SCIHUB_PASSWORD: ${{ secrets.SCIHUB_PASSWORD }}
+        EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+        EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}      
         PYTHONPATH : ${{ github.workspace }}  
       run: |
         pytest tests/data/test_auth.py
