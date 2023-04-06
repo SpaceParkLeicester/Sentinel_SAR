@@ -27,7 +27,7 @@ class auth_credentials():
         self.data_service = data_service
         self.path_to_cred_file = path_to_cred_file
         self.log = log
-        if not os.path.exists(self.path_to_cred_file):
+        if self.path_to_cred_file is None:
             assert username is not None
             assert password is not None
             self.username = username
@@ -36,7 +36,7 @@ class auth_credentials():
 
     def credentials(self)-> None:
         """Get the credentials"""
-        assert os.path.exists(self.path_to_cred_file) is True
+        assert os.path.exists(self.path_to_cred_file)
         self.log.info("Getting info from the credential file")
         with open(self.path_to_cred_file) as f:
             credentials_data = json.load(f)
@@ -49,7 +49,7 @@ class auth_credentials():
 
     def earthdata_auth(self):
         """Earthdata authentication with credentials"""
-        if os.path.exists(self.path_to_cred_file):
+        if self.path_to_cred_file is None:
             self.username = self.earthdata_username
             self.password = self.earthdata_password
         try:
@@ -69,7 +69,7 @@ class auth_credentials():
     
     def scihub_auth(self):
         """Copernicus scihub authentication"""
-        if os.path.exists(self.path_to_cred_file):
+        if self.path_to_cred_file is None:
             self.username = self.scihub_username
             self.password = self.scihub_password
          
