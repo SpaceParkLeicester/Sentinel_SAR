@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import pandas as pd
 from shapely.wkt import loads
 
 from oil_storage_tanks.data import auth_credentials, oil_terminals
@@ -11,9 +12,14 @@ class search_data(auth_credentials):
     def __init__(
             self, 
             data_service: str = None, 
-            path_to_cred_file: str = None, 
+            path_to_cred_file: str = None,
+            username:str = None,
+            password:str = None,
             log=None) -> None:
-        super().__init__(data_service, path_to_cred_file, log)
+        super().__init__(
+            data_service, 
+            path_to_cred_file, 
+            username, password, log)
         self.api = super().scihub_auth()
     
     def footprint(
@@ -53,16 +59,19 @@ class search_data(auth_credentials):
         
         return self.foot_print
     
-
     def query(
             self,
             start_date:str = None,
-            end_date:str = None)-> None:
+            end_date:str = None,
+            platformname:str = 'Sentinel-1',
+            producttype:str = 'GRD'):
         """Fucntion to query scihub
         
         Args:
             start_date: Start date of the search. eg: 2023-02-01
             end_date: End date of the search, eg: 2023-03-21
+            platformname: Name of the platform, Sentinel-1
+            producttype: Type of the sentinel-1 data product, eg: 'SLC', 'GRD' 
         """
         # Getting the dates
         startdate = start_date.split('-')
@@ -76,8 +85,9 @@ class search_data(auth_credentials):
         # Getting the products
         self.products = self.api.query(self.aoi,
                      date=(startdate, enddate),
-                     platformname='Sentinel-1',
-                     producttype='SLC')
+                     platformname=platformname,
+                     producttype=producttype)
+        return self.api.to_dataframe(self.products) # Returning a dataframe of the results
 
     def swath_aoi_check(self)-> None:
         """This function helps to filter swaths which has our AOI"""
