@@ -28,8 +28,8 @@ class download_data(auth_credentials):
             uuid: Identifier of the a file
             download_path: Download path folder
         """
-        file_ext = title + '.zip'
-        filepath = os.path.join(download_path, file_ext)
+        safe_file = title + '.SAFE'
+        filepath = os.path.join(download_path, safe_file)
         if not os.path.exists(filepath):
             self.log.info(f"Commencing {title} download")
             self.api.download(uuid, download_path)
