@@ -3,6 +3,9 @@ from snappy import ProductIO
 from snappy import HashMap
 import os, gc
 from snappy import GPF
+from oil_storage_tanks.utils import logger
+from oil_storage_tanks.data import oil_terminals
+from oil_storage_tanks.data import bounding_box as bbox
 
 ## UTM projection parameters
 proj = '''PROJCS["UTM Zone 4 / World Geodetic System 1984",GEOGCS["World Geodetic System 1984",DATUM["World Geodetic System 1984",SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],UNIT["degree", 0.017453292519943295],AXIS["Geodetic longitude", EAST],AXIS["Geodetic latitude", NORTH]],PROJECTION["Transverse_Mercator"],PARAMETER["central_meridian", -159.0],PARAMETER["latitude_of_origin", 0.0],PARAMETER["scale_factor", 0.9996],PARAMETER["false_easting", 500000.0],PARAMETER["false_northing", 0.0],UNIT["m", 1.0],AXIS["Easting", EAST],AXIS["Northing", NORTH]]'''
@@ -132,8 +135,8 @@ class pre_process():
         """Pre-processing steps"""
         self.applyorbit = do_apply_orbit_file(self.sentinel_1, self.log)
         self.thermalremoved = do_thermal_noise_removal(self.applyorbit, self.log)
-        self.calibrated = do_calibration(self.thermalremoved, self.polarization, self.pols)
-        self.down_filtered = do_speckle_filtering(self.calibrated)
+        self.calibrated = do_calibration(self.thermalremoved, self.polarization, self.pols, self.log)
+        self.down_filtered = do_speckle_filtering(self.calibrated, self.log)
         del self.applyorbit
         del self.thermalremoved
         del self.calibrated
@@ -142,13 +145,13 @@ class pre_process():
         """Downasmpling from 10m to 40m"""
         # IW images are downsampled from 10m to 40m (the same resolution as EW images).
         if (self.modestamp == 'IW' and self.productstamp == 'GRDH') or (self.modestamp == 'EW' and self.productstamp == 'GRDH'):
-            self.down_tercorrected = do_terrain_correction(self.down_filtered, proj, 1)
-            self.down_subset = do_subset(self.down_tercorrected, self.wkt_string)
+            self.down_tercorrected = do_terrain_correction(self.down_filtered, proj, 1, self.log)
+            self.down_subset = do_subset(self.down_tercorrected, self.wkt_string, self.log)
             del self.down_filtered
             del self.down_tercorrected
         elif self.modestamp == 'EW' and self.productstamp == 'GRDM':
-            self.tercorrected = do_terrain_correction(self.down_filtered, proj, 0)
-            self.subset = do_subset(self.tercorrected, self.wkt_string)
+            self.tercorrected = do_terrain_correction(self.down_filtered, proj, 0, self.log)
+            self.subset = do_subset(self.tercorrected, self.wkt_string, self.log)
             del self.down_filtered
             del self.tercorrected
         else:
@@ -168,9 +171,35 @@ class pre_process():
         except NameError:
             self.subset
             self.log.info(f"Writing the file to {self.geotiff_path_40m}")
-            ProductIO.writeProduct(self.subset, self.geotiff_path_50m, 'GeoTIFF')
+            ProductIO.writeProduct(self.subset, self.geotiff_path_40m, 'GeoTIFF')
             del self.subset
             self.log.info("Writing into GeoTiff is Finished!")
 
         self.sentinel_1.dispose()
-        self.sentinel_1.closeIO()            
+        self.sentinel_1.closeIO()
+
+if __name__ == "__main__":
+    grd_folder_path = 'data/SAFE/S1A_IW_GRDH_1SDV_20230301T175145_20230301T175210_047454_05B27C_E425.SAFE'
+    processed_folder = 'data/pre_process'
+    terminal_file_path = 'data/uk_oil_terminals.xlsx'
+    location_name = 'flotta'
+    termial_dict = oil_terminals(terminal_file_path = terminal_file_path)
+    for loaction, coords in termial_dict.items():
+        if loaction == location_name:
+            center_coords_lat = coords[0]
+            center_coords_lon = coords[1]
+            break
+    wkt_string = bbox(
+        half_side = 10,
+        center_lat = center_coords_lat,
+        center_lon = center_coords_lon)
+    preprocess = pre_process(
+        grd_folder_path = grd_folder_path,
+        processed_folder = processed_folder,
+        wkt_string = wkt_string,
+        log = logger())
+    preprocess.collect_data()
+    preprocess.polarisation()
+    preprocess.start_preprocess()
+    preprocess.downsample()
+    preprocess.geotiff_conversion()

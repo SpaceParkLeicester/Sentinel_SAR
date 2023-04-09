@@ -66,6 +66,15 @@ fi
 $ wget -P $HOME/apps/tmp https://download.esa.int/step/snap/8.0/installers/esa-snap_sentinel_unix_8_0.sh
 $ sudo chmod +x $HOME/apps/tmp/esa-snap_sentinel_unix_9_0_0.sh
 $ bash $HOME/apps/tmp/esa-snap_sentinel_unix_9_0_0.sh
+$ whereis python # Assuming you have conda env activated
+# copy the above python path and paste below
+$ ./snap/bin/snappy-conf <conda env python path> # This command fails, as it creates '$HOME/.snap' folder
+```
+Add ESA SNAP `snap` and `gpt` executables to the `.bashrc`, to use from command line
+```
+# Add executables and name the aliases
+alias snap64='/home/<user>/snap/bin/snap'
+alias gpt='/home/<user>/snap/bin/gpt'
 ```
 
 * Install `jpy`, a bi-direction java-python package by running the follwing commands.
@@ -73,7 +82,7 @@ $ bash $HOME/apps/tmp/esa-snap_sentinel_unix_9_0_0.sh
 $ git -C $HOME/apps/tmp clone https://github.com/jpy-consortium/jpy.git
 $ python $HOME/apps/tmp/jpy setup.py build maven bdist_wheel 
 # If there is any error, seacrh for solutions in the STEP forum, add `LD_LIBRARY_PATH` tp point out JDK8 in .bashrc
-$ cp $HOME/apps/tmp/jpy/dist/jpy-0.9.0-cp39-cp39-linux_x86_64.whl $HOME/.snap/snap-python/snappy
+$ cp ~/apps/tmp/jpy/dist/jpy-0.9.0-cp39-cp39-linux_x86_64.whl ~/.snap/snap-python/snappy
 ```
 
 * Configuring ESA SNAP for `snappy` and add the snappy package to `PYTHONPATH` in `.bashrc`
