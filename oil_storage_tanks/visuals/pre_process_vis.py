@@ -1,28 +1,11 @@
-"""Functions to visualise SAR data"""
-import numpy as np
-import netCDF4 as nc
-from ipywidgets import interactive
-import matplotlib.pyplot as plt
+import rasterio
+from rasterio.plot import show
 
+def geotiff_viz(path):
+    """Visualise GeoTiff images"""
+    img = rasterio.open(path)
+    show(img)
 
-class sar_visualisation():
-    """Visualisation of SAR data"""
-    def __init__(
-            self,
-            path_to_nc_file:str = None,
-            log = None) -> None:
-        """Defining variables"""
-        self.path_to_nc_file = path_to_nc_file
-        self.log = log
-    
-    def load_nc(self)-> None:
-        """Loading the netcdf file"""
-        self.data = nc.Dataset(self.path_to_nc_file, mode = 'r')
-        self.data.variables['orbitdirection'][:]
-        self.data.variables['time'][:]
-        lons = self.data.variables['lon'][:]
-        lats = self.data.variables['lat'][:]
-        self.vv = self.data.variables['sigma0_vv_single'][:]
-
-        vv_units = self.data.variables['sigma0_vv_single'].units
-        self.data.close()       
+if __name__ == "__main__":
+    path = 'data/pre_process/S1A_IW_GRDH_1SDV_20230301T175145_20230301T175210_047454_05B27C_E425_10.tif'
+    geotiff_viz(path = path)

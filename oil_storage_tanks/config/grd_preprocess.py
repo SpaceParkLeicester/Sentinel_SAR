@@ -57,7 +57,7 @@ def do_terrain_correction(source, proj, downsample, log):
     parameters = HashMap()
     parameters.put('demName', 'GETASSE30')
     parameters.put('imgResamplingMethod', 'BILINEAR_INTERPOLATION')
-    parameters.put('mapProjection', proj)       # comment this line if no need to convert to UTM/WGS84, default is WGS84
+    # parameters.put('mapProjection', proj)       # comment this line if no need to convert to UTM/WGS84, default is WGS84
     parameters.put('saveProjectedLocalIncidenceAngle', True)
     parameters.put('saveSelectedSourceBand', True)
     while downsample == 1:                      # downsample: 1 -- need downsample to 40m, 0 -- no need to downsample
