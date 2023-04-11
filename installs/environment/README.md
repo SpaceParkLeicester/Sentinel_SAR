@@ -41,3 +41,11 @@ $ mamba install -c conda-forge python_abi
 $ mamba install -c terradue snap
 $ mamba install -c terradue snapista
 ```
+If the ESA SNAP application has not been installed, follow the commands from the folder `installs/esa_snap` and come back here.
+```
+$ rm ~/.snap/snap-python/snappy/jpy-0.9.0-cp39-cp39-linux_x86_64.whl # make sure to type the right version, cp39 means python3.9
+$ rm -rf ~/apps/tmp/jpy-0.9.0/dist
+$ python ~/apps/tmp/jpy-0.9.0/setup.py install build maven bdist_wheel
+$ cp ~/apps/tmp/jpy-0.9.0/dist/jpy-0.9.0-cp37-cp37m-linux_x86_64.whl ~/.snap/snap-python/snappy
+$ python -c "from snapista import Graph" # verifying snapista package import
+```
