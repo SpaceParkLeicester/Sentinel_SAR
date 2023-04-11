@@ -1,9 +1,9 @@
 """Test the utils functions"""
 from shapely.wkt import loads
-from oil_storage_tanks.data import oil_terminals
+from oil_storage_tanks.data import oil_terminals, polygon_coords_csv
 from oil_storage_tanks.data import bounding_box as bbox
 
-def test_oilterminls_dict():
+def test_oilterminals_dict():
     """Testing the oil terminal file"""
     terminal_file_path = "data/uk_oil_terminals.xlsx"
     data = oil_terminals(
@@ -32,4 +32,14 @@ def test_bounding_box():
 
         assert poly.geom_type == 'Polygon'
 
-       
+def test_polygon_csv():
+    """Testing csv file written with polygon wkt"""
+    terminal_file_path = "data/uk_oil_terminals.xlsx"
+    out_csv_file = 'data/uk_oil_termianls_poly.csv'
+    half_side = 10
+    df = polygon_coords_csv(
+        terminal_file_path = terminal_file_path,
+        out_csv_file = out_csv_file,
+        half_side = half_side
+        )
+    assert df is not None

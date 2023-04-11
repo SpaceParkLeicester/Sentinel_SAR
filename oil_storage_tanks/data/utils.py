@@ -86,4 +86,26 @@ def oil_terminals(terminal_file_path: str):
         terminal_dict[location] = lat_lon[index]
     return terminal_dict
 
-         
+def polygon_coords_csv(
+        terminal_file_path:str = None,
+        half_side:np.int64 = None,
+        out_csv_file:str = None):
+    """Writing polygon bounding box coords"""
+    # Load the csv file
+    df = pd.read_excel(
+        terminal_file_path, 
+        skiprows = 1)
+    
+    # Getting the bbox
+    polygon_wkt = []
+    for row, _ in df.iterrows():
+        center_coords_lat = df['Lat'][row]
+        center_coords_lon = df['Lon'][row]
+        poly_wkt = bounding_box(
+            center_lat = center_coords_lat,
+            center_lon = center_coords_lon,
+            half_side = half_side)
+        polygon_wkt.append(poly_wkt)
+    df['Polygon'] = polygon_wkt
+    return df
+        

@@ -29,13 +29,13 @@ $ mamba init
 ### Required packages
 Creating a virual environment with `mamba`
 ```
-$ mamba create -n esa_snap
+$ mamba create -n <venv name>
 $ mamba init
-$ mamna activate esa_snap 
+$ mamna activate <venv name> 
 ```
 
 Each project requres set of packages with set of requirement versions. This project requires following packages from different `anaconda` channles.
-* Installing necessary packages from channel [`terradue`](https://anaconda.org/Terradue/repo)
+* Installing necessary packages from channel [`terradue`](https://anaconda.org/Terradue/repo) - `snap` and `snapista`. Note: These packages uses `python3.7` hence, it is advised to create a remote `venv` just for these package operations to avoid dependecy issues. 
 ```
 $ mamba install -c conda-forge python_abi
 $ mamba install -c terradue snap

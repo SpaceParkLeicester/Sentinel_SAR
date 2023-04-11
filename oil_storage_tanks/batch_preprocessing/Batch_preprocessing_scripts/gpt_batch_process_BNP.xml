@@ -54,7 +54,7 @@
       <sourceProduct refid="Calibration"/>
     </sources>
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
-      <sourceBands>Sigma0_VH,Sigma0_VV</sourceBands>
+      <sourceBands>Remove-GRD-Border-Noise</sourceBands>
       <demName>SRTM 3Sec</demName>
       <externalDEMFile/>
       <externalDEMNoDataValue>0.0</externalDEMNoDataValue>
