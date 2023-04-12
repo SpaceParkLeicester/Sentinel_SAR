@@ -1,11 +1,7 @@
 import os
 import logging
-from bs4 import BeautifulSoup
-
 from snapista import Graph
 from snapista import Operator
-from snapista import TargetBand
-from snapista import TargetBandDescriptors
 
 
 class esa_snap_graph():
@@ -133,7 +129,7 @@ class esa_snap_graph():
         self.graph.add_node(
             operator = self.speckle_filtering,
             node_id = 'Speckle-Filter',
-            source = 'Terrain-Correction')
+            source = 'Subset')
         self.log.info("Adding 'LinearToFromdB' to the graph")
         self.graph.add_node(
             operator = self.linear_to_db,

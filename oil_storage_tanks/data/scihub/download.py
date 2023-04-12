@@ -1,5 +1,6 @@
 """Downloading data from Copernicus Data Hub"""
 import os
+from oil_storage_tanks.utils import unzip_scihub_s1data
 from oil_storage_tanks.utils import logger
 from oil_storage_tanks.data.scihub import search_data
 from oil_storage_tanks.data import auth_credentials
@@ -31,21 +32,28 @@ class download_data(auth_credentials):
             uuid: Identifier of the a file
             download_path: Download path folder
         """
-        safe_file = title + '.SAFE'
-        filepath = os.path.join(download_path, safe_file)
-        if not os.path.exists(filepath):
+        # Downloading the data
+        zip_file = title + '.SAFE'
+        zip_filepath = os.path.join(download_path, zip_file)
+        if not os.path.exists(zip_filepath):
             self.log.info(f"Commencing {title} download")
             self.api.download(uuid, download_path)
-            return filepath
         else:
             self.log.debug("File already exists!")
-            return filepath
+        
+        # Extracting the zip data
+        # zip_extract = unzip_scihub_s1data(
+        #     download_path = download_path,
+        #     path_to_zip_file = zip_filepath,
+        #     unzip_dir_filename = title,
+        #     log = log)
+
 
 if __name__ == '__main__':
     path_to_cred_file = '.private/cred.json'
     terminal_file_path = 'data/uk_oil_terminals.xlsx'
     data_service = 'Copernicus scihub'
-    download_path = 'data/SAFE'
+    download_path = '/mnt/disks/diss_dir/SAFE'
     half_side = 10
     location_name = 'flotta'
     start_date = '2023-03-01'
