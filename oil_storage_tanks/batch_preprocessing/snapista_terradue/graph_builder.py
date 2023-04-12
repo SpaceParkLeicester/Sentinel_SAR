@@ -56,18 +56,16 @@ class esa_snap_graph():
         """Applying orbit file"""
         self.orbit = Operator('Apply-Orbit-File')
         self.orbit.orbitType = 'Sentinel Precise (Auto Download)'
-        self.polyDegree = '3'
         self.continueOnFail = 'true'
     
     def remove_grd_border_noise(self)-> None:
         """Removing GRD_Border noise"""
         self.grd_border_noise = Operator('Remove-GRD-Border-Noise')
-        self.grd_border_noise.borderLimit = '500'
-        self.grd_border_noise.trimThreshold = '5'
     
     def calibration(self)-> None:
         """Calibrating"""
         self.calibrating = Operator('Calibration')
+        self.calibrating.auxFile = 'Product Auxiliary File'
     
     def terrain_correction(self)-> None:
         """Terrain Correction"""
@@ -76,13 +74,12 @@ class esa_snap_graph():
         self.terrain_correct.pixelSpacingInMeter = '10.0'
         self.terrain_correct.pixelSpacingInDegree = '8.983152841195215E-5'
     
-    # def subset(self, wkt_string)-> None:
-    #     """Subsetting (clipping) the data with WKT"""
-    #     self.spatial_subset = Operator('Subset')
-    #     self.spatial_subset.sourceBands = 'Sigma0_VH'
-    #     self.spatial_subset.region = '0,0,0,0'
-    #     self.spatial_subset.geoRegion = wkt_string
-    #     self.spatial_subset.copyMetadata = 'true'
+    def subset(self, wkt_string)-> None:
+        """Subsetting (clipping) the data with WKT"""
+        self.spatial_subset = Operator('Subset')
+        self.spatial_subset.sourceBands = 'Sigma0_VH'
+        self.spatial_subset.geoRegion = wkt_string
+        self.spatial_subset.copyMetadata = 'true'
     
     def speckle_filter(self)-> None:
         """Speckle filter for the subset"""
@@ -94,7 +91,7 @@ class esa_snap_graph():
     def linear_to_from_db(self)-> None:
         """ Converts bands to/from dB"""
         self.linear_to_db = Operator('LinearToFromdB')
-        self.linear_to_db.sourceBandNames = 'Sigma0_VH'
+        self.linear_to_db.sourceBands = 'Sigma0_VH'
     
     def write_file(self)-> None:
         """writes the data product of the file"""
@@ -127,11 +124,11 @@ class esa_snap_graph():
             operator = self.terrain_correct,
             node_id = 'Terrain-Correction',
             source = 'Calibration')
-        # self.log.info("Adding 'Subset' node to the graph")
-        # self.graph.add_node(
-        #     operator = self.spatial_subset,
-        #     node_id = 'Subset',
-        #     source = 'Terrain-Correction')
+        self.log.info("Adding 'Subset' node to the graph")
+        self.graph.add_node(
+            operator = self.spatial_subset,
+            node_id = 'Subset',
+            source = 'Terrain-Correction')
         self.log.info("Adding 'speckle-filter' to the graph")
         self.graph.add_node(
             operator = self.speckle_filtering,
@@ -168,7 +165,7 @@ if __name__ == "__main__":
     create_graph.remove_grd_border_noise()
     create_graph.calibration()
     create_graph.terrain_correction()
-    # create_graph.subset(wkt_string = wkt_string)
+    create_graph.subset(wkt_string = wkt_string)
     create_graph.speckle_filter()
     create_graph.linear_to_from_db()
     create_graph.write_file()

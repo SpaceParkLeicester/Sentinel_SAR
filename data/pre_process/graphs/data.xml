@@ -34,7 +34,7 @@
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
       <borderLimit>500</borderLimit>
       <selectedPolarisations/>
-      <trimThreshold>5</trimThreshold>
+      <trimThreshold>0.5</trimThreshold>
     </parameters>
   </node>
   <node id="Calibration">
@@ -43,7 +43,7 @@
       <sourceProduct refid="Remove-GRD-Border-Noise"/>
     </sources>
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
-      <auxFile>Latest Auxiliary File</auxFile>
+      <auxFile>Product Auxiliary File</auxFile>
       <createBetaBand>false</createBetaBand>
       <createGammaBand>false</createGammaBand>
       <externalAuxFile/>
@@ -94,6 +94,24 @@
       <standardGridOriginY>0</standardGridOriginY>
     </parameters>
   </node>
+  <node id="Subset">
+    <operator>Subset</operator>
+    <sources>
+      <sourceProduct refid="Terrain-Correction"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <bandNames/>
+      <copyMetadata>true</copyMetadata>
+      <fullSwath>false</fullSwath>
+      <geoRegion>POLYGON ((-3.1213777475678892 58.7484157729458332, -3.1213231887020512 58.7484157729458332, -3.1213231887020512 58.9282800941295761, -3.1213777475678892 58.9282800941295761, -3.1213777475678892 58.7484157729458332))</geoRegion>
+      <referenceBand/>
+      <region/>
+      <sourceBands>Sigma0_VH</sourceBands>
+      <subSamplingX>1</subSamplingX>
+      <subSamplingY>1</subSamplingY>
+      <tiePointGridNames/>
+    </parameters>
+  </node>
   <node id="Speckle-Filter">
     <operator>Speckle-Filter</operator>
     <sources>
@@ -121,7 +139,8 @@
       <sourceProduct refid="Speckle-Filter"/>
     </sources>
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
-      <sourceBandNames>Sigma0_VH</sourceBandNames>
+      <sourceBandNames/>
+      <sourceBands>Sigma0_VH</sourceBands>
     </parameters>
   </node>
   <node id="Write">

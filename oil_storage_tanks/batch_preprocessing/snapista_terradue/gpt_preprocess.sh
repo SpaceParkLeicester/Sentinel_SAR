@@ -9,10 +9,7 @@ path_output_VH=/data/pre_process/sigma0_VH/test.dim
 date
 
 echo "Commencing the pre-process"
-gpt -e "\"$xmlfile\"" -Pinput_data="\"$path_input\"" -Poutput_data="\"$path_output_VH\""
+gpt -e "data/pre_process/graphs/data.xml" -Pinput_data="/mnt/disks/diss_dir/S1A_IW_GRDH_1SDV_20230301T175145_20230301T175210_047454_05B27C_E425.SAFE" -Poutput_data="data/SAFE/flotta_10"
 echo "Pre-process finished"
-
-echo "Removing '${xmlfile}'"
-rm $path_input
 
 date
