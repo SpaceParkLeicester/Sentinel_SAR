@@ -20,6 +20,7 @@ class search_data(auth_credentials):
             data_service, 
             path_to_cred_file, 
             username, password, log)
+        super().credentials()
         self.api = super().scihub_auth()
     
     def footprint(
@@ -89,7 +90,7 @@ class search_data(auth_credentials):
                      producttype=producttype)
         return self.api.to_dataframe(self.products) # Returning a dataframe of the results
 
-    def swath_aoi_check(self)-> None:
+    def swath_aoi_check(self):
         """This function helps to filter swaths which has our AOI"""
         # Checking if the AOI falls within the downloadble swaths
         self.products_df = self.api.to_dataframe(self.products)
@@ -104,9 +105,13 @@ class search_data(auth_credentials):
                 break
             else:
                 self.log.debug("No desired swath has been indentified!")
+                self.log.debug("Reduce the halfside, as desired AOI should not cross the footprint")
+                self.log.debug("Happends if the desired AOI is near to the edge")
+                self.log.debug("<========================================================>")
                 self.log.debug("Expand the search parameters such as datetimes")
                 self.log.debug("and mkae sure the foot print is on the land")
                 self.uuid = None
+                self.title = None
         
         return self.title, self.uuid 
         # Returns the title S1A_IW__XXX_XXXXXX

@@ -7,7 +7,7 @@
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
       <bandNames/>
       <copyMetadata>true</copyMetadata>
-      <file>data/SAFE/S1A_IW_GRDH_1SDV_20230301T175145_20230301T175210_047454_05B27C_E425.SAFE/manifest.safe</file>
+      <file>${input_data}</file>
       <formatName>SENTINEL-1</formatName>
       <geometryRegion/>
       <maskNames/>
@@ -90,41 +90,21 @@
       <saveSelectedSourceBand>true</saveSelectedSourceBand>
       <saveSigmaNought>false</saveSigmaNought>
       <sourceBandNames/>
-      <sourceBands>Remove-GRD-Border-Noise</sourceBands>
       <standardGridOriginX>0</standardGridOriginX>
       <standardGridOriginY>0</standardGridOriginY>
-    </parameters>
-  </node>
-  <node id="Subset">
-    <operator>Subset</operator>
-    <sources>
-      <sourceProduct refid="Terrain-Correction"/>
-    </sources>
-    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
-      <bandNames/>
-      <copyMetadata>true</copyMetadata>
-      <fullSwath>false</fullSwath>
-      <geoRegion>POLYGON ((-3.1213777475678892 58.7484157729458332, -3.1213231887020512 58.7484157729458332, -3.1213231887020512 58.9282800941295761, -3.1213777475678892 58.9282800941295761, -3.1213777475678892 58.7484157729458332))</geoRegion>
-      <referenceBand/>
-      <region>0,0,0,0</region>
-      <sourceBands>Sigma0_VH</sourceBands>
-      <subSamplingX>1</subSamplingX>
-      <subSamplingY>1</subSamplingY>
-      <tiePointGridNames/>
     </parameters>
   </node>
   <node id="Speckle-Filter">
     <operator>Speckle-Filter</operator>
     <sources>
-      <sourceProduct refid="Subset"/>
+      <sourceProduct refid="Terrain-Correction"/>
     </sources>
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
       <anSize>50</anSize>
       <dampingFactor>2</dampingFactor>
       <enl>1.0</enl>
       <estimateENL>true</estimateENL>
-      <filer>Refined Lee</filer>
-      <filter>Lee Sigma</filter>
+      <filter>Refined Lee</filter>
       <filterSizeX>3</filterSizeX>
       <filterSizeY>3</filterSizeY>
       <numLooksStr>1</numLooksStr>
@@ -152,7 +132,7 @@
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
       <clearCacheAfterRowWrite>false</clearCacheAfterRowWrite>
       <deleteOutputOnFailure>true</deleteOutputOnFailure>
-      <file>data/pre_process/graphs/data.dim</file>
+      <file>${output_data}</file>
       <formatName>BEAM-DIMAP</formatName>
       <writeEntireTileRows>false</writeEntireTileRows>
     </parameters>

@@ -1,5 +1,7 @@
 If a progress bar needed to appear for the downloads through 'asf_search' package
-Following changes needs to be made to the core python package
+Following changes needs to be made to the core python package.
+
+Source - https://github.com/asfadmin/Discovery-asf_search/pull/81/files
 ```
 $ sudo find / -name "asf_search" # Copy the path to the folder
 $ cd <paste the path here>
