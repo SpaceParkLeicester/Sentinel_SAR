@@ -13,23 +13,47 @@ class esa_snap_graph():
     def __init__(
             self, 
             xml_folder:str = None,
+            manifest_path:str = None,            
             log:isinstance = None) -> None:
+        """Defining variables
+
+        Args:
+            xml_folder: folder to dave xml graphs
+            manifest_path: Path to the manifest file GRD S1        
+        """
         self.xml_folder = xml_folder
+        self.manifest_path = manifest_path
         self.graph = Graph()
         self.log = logging.getLogger(__name__)
 
-    def read_grd(
-            self,
-            manifest_path:str = None)-> None:
-        """Read the GRD S1-data manifest file
-
-        Args:
-            manifest_path: Path to the manifest file GRD S1
-        """
-        self.log.info(f"Reading the manifes file from {manifest_path}")
+    def read_grd(self)-> None:
+        """Read the GRD S1-data manifest file"""
+        self.log.info(f"Reading the manifes file from {self.manifest_path}")
         self.read = Operator('Read')
         self.read.formatName = 'SENTINEL-1'
-        self.read.file = manifest_path
+        self.read.file = self.manifest_path
+
+    def polarisation_stamp(self)-> None:
+        """Determining the polarisation stamp of the file"""
+        # Getting the filename
+        self.uuid = os.path.basename(os.path.dirname(manifest_path))
+        self.polstamp = self.uuid.split("_")[3]
+        self.polarization = self.polstamp[2:4]
+        if self.polarization == 'DV':
+            self.pols = 'VH,VV'
+        elif self.polarization == 'DH':
+            self.pols = 'HH,HV'
+        elif self.polarization == 'SH' or self.polarization == 'HH':
+            self.pols = 'HH'
+        elif self.polarization == 'SV':
+            self.pols = 'VV'
+        else:
+            self.pols = None
+            self.log.error("Polarization error!")
+        
+        if not self.pols is None:
+            self.log.info(f"Product {self.uuid} is of polarisation {self.pols}")
+      
     
     def apply_orbit_file(self)-> None:
         """Applying orbit file"""
@@ -57,8 +81,9 @@ class esa_snap_graph():
     
     def subset(self, wkt_string)-> None:
         """Subsetting (clipping) the data with WKT"""
+        self.pol = self.pols.split(',')[0]
         self.spatial_subset = Operator('Subset')
-        self.spatial_subset.sourceBands = 'Sigma0_VH'
+        self.spatial_subset.sourceBands = f'Sigma0_{self.pol}'
         self.spatial_subset.region = '0,0,0,0'
         self.spatial_subset.geoRegion = wkt_string
         self.spatial_subset.copyMetadata = 'true'
@@ -66,7 +91,7 @@ class esa_snap_graph():
     def speckle_filter(self)-> None:
         """Speckle filter for the subset"""
         self.speckle_filtering = Operator('Speckle-Filter')
-        self.speckle_filtering.sourceBands = 'Sigma0_VH'
+        self.speckle_filtering.sourceBands = f'Sigma0_{self.pol}'
         self.speckle_filtering.filer = 'Refined Lee'
         self.speckle_filtering.estimateENL = 'true'
     
@@ -143,8 +168,10 @@ if __name__ == "__main__":
     wkt_string = 'POLYGON ((-3.1213777475678892 58.7484157729458332, -3.1213231887020512 58.7484157729458332, -3.1213231887020512 58.9282800941295761, -3.1213777475678892 58.9282800941295761, -3.1213777475678892 58.7484157729458332))'
 
     create_graph = esa_snap_graph(
+        manifest_path = manifest_path,
         xml_folder = xml_folder)
-    create_graph.read_grd(manifest_path = manifest_path)
+    create_graph.read_grd()
+    create_graph.polarisation_stamp()
     create_graph.apply_orbit_file()
     create_graph.remove_grd_border_noise()
     create_graph.calibration()

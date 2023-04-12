@@ -1,6 +1,7 @@
 """Function to Authenticate EARTH DATA credentials"""
 import os
 import json
+import logging
 from getpass import getpass
 import asf_search as asf
 from sentinelsat import SentinelAPI, SentinelAPIError
@@ -10,7 +11,7 @@ class auth_credentials():
     """Authenticating crednetials"""
     def __init__(
             self,
-            data_service: str = None,
+            data_service: str = 'Copernicus scihub',
             path_to_cred_file: str = None,
             username:str = None,
             password:str = None,
@@ -86,3 +87,4 @@ class auth_credentials():
         else:
             self.log.info("Authentication successful!")
             return self.api
+

@@ -1,7 +1,8 @@
 from glob import glob
 import asf_search as asf
 from oil_storage_tanks.utils import logger
-from oil_storage_tanks.data.asf_data import download_asf, earthdata_auth
+from oil_storage_tanks.data.asf_data import download_asf
+from oil_storage_tanks.data import auth_credentials
 
 class download_data():
     """Function to download all available csv files"""
@@ -36,22 +37,23 @@ class download_data():
                 data.check_files()
                 data.get_download_path()
                 data.download_data()
-                data.zip_extract_earthdata()
-                data.upload_to_gcp()
+                # data.zip_extract_earthdata()
+                # data.upload_to_gcp()
 
 
 if __name__ == "__main__":
-    path_to_cred_file = ".private/earthdata_cred.json"
+    path_to_cred_file = ".private/cred.json"
     path_to_uk_terminal = "data/uk_oil_terminals.xlsx"
     bucket_name = "s1-data"
     download_path = "data/SAFE"    
     csv_folder = "data/s1_data_search_results"
     
     # Getting the session
-    session = earthdata_auth(
+    session = auth_credentials(
         path_to_cred_file = path_to_cred_file,
         log = logger())
-    user_pass_session = session.auth()
+    session.credentials()
+    user_pass_session = session.earthdata_auth()
 
     # Downloading the data
     download = download_data(

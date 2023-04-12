@@ -130,6 +130,7 @@ class pre_process():
         
         if not self.pols is None:
             self.log.info(f"Product {self.safe_folder} is of polarisation {self.pols}")
+        print(self.pols)
 
     def start_preprocess(self)-> None:
         """Pre-processing steps"""
@@ -200,6 +201,6 @@ if __name__ == "__main__":
         log = logger())
     preprocess.collect_data()
     preprocess.polarisation()
-    preprocess.start_preprocess()
-    preprocess.downsample()
-    preprocess.geotiff_conversion()
+    # preprocess.start_preprocess()
+    # preprocess.downsample()
+    # preprocess.geotiff_conversion()
