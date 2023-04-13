@@ -23,5 +23,5 @@ def vis_sar(path_to_file):
     # plt.imshow(band_data, cmap = plt.cm.binary)
     # plt.show()      
 if __name__ == "__main__":
-    path_to_file = 'data/SAFE/flotta_10.dim'
+    path_to_file = '/mnt/disks/diss_dir/SAFE/flotta_10.dim'
     vis_sar(path_to_file = path_to_file)

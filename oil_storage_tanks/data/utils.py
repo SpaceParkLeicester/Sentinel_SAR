@@ -1,14 +1,15 @@
-import math
+from math import sqrt
+import geopandas as gpd
 import numpy as np
 import pandas as pd
-from shapely.wkt import dumps
+from shapely.wkt import dumps, loads
 from shapely.geometry import Polygon
 from typing import Optional
 
 def bounding_box(
         center_lat: np.float64 = 58.83834793,          
         center_lon: np.float64 = -3.121350468, 
-        half_side: np.int64 = 100,
+        half_side: np.int64 = 100, # in Km
         just_coords: Optional[bool] = False):
     """
     Function that gives WKT of a polygin from a center lon, lat
@@ -24,45 +25,25 @@ def bounding_box(
     assert center_lat >= -90.0 and center_lat  <= 90.0
     assert center_lon >= -180.0 and center_lon <= 180.0
 
-    # Convert degrees to radians
-    lat = math.radians(center_lat)
-    lon = math.radians(center_lon)
+    # Km to m
+    half_side = (half_side*1000)/sqrt(2)
 
-    # Earth radius in km
-    RADIUS = 6371
+    # Geopandas geoseries
+    gs = gpd.GeoSeries(loads(f'POINT({center_lon} {center_lat})'))
+    # GeoDataframe
+    gdf = gpd.GeoDataFrame(geometry=gs)
+    # Projection
+    gdf.crs='EPSG:4326'
+    gdf = gdf.to_crs('EPSG:3857')
+    res = gdf.buffer(
+        distance=half_side,
+        cap_style=3,
+    )    
 
-    # Radius of the parallel at given latitude
-    parallel_radius = RADIUS * math.cos(lat)
-
-    # Angular distance in radians on a great circle
-    ang_dist = half_side / RADIUS
-
-    # Minimum and maximum latitudes for given distance
-    lat_min = lat - ang_dist
-    lat_max = lat + ang_dist
-
-    # Minimum and maximum longitudes for given distance
-    lon_min = lon - ang_dist / parallel_radius
-    lon_max = lon + ang_dist / parallel_radius
-
-    # Convert radians back to degrees
-    rad2deg = math.degrees
-
-    # Create a list of coordinates as tuples
-    coords = [
-        (rad2deg(lon_min), rad2deg(lat_min)), 
-        (rad2deg(lon_max), rad2deg(lat_min)), 
-        (rad2deg(lon_max), rad2deg(lat_max)), 
-        (rad2deg(lon_min), rad2deg(lat_max))
-        ]
-    # Create a polygon object from the coordinates
-    poly = Polygon(coords)
-
-    if just_coords:
-        return coords
-    else:
-        # Convert the polygon object to WKT string
-        return dumps(poly)
+    # Get the geom
+    geom = res.to_crs('EPSG:4326').iloc[0]
+    # Getting Polygon WKT string
+    return geom.wkt
 
 def oil_terminals(terminal_file_path: str):
     """Function to get the lat, lon of oil termianls

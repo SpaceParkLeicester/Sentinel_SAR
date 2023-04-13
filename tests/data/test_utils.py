@@ -43,3 +43,4 @@ def test_polygon_csv():
         half_side = half_side
         )
     assert df is not None
+    print(df['Polygon'][7])

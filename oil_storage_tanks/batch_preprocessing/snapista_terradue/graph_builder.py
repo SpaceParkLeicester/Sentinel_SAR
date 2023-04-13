@@ -66,7 +66,7 @@ class esa_snap_graph():
     def terrain_correction(self)-> None:
         """Terrain Correction"""
         self.terrain_correct = Operator('Terrain-Correction')
-        # self.terrain_correct.sourceBands = 'Remove-GRD-Border-Noise'
+        self.terrain_correct.sourceBands = 'Remove-GRD-Border-Noise'
         self.terrain_correct.pixelSpacingInMeter = '10.0'
         self.terrain_correct.pixelSpacingInDegree = '8.983152841195215E-5'
     
@@ -151,8 +151,7 @@ class esa_snap_graph():
 if __name__ == "__main__":
     xml_folder = 'data/pre_process/graphs'
     filename = 'data.xml'
-    wkt_string = 'POLYGON ((-3.1213777475678892 58.7484157729458332, -3.1213231887020512 58.7484157729458332, -3.1213231887020512 58.9282800941295761, -3.1213777475678892 58.9282800941295761, -3.1213777475678892 58.7484157729458332))'
-
+    wkt_string = 'POLYGON ((-0.1906563590715226 53.68193630164516, -0.1906563590715226 53.60662686944885, -0.3176973248804094 53.60662686944885, -0.3176973248804094 53.68193630164516, -0.1906563590715226 53.68193630164516))'
     create_graph = esa_snap_graph(
         xml_folder = xml_folder)
     create_graph.read_grd()
