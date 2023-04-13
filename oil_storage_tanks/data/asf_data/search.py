@@ -1,17 +1,11 @@
 """Functions relating to search"""
 import os
-import numpy as np
-import logging
 from datetime import datetime
-from typing import Dict
 
-try:
-    import asf_search as asf
-    from oil_storage_tanks.utils import stitch_strings
-    from oil_storage_tanks.data import bounding_box as bbox
-    from oil_storage_tanks.data import oil_terminals
-except ImportError as e:
-    logging.debug(f"Import error: {e}")
+import asf_search as asf
+from oil_storage_tanks.utils import stitch_strings
+from oil_storage_tanks.data import bounding_box as bbox
+from oil_storage_tanks.data import oil_terminals
 
 
 class search_earthdata():

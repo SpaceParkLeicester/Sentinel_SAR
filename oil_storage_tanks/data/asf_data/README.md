@@ -1,9 +1,22 @@
-## SAR Storage Oil Tank Datasets
+# ASF Data 
 
-### ASF EARTDATA
-* ASF along with NASA's EARTHDATA provides a visual interface [dashboard](https://search.earthdata.nasa.gov/search?fdc=Alaska%20Satellite%20Facility) to download the data
+This folder consists of the datapipes and functions that are relted to the SAR data search, data download and `EARTHDATA` credentails authentication.
 
-### UK Oil refineries datasets
-. [Refinerymaps.com](https://www.refinerymaps.com/) provides a refinery dataset but it is expensive to download
-. List of oil terminals manually collected in a [wikipedia article](https://en.wikipedia.org/wiki/Oil_terminals_in_the_United_Kingdom)
-. An [article](https://fueloilnews.co.uk/2022/11/the-uks-refineries-past-present-and-future/) from Nov 2022 detailing past, present UK oil refineries
+Note: Before starting to use the functions, It is adviced to add changes to the core `asf_search` `download.py` function by adding a progressbar. Run the following commands.
+```
+$ sudo find / -name 'asf_search' # Assuming the python package in the conda env
+# Manually copy the path and and paste below
+$ cd <paste the path here>
+$ vim download/download.py # Or open with your fav editor
+```
+Add following lines to the python file, replace the commented with tqdm to add progressbar
+```
+from tqdm.auto import tqdm
+#with open(os.path.join(path, filename), 'wb') as f:
+with tqdm.wrapattr(open(os.path.join(path, filename),'wb'), 
+                    'write', miniters=1, desc=filename,
+                    total=int(response.headers.get('content-length', 0))) as f:
+    #for chunk in response.iter_content(chunk_size=8192):
+    for chunk in response.iter_content(chunk_size=31457280):
+        f.write(chunk)
+``` 

@@ -1,2 +1,2 @@
-from .utils import oil_terminals, bounding_box, polygon_coords_csv
+from .utils import OilTerminals
 from .auth import auth_credentials
