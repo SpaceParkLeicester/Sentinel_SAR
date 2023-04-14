@@ -1,8 +1,8 @@
 """Testing the functions of the scihub"""
 import os
 from oil_storage_tanks.utils import logger
-from oil_storage_tanks.data import auth_credentials
-from oil_storage_tanks.data.scihub import search_data
+from oil_storage_tanks.data import AuthCredentials
+from oil_storage_tanks.data.scihub import SearchSciHubData
 from sentinelsat import SentinelAPI
 
 def test_scihub_query():
@@ -13,14 +13,14 @@ def test_scihub_query():
         username = os.environ.get('SCIHUB_USERNAME')
         password = os.environ.get('SCIHUB_PASSWORD')
         # Authenticating the username and password
-        auth = auth_credentials(
+        auth = AuthCredentials(
             username = username,
             password = password,
             log = logger())
         api = auth.scihub_auth()
         assert type(api) is SentinelAPI
     else:
-        auth = auth_credentials(
+        auth = AuthCredentials(
             path_to_cred_file = path_to_cred_file,
             data_service = 'Copernicus scihub',
             log = logger()
@@ -31,16 +31,14 @@ def test_scihub_query():
 
     """Testing scihub footprint"""
     half_side = 10
-    location_name = 'flotta'
-    termianl_file_path = 'data/uk_oil_terminals.xlsx'
-    search = search_data(
+    location_name = 'stanlow'
+    search = SearchSciHubData(
         data_service = data_service,
         path_to_cred_file = path_to_cred_file,
         log = logger())
     foot_print = search.footprint(
         half_side = half_side,
-        location_name = location_name,
-        terminal_file_path = termianl_file_path)
+        location_name = location_name)
     assert foot_print is not None
 
     """Testing the search results"""

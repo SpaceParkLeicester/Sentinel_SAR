@@ -1,2 +1,2 @@
-from .api_query import search_data
-from .download import download_data
+from .api_query import SearchSciHubData
+from .download import DownloadSciHubData

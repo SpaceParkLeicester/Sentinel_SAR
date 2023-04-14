@@ -1,0 +1,1 @@
+web: python3 /home/vardh/gcp_project/oiltanks/oil_storage_tanks/jobs/sar_prepocess/gcp_prepross.py

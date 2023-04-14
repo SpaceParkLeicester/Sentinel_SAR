@@ -33,12 +33,12 @@ class SearchSciHubData(AuthCredentials):
             location_name: Name of the location from xlsx file
         """
         # Initiating oil terminal data
-        oil_terminals = OilTerminals(
-            location_name = location_name,
+        oil_terminals = OilTerminals()
+        data_dict = oil_terminals.read_data()
+        self.foot_print = oil_terminals.bounding_box(
+            center_lat = data_dict[location_name][0],
+            center_lon = data_dict[location_name][1],
             half_side = half_side)
-        oil_terminals.read_data()
-        self.foot_print = oil_terminals.polygon_coords()
-
         return self.foot_print
     
     def query(

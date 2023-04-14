@@ -7,14 +7,14 @@ from shapely.wkt import loads
 
 class OilTerminals:
     """Class method for oil terminals data"""
-    file_path = 'data/uk_oil_terminals.xlsx'
-    assert os.path.exists(file_path) is True
+    terminal_file_path = 'data/uk_oil_terminals.xlsx'
+    assert os.path.exists(terminal_file_path) is True
     
     @staticmethod
     def bounding_box(
-            center_lat: np.float64 = 58.83834793,          
-            center_lon: np.float64 = -3.121350468, 
-            half_side: np.int64 = 100, # in Km
+            center_lat: np.float64 = None,          
+            center_lon: np.float64 = None, 
+            half_side: np.int64 = None, # in Km
             ):
         """
         Function that gives WKT of a polygin from a center lon, lat
@@ -49,15 +49,9 @@ class OilTerminals:
         # Getting Polygon WKT string
         return geom.wkt
 
-    def __init__(
-            self,
-            terminal_file_path:str = 'data/uk_oil_terminals.xlsx',
-            location_name:str = None,
-            half_side:np.int64 =None) -> None:
+    def __init__(self) -> None:
         """Declaring variables"""
-        self.terminal_file_path = terminal_file_path
-        self.location_name = location_name
-        self.half_side = half_side
+        pass
 
     def read_data(self):
         """Read data from xlsx file"""
@@ -76,19 +70,4 @@ class OilTerminals:
             location = location.split(',')[0].lower()
             self.terminal_dict[location] = lat_lon[index]
         return self.terminal_dict
-
-    def polygon_coords(self):
-        """Getting polygon wkt for the bounding box"""
-        # Getting the bbox
-        for loc, coords in self.terminal_dict.items():
-            if loc == self.location_name:
-                center_lat = coords[0]
-                center_lon = coords[1]
-                poly_wkt = OilTerminals.bounding_box(
-                    center_lat = center_lat,
-                    center_lon = center_lon,
-                    half_side = self.half_side)
-                return poly_wkt
-            else:
-                return None
         
