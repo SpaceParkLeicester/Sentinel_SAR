@@ -56,11 +56,9 @@ class SearchEarthData:
         self.end = datetime.strptime(self.end_date, "%Y-%m-%d")
 
         # Getting the results of the search
-        platform = f'asf.PLATFORM.{platform_name}'
-        processingLevel = f'asf.PRODUCT_TYPE.{product_type}'
         self.results = asf.search(
-            platform= platform,
-            processingLevel=[processingLevel],
+            platform = asf.PLATFORM.SENTINEL1A,
+            processingLevel = [asf.PRODUCT_TYPE.GRD_HD],
             start = self.start,
             end = self.end,
             intersectsWith = self.wkt_aoi

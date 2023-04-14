@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess as sp
 from google.cloud import storage
 from google.api_core.exceptions import NotFound
@@ -53,7 +54,7 @@ class GoogleBuckets:
         """Removing files from local system"""
         # Removing file
         if os.path.exists(self.abs_filepath):
-            os.remove(self.abs_filepath)
+            shutil.rmtree(self.abs_filepath, ignore_errors = True)
         else:
             self.log.debug(f"file {self.abs_filepath} does not exist")
 

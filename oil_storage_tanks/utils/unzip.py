@@ -2,7 +2,7 @@ import os
 from tqdm import tqdm
 from zipfile import ZipFile
 
-def unzip_scihub_s1data(
+def unzip_s1data(
         download_path:str = None,
         path_to_zip_file: str = None,
         unzip_dir_filename:str = None,
