@@ -1,0 +1,9 @@
+steps:
+
+  # build & push the container image
+- name: "gcr.io/oiltanks/sar-data-download:latest"
+  args: ["--cache=true", "--cache-ttl=48h", "--destination=gcr.io/oiltanks/sar-data-download"]
+
+  # Deploy container image to Cloud Run
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ['beta', 'run', 'deploy', 'sar-data-download', '--image', 'gcr.io/oiltanks/sar-data-download', '--region', 'us-central1', '--allow-unauthenticated', '--platform', 'managed']
