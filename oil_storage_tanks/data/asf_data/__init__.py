@@ -1,2 +1,2 @@
-from .search import search_earthdata
+from .search import SearchEarthData
 from .download import download_asf

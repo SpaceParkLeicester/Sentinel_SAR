@@ -1,14 +1,14 @@
 """Functions relating to search"""
 import os
+import numpy as np
 from datetime import datetime
 
 import asf_search as asf
 from oil_storage_tanks.utils import stitch_strings
-from oil_storage_tanks.data import bounding_box as bbox
-from oil_storage_tanks.data import oil_terminals
+from oil_storage_tanks.data import OilTerminals
 
 
-class search_earthdata():
+class SearchEarthData():
     """Refine Search results from ASF EARTH DATA"""
     def __init__(
             self,
@@ -29,32 +29,25 @@ class search_earthdata():
         self.location_name = location_name
         self.log = log
 
-    def region_coords(
+    def metadata(
             self,
-            oil_terminal_path: str = None)-> None:
-        """Getting the coordinates"""
-        if not os.path.exists(oil_terminal_path):
-            self.log.error(f"{oil_terminal_path} does not exist!")
-            self.log.debug("Add correct path to the oil terminal file")
-        else:
-            oil_terminal_data = oil_terminals(
-                terminal_file_path = oil_terminal_path)
-            try:
-                self.center_coords_lat = oil_terminal_data[self.location_name][0]
-                self.center_coords_lon = oil_terminal_data[self.location_name][1]
-            except IndexError:
-                self.log.error(f"{self.location_name} is not in the file")
-                self.log.debug("Choose an appropriate location name!")
-
-    def metadata(self):
+            half_side: np.int64 = None):
+        """Getting the meta data as per search details
+        
+        Args:
+            half_side: Half side of AOI.
+        """
         # Getting the WKT from center coordinates
-        self.log.info(f"Looking data for the coords:{self.center_coords_lat},{self.center_coords_lon}")
-        self.wkt_aoi = bbox(
-            center_lat = self.center_coords_lat,
-            center_lon = self.center_coords_lon)
+        self.log.info(f"Getting metadata for {self.location_name}")
+        self.log.info(f"from {self.start_date} to {self.end_date}")
+        # Initiating Oil Termianls function
+        self.oilterminals = OilTerminals(
+            location_name = self.location_name,
+            half_side = half_side)
+        self.oilterminals.read_data()
+        self.wkt_aoi = self.oilterminals.polygon_coords()
 
         # Date objects
-        self.log.info(f"Searching data for the dates between {self.start_date} : {self.end_date}")
         self.start = datetime.strptime(self.start_date, "%Y-%m-%d")
         self.end = datetime.strptime(self.end_date, "%Y-%m-%d")
 

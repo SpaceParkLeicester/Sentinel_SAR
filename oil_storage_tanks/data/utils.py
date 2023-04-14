@@ -1,14 +1,14 @@
+import os
 from math import sqrt
 import geopandas as gpd
 import numpy as np
 import pandas as pd
-from shapely.wkt import dumps, loads
-from shapely.geometry import Polygon
-from typing import Optional
+from shapely.wkt import loads
 
 class OilTerminals:
     """Class method for oil terminals data"""
     file_path = 'data/uk_oil_terminals.xlsx'
+    assert os.path.exists(file_path) is True
     
     @staticmethod
     def bounding_box(
@@ -80,7 +80,6 @@ class OilTerminals:
     def polygon_coords(self):
         """Getting polygon wkt for the bounding box"""
         # Getting the bbox
-        polygon_wkt = []
         for loc, coords in self.terminal_dict.items():
             if loc == self.location_name:
                 center_lat = coords[0]
