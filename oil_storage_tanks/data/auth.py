@@ -1,13 +1,11 @@
 """Function to Authenticate EARTH DATA credentials"""
 import os
 import json
-import logging
-from getpass import getpass
 import asf_search as asf
 from sentinelsat import SentinelAPI, SentinelAPIError
 
 
-class auth_credentials():
+class AuthCredentials():
     """Authenticating crednetials"""
     def __init__(
             self,

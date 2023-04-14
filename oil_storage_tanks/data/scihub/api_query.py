@@ -3,11 +3,10 @@ import numpy as np
 import pandas as pd
 from shapely.wkt import loads
 
-from oil_storage_tanks.data import auth_credentials, oil_terminals
-from oil_storage_tanks.data import bounding_box as bbox
+from oil_storage_tanks.data import AuthCredentials, OilTerminals
 from oil_storage_tanks.utils import stitch_strings
 
-class search_data(auth_credentials):
+class SearchSciHubData(AuthCredentials):
     """Functions to search data in scihub"""
     def __init__(
             self, 
@@ -17,7 +16,7 @@ class search_data(auth_credentials):
             password:str = None,
             log=None) -> None:
         super().__init__(
-            data_service, 
+            data_service,
             path_to_cred_file, 
             username, password, log)
         super().credentials()
@@ -26,38 +25,20 @@ class search_data(auth_credentials):
     def footprint(
             self,
             half_side: np.int32 = None,
-            location_name: str = None,
-            terminal_file_path:str  = None)-> None:
+            location_name: str = None)-> None:
         """Getting the foot print
         
         Args:
             half_side: Lenght of the half side of AOI in Km.
             location_name: Name of the location from xlsx file
-            terminal_file_path: Path to the oil terminal data file
         """
-        if not os.path.exists(terminal_file_path):
-            self.foot_print = None
-            self.log.error(f"{terminal_file_path} is not filepath or does not exist")
-        else:
-            # Getting the coordinates of the location
-            terminal_dict = oil_terminals(
-                terminal_file_path = terminal_file_path)
-            for loc_name, coords in terminal_dict.items():
-                if location_name == loc_name:
-                    self.center_coords_lat = coords[0]
-                    self.center_coords_lon = coords[1]
+        # Initiating oil terminal data
+        oil_terminals = OilTerminals(
+            location_name = location_name,
+            half_side = half_side)
+        oil_terminals.read_data()
+        self.foot_print = oil_terminals.polygon_coords()
 
-                    # Getting the footprint polygon
-                    self.foot_print = bbox(
-                        half_side = half_side,
-                        center_lat = self.center_coords_lat,
-                        center_lon = self.center_coords_lon
-                        )
-                    break                   
-                else:
-                    self.foot_print = None
-                    self.log.error(f"{location_name} is not in {terminal_file_path}")
-        
         return self.foot_print
     
     def query(
@@ -91,7 +72,7 @@ class search_data(auth_credentials):
         return self.api.to_dataframe(self.products) # Returning a dataframe of the results
 
     def swath_aoi_check(self):
-        """This function helps to filter swaths which has our AOI"""
+        """This function helps to filter swaths which has AOI"""
         # Checking if the AOI falls within the downloadble swaths
         self.products_df = self.api.to_dataframe(self.products)
         swath_polygons = self.products_df['footprint'].values
