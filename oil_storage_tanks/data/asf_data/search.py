@@ -8,7 +8,7 @@ from oil_storage_tanks.utils import stitch_strings
 from oil_storage_tanks.data import OilTerminals
 
 
-class SearchEarthData():
+class SearchEarthData:
     """Refine Search results from ASF EARTH DATA"""
     def __init__(
             self,
@@ -31,10 +31,14 @@ class SearchEarthData():
 
     def metadata(
             self,
+            platform_name:str = 'SENTINEL1A', # SENTINEL1A or SENTINEL1B,
+            product_type:str = 'GRD', # SLC or GRD
             half_side: np.int64 = None):
         """Getting the meta data as per search details
         
         Args:
+            platform_name: Name of the Sentinel platform.
+            product_type: Type of the product.
             half_side: Half side of AOI.
         """
         # Getting the WKT from center coordinates
@@ -52,9 +56,11 @@ class SearchEarthData():
         self.end = datetime.strptime(self.end_date, "%Y-%m-%d")
 
         # Getting the results of the search
+        platform = f'asf.PLATFORM.{platform_name}'
+        processingLevel = f'asf.PRODUCT_TYPE.{product_type}'
         self.results = asf.search(
-            platform= asf.PLATFORM.SENTINEL1A,
-            processingLevel=[asf.PRODUCT_TYPE.SLC],
+            platform= platform,
+            processingLevel=[processingLevel],
             start = self.start,
             end = self.end,
             intersectsWith = self.wkt_aoi
