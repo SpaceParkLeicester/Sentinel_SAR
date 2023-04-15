@@ -37,4 +37,5 @@ class DownloadSciHubData(AuthCredentials):
             self.api.download(uuid, download_path)
         else:
             self.log.debug("File already exists!")
+        return zip_filepath
     

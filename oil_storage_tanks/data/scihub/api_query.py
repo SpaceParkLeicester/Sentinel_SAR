@@ -24,7 +24,7 @@ class SearchSciHubData(AuthCredentials):
     
     def footprint(
             self,
-            half_side: np.int32 = None,
+            half_side: np.int32 = 10,
             location_name: str = None)-> None:
         """Getting the foot print
         
@@ -43,15 +43,15 @@ class SearchSciHubData(AuthCredentials):
     
     def query(
             self,
-            start_date:str = None,
-            end_date:str = None,
+            start_date:str = '2023-03-01',
+            end_date:str = '2023-03-30',
             platformname:str = 'Sentinel-1',
             producttype:str = 'GRD'):
         """Fucntion to query scihub
         
         Args:
             start_date: Start date of the search. eg: 2023-02-01
-            end_date: End date of the search, eg: 2023-03-21
+            end_date: End date of the search, eg: 2023-03-30
             platformname: Name of the platform, Sentinel-1
             producttype: Type of the sentinel-1 data product, eg: 'SLC', 'GRD' 
         """

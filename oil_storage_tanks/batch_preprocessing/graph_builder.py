@@ -1,5 +1,4 @@
 import os
-import logging
 from snapista import Graph
 from snapista import Operator
 
@@ -18,7 +17,7 @@ class esa_snap_graph():
         """
         self.xml_folder = xml_folder
         self.graph = Graph()
-        self.log = logging.getLogger(__name__)
+        self.log = log
 
     def read_grd(self)-> None:
         """Read the GRD S1-data manifest file"""
