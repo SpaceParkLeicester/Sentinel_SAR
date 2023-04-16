@@ -189,6 +189,13 @@ class esa_snap_graph():
         filepath = os.path.join(os.getcwd(), filepath)
         self.graph.save_graph(filename = filepath)
         return filepath
+    
+    def graph_view(self)-> None:
+        """Run the Graph"""
+        # Viewing the graph
+        self.log.info("The Graph XML")
+        self.graph.view()
+
 
 if __name__ == "__main__":
     xml_folder = 'data/pre_process/graphs'

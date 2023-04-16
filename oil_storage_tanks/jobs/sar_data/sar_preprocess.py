@@ -68,18 +68,16 @@ class preprocess_sar:
 
     def preprocess(self)-> None:
         """SAR-Preprocessing using SNAP gpt"""
-        gpt_cmd = f"gpt -e {self.xml_filepath}"
-        process = subprocess.Popen(gpt_cmd.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate()        
-
+        gpt_path = '/home/vardh/miniconda3/envs/terradue_snapista/snap/bin/gpt'
+        process = subprocess.run([gpt_path, '-e', f'{self.xml_filepath}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)  
         if process.returncode == 0:
             self.log.debug("Command succeeded:")
-            self.log.debug(stdout.decode())
+            self.log.debug(process.stdout.decode())
             self.log.info(f"Removing {self.safe_folder_path}")
             os.remove(self.safe_folder_path)
         else:
             self.log.debug("Command failed:")
-            self.log.debug(stderr.decode())
+            self.log.debug(process.stderr.decode())
 
 
 if __name__ == "__main__":
