@@ -14,7 +14,7 @@ class OilTerminals:
     def bounding_box(
             center_lat: np.float64 = None,          
             center_lon: np.float64 = None, 
-            half_side: np.int64 = None, # in Km
+            half_side: np.int64 = 10, # in Km
             ):
         """
         Function that gives WKT of a polygin from a center lon, lat

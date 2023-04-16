@@ -7,15 +7,21 @@ class esa_snap_graph():
     """Pre-process Graph of ESA SNAP"""
     def __init__(
             self, 
-            xml_folder:str = None,          
+            xml_folder:str = 'data/pre_process/graphs',
+            processed_data_folder:str = 'data/pre_process/processed',
+            safe_folder_path:str = None,                      
             log:isinstance = None) -> None:
         """Defining variables
 
         Args:
             xml_folder: folder to dave xml graphs
+            processed_data_folder: folder to the proccesed files
+            safe_folder_path: Path to the SAFE folder
             manifest_path: Path to the manifest file GRD S1        
         """
         self.xml_folder = xml_folder
+        self.safe_folder_path = safe_folder_path
+        self.processed_data_folder = processed_data_folder
         self.graph = Graph()
         self.log = log
 
@@ -23,29 +29,44 @@ class esa_snap_graph():
         """Read the GRD S1-data manifest file"""
         self.read = Operator('Read')
         self.read.formatName = 'SENTINEL-1'
-        self.read.file = '${input_data}'
+        self.read.file = self.safe_folder_path
 
-    # def polarisation_stamp(self)-> None:
-    #     """Determining the polarisation stamp of the file"""
-    #     # Getting the filename
-    #     self.uuid = os.path.basename(os.path.dirname(manifest_path))
-    #     self.polstamp = self.uuid.split("_")[3]
-    #     self.polarization = self.polstamp[2:4]
-    #     if self.polarization == 'DV':
-    #         self.pols = 'VH,VV'
-    #     elif self.polarization == 'DH':
-    #         self.pols = 'HH,HV'
-    #     elif self.polarization == 'SH' or self.polarization == 'HH':
-    #         self.pols = 'HH'
-    #     elif self.polarization == 'SV':
-    #         self.pols = 'VV'
-    #     else:
-    #         self.pols = None
-    #         self.log.error("Polarization error!")
+    def polarisation_stamp(self)-> None:
+        """Determining the polarisation stamp of the file"""
+        # Getting the filename
+        self.manifest_path = os.path.join(self.safe_folder_path, 'manifest.safe')
+        self.uuid = os.path.basename(os.path.dirname(self.manifest_path))
+        self.polstamp = self.uuid.split("_")[3]
+        self.polarization = self.polstamp[2:4]
+        if self.polarization == 'DV':
+            self.pols = ['VH','VV']
+        elif self.polarization == 'DH':
+            self.pols = ['HH','HV']
+        elif self.polarization == 'SH' or self.polarization == 'HH':
+            self.pols = ['HH']
+        elif self.polarization == 'SV':
+            self.pols = ['VV']
+        else:
+            self.pols = None
+            self.log.error("Polarization error!")
         
-    #     if not self.pols is None:
-    #         self.log.info(f"Product {self.uuid} is of polarisation {self.pols}")
-      
+        if not self.pols is None:
+            self.log.info(f"Product {self.uuid} is of polarisation {self.pols}")
+
+    def sourcing_polarisation(
+            self,
+            band_type: str = None)-> None:
+        """Sourcing bands
+        
+        Args:
+            band_type: Seleting a polarisation, eg: VV, VH, HH, HV
+        """
+        if band_type in self.pols:
+            self.sourcebands = f'Sigma0_{band_type}'
+        else:
+            self.sourcebands = None
+            self.log.debug(f"Polarisation '{band_type}' is not present")
+            self.log.debuf(f"in the file {self.safe_folder_path}")
     
     def apply_orbit_file(self)-> None:
         """Applying orbit file"""
@@ -65,33 +86,49 @@ class esa_snap_graph():
     def terrain_correction(self)-> None:
         """Terrain Correction"""
         self.terrain_correct = Operator('Terrain-Correction')
-        self.terrain_correct.sourceBands = 'Remove-GRD-Border-Noise'
+        # self.terrain_correct.sourceBands = 'Remove-GRD-Border-Noise'
         self.terrain_correct.pixelSpacingInMeter = '10.0'
         self.terrain_correct.pixelSpacingInDegree = '8.983152841195215E-5'
     
-    def subset(self, wkt_string)-> None:
-        """Subsetting (clipping) the data with WKT"""
+    def subset(
+            self, 
+            wkt_string)-> None:
+        """Subsetting (clipping) the data with WKT
+        
+        Args:
+            wkt_string: Polygon string of an AOI
+        """
         self.spatial_subset = Operator('Subset')
-        self.spatial_subset.sourceBands = 'Sigma0_VH'
+        self.spatial_subset.sourceBands = self.sourcebands
         self.spatial_subset.geoRegion = wkt_string
         self.spatial_subset.copyMetadata = 'true'
     
     def speckle_filter(self)-> None:
         """Speckle filter for the subset"""
         self.speckle_filtering = Operator('Speckle-Filter')
-        self.speckle_filtering.sourceBands = 'Sigma0_VH'
+        self.speckle_filtering.sourceBands = self.sourcebands
         self.speckle_filtering.filter = 'Refined Lee'
         self.speckle_filtering.estimateENL = 'true'
     
     def linear_to_from_db(self)-> None:
         """ Converts bands to/from dB"""
         self.linear_to_db = Operator('LinearToFromdB')
-        self.linear_to_db.sourceBands = 'Sigma0_VH'
+        self.linear_to_db.sourceBands = self.sourcebands
     
-    def write_file(self)-> None:
-        """writes the data product of the file"""
+    def write_file(
+            self,
+            output_filename:str = None)-> None:
+        """writes the data product of the file
+        
+        Args:
+            output_filename: Location name as the output filename
+        """
+        processed_data = os.path.join(self.processed_data_folder, output_filename)
+        processed_data = os.path.join(os.getcwd(), processed_data)
+        if not os.path.exists(processed_data):
+            os.makedirs(processed_data)
         self.write_data = Operator('Write')
-        self.write_data.file = '${output_data}'
+        self.write_data.file = os.path.join(processed_data, output_filename)
 
     def add_node(self)-> None:
         """Adding node to the graph"""
@@ -142,10 +179,16 @@ class esa_snap_graph():
     
     def write_xml(
             self,
-            filename:str = None)-> None:
-        """Writing data into xml file"""
-        filepath = os.path.join(self.xml_folder, filename)
+            graph_xml:str = None)-> None:
+        """Writing data into xml file
+        
+        Args:
+            graph_xml: put location name as Filename of the graph file
+        """
+        filepath = os.path.join(self.xml_folder, graph_xml+'.xml')
+        filepath = os.path.join(os.getcwd(), filepath)
         self.graph.save_graph(filename = filepath)
+        return filepath
 
 if __name__ == "__main__":
     xml_folder = 'data/pre_process/graphs'
@@ -154,7 +197,7 @@ if __name__ == "__main__":
     create_graph = esa_snap_graph(
         xml_folder = xml_folder)
     create_graph.read_grd()
-    # create_graph.polarisation_stamp()
+    create_graph.polarisation_stamp()
     create_graph.apply_orbit_file()
     create_graph.remove_grd_border_noise()
     create_graph.calibration()

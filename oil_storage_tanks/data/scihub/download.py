@@ -11,6 +11,15 @@ class DownloadSciHubData(AuthCredentials):
             username:str = None,
             password:str = None,            
             log=None) -> None:
+        """Inherting and declaring variables
+        
+        Args:
+            data_service: Name of the data service, eg: "Copernicus"
+            path_to_cred_file: Path to the credentail file
+            username: Username of the data service account
+            password: Password of the data service account
+            log: Custom logger function
+        """
         super().__init__(
             data_service, path_to_cred_file,
             username, password, log)
