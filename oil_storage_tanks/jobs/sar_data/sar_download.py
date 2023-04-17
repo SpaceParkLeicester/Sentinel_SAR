@@ -84,7 +84,7 @@ class download_sar:
 if __name__ == "__main__":
     path_to_cred_file = '.private/cred.json'
     download_path = '/mnt/disks/diss_dir/SAFE'
-    location_name = 'stanlow'
+    location_name = 'shetland'
 
     sar = download_sar(
         path_to_cred_file = path_to_cred_file,

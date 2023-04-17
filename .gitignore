@@ -130,7 +130,7 @@ dmypy.json
 
 # Project stuff
 data/SAFE/*
-data/pre_process/sigma0_VH
+data/pre_process/processed/*
 oiltanks.code-workspace
 .private/*
 # Ignore generated credentials from google-github-actions/auth

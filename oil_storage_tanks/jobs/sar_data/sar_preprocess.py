@@ -1,5 +1,4 @@
 import os
-import subprocess 
 from pathlib import Path
 from oil_storage_tanks.utils import unzip_s1data, logger
 from oil_storage_tanks.data import OilTerminals
@@ -68,7 +67,7 @@ class preprocess_sar:
 
 
 if __name__ == "__main__":
-    path_to_zip_file = '/mnt/disks/diss_dir/SAFE/stanlow/S1A_IW_GRDH_1SDV_20230327T062258_20230327T062323_047826_05BF02_706A.zip'
+    path_to_zip_file = '/mnt/disks/diss_dir/SAFE/shetland/S1A_IW_GRDH_1SDV_20230327T173601_20230327T173626_047833_05BF45_5ADD.zip'
     log = logger()
     sar = preprocess_sar(
         path_to_zip_file = path_to_zip_file,
@@ -76,4 +75,3 @@ if __name__ == "__main__":
     sar.unzipping_s1data()
     sar.graph_build(
         band_type = 'VH')
-    sar.preprocess()

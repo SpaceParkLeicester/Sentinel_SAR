@@ -7,7 +7,7 @@
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
       <bandNames/>
       <copyMetadata>true</copyMetadata>
-      <file>${input_data}</file>
+      <file>/mnt/disks/diss_dir/SAFE/flotta/S1A_IW_GRDH_1SDV_20230325T175145_20230325T175210_047804_05BE4F_DD2A.SAFE</file>
       <formatName>SENTINEL-1</formatName>
       <geometryRegion/>
       <maskNames/>
@@ -103,7 +103,7 @@
       <bandNames/>
       <copyMetadata>true</copyMetadata>
       <fullSwath>false</fullSwath>
-      <geoRegion>POLYGON ((-3.1213777475678892 58.7484157729458332, -3.1213231887020512 58.7484157729458332, -3.1213231887020512 58.9282800941295761, -3.1213777475678892 58.9282800941295761, -3.1213777475678892 58.7484157729458332))</geoRegion>
+      <geoRegion>POLYGON ((-3.057829985230527 58.87120129903605, -3.057829985230527 58.805463386036166, -3.1848709510394135 58.805463386036166, -3.1848709510394135 58.87120129903605, -3.057829985230527 58.87120129903605))</geoRegion>
       <referenceBand/>
       <region/>
       <sourceBands>Sigma0_VH</sourceBands>
@@ -151,7 +151,7 @@
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
       <clearCacheAfterRowWrite>false</clearCacheAfterRowWrite>
       <deleteOutputOnFailure>true</deleteOutputOnFailure>
-      <file>${output_data}</file>
+      <file>/home/vardh/gcp_project/oiltanks/data/pre_process/processed/flotta/flotta</file>
       <formatName>BEAM-DIMAP</formatName>
       <writeEntireTileRows>false</writeEntireTileRows>
     </parameters>
