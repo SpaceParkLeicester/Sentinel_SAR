@@ -1,88 +1,98 @@
 """Function to Authenticate EARTH DATA credentials"""
 import os
-import json
+import requests
 import asf_search as asf
 from sentinelsat import SentinelAPI, SentinelAPIError
 
 
 class AuthCredentials():
-    """Authenticating crednetials"""
-    def __init__(
-            self,
-            data_service: str = 'Copernicus scihub',
-            path_to_cred_file: str = None,
-            username:str = None,
-            password:str = None,
-            log = None) -> None:
+    """Authenticating credentials"""
+    def __init__(self,log: isinstance = None) -> None:
         """Declaring variables
         
         Args:
-            data_service: Type of the data serivce, eg: 'EARTHDATA', 'scihub'
-            path_to_cred_file: Path to the crednetial file
-            username: USERNAME of the service, earthdata or scihub
-            password: PASSWORD of the service, earthdata or scihub
             log: Custom logging configuration
         """
-        self.data_service = data_service
-        self.path_to_cred_file = path_to_cred_file
         self.log = log
-        if self.path_to_cred_file is None:
-            assert username is not None
-            assert password is not None
-            self.username = username
-            self.password = password
+
+        # EARTHDATA Credentials
+        self.EARTHDATA_USERNAME = os.environ.get('EARTHDATA_USERNAME')
+        self.EARTHDATA_PASSWORD = os.environ.get('EARTHDATA_PASSWORD')
+
+        # Copernicus scihub account credentials
+        self.SCIHUB_USERNAME = os.environ.get('SCIHUB_USERNAME')
+        self.SCIHUB_PASSWORD = os.environ.get('SCIHUB_PASSWORD')
+
+        # Planet API KEY
+        self.PLANET_APIKEY = os.environ.get('PLANET_APIKEY')
 
 
-    def credentials(self)-> None:
-        """Get the credentials"""
-        assert os.path.exists(self.path_to_cred_file)
-        self.log.info("Getting info from the credential file")
-        with open(self.path_to_cred_file) as f:
-            credentials_data = json.load(f)
-            self.earthdata_username = credentials_data['earthdata_username']
-            self.earthdata_password = credentials_data['earthdata_password']
-            self.scihub_username = credentials_data['scihub_username']
-            self.scihub_password = credentials_data['scihub_password']
-            f.close()
-
-
-    def earthdata_auth(self):
+    def earthdata_auth(self)-> None:
         """Earthdata authentication with credentials"""
-        if self.path_to_cred_file is not None:
-            self.username = self.earthdata_username
-            self.password = self.earthdata_password
         try:
+            assert self.EARTHDATA_USERNAME is not None
+            assert self.EARTHDATA_PASSWORD is not None
+        except AssertionError as e:
+            self.log.debug("Make sure EARTHDATA credentials are added to env variables")
+            self.log.debug("Create an EARTHDATA account in the below link")
+            self.log.debug("http://urs.earthdata.nasa.gov.")
+
+        try:       
             self.log.info("Authenticating EARTHDATA account!")
             self.user_pass_session = asf.ASFSession().auth_with_creds(
-                username = self.username,
-                password = self.password
-            )
+                username = self.EARTHDATA_USERNAME,
+                password = self.EARTHDATA_PASSWORD)
         except asf.ASFAuthenticationError as e:
             self.log.error(f"Authentication failed:\n{e}")
             earthdata_link = "https://www.earthdata.nasa.gov/"
             self.log.debug(f"For details, visit: {earthdata_link}")
-            return e
+            return None
         else:
             self.log.info("User Authentication Successful!")
             return self.user_pass_session
     
     def scihub_auth(self):
         """Copernicus scihub authentication"""
-        if self.path_to_cred_file is not None:
-            self.username = self.scihub_username
-            self.password = self.scihub_password
+        try:
+            assert self.SCIHUB_USERNAME is not None
+            assert self.SCIHUB_PASSWORD is not None
+        except AssertionError as e:
+            self.log.debug("Make sure scihub credentials are added as env variables")
+            self.log.debug("Create scihub account by visiting the link below")
+            self.log.debug("https://scihub.copernicus.eu/dhus/#/self-registration")
          
         try:
             self.log.info("Authenticating Copernicus scihub account!")
             # Initiate Sentinel API
-            schihub_link = 'https://scihub.copernicus.eu/dhus'
+            scihub_link = 'https://scihub.copernicus.eu/dhus'
             self.api = SentinelAPI(
-                self.username, self.password,
-                schihub_link)
+                self.SCIHUB_USERNAME, self.SCIHUB_PASSWORD,
+                scihub_link)
         except SentinelAPIError as e:
             self.log.error(f"Authentication error: {e}")
             return e
         else:
             self.log.info("Authentication successful!")
             return self.api
+    
+    def planet_auth(self)-> None:
+        """Authenticating Planet with API KEY"""
+        try:
+            assert self.PLANET_APIKEY is not None
+        except AssertionError as e:
+            self.log.debug("Make sure to add PLANET APIKEY as the env variable")
+        
+        # Base URL
+        base_url = 'https://api.planet.com/data/v1'
+        session = requests.session()
+        session.auth = (self.PLANET_APIKEY, "")
 
+        # Making a request
+        req = session.get(base_url)
+
+        if req.status_code == 200:
+            self.log.info("Planet data Authentication successful")
+        else:
+            self.log.debug("Planet data authentication unsuccessful")
+        
+        return req.status_code
