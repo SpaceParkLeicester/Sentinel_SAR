@@ -42,7 +42,7 @@ class GoogleBuckets:
                     self.log.info(f"file {self.filename} not found in GCP")
                     self.log.info("Commencing upload!")
                     # Uploading file
-                    sp.check_call(f'gsutil cp {self.abs_filepath} gs://{self.bucket_path}', 
+                    sp.check_call(f'gsutil cp -r {self.abs_filepath} gs://{self.bucket_path}', 
                                 shell = True, stdout = sp.PIPE)
                     self.log.info("Upload finished")
                 else:

@@ -8,7 +8,7 @@ class SearchSciHubData(AuthCredentials):
     """Functions to search data in scihub"""
     def __init__(
             self, 
-            data_service: str = None, 
+            data_service: str = "Copernicus scihub service", 
             path_to_cred_file: str = None,
             username:str = None,
             password:str = None,

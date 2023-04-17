@@ -6,7 +6,7 @@ class DownloadSciHubData(AuthCredentials):
     """Function to download single scene"""
     def __init__(
             self, 
-            data_service: str = None, 
+            data_service: str = "Copernicus scihub service", 
             path_to_cred_file: str = None,
             username:str = None,
             password:str = None,            
@@ -39,7 +39,7 @@ class DownloadSciHubData(AuthCredentials):
             download_path: Download path folder
         """
         # Downloading the data
-        zip_file = title + '.SAFE'
+        zip_file = title + '.zip'
         zip_filepath = os.path.join(download_path, zip_file)
         if not os.path.exists(zip_filepath):
             self.log.info(f"Commencing {title} download")
