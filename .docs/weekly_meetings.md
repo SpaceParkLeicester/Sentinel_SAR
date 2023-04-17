@@ -11,4 +11,4 @@ Supervisor - [Prof. Kevin Tansey](https://le.ac.uk/people/kevin-tansey)
 * Meeting has taken place in person at the SPL, Leicester. I have presented the progress that had happened since the last meeting. Progress in S1 SAR data acquistion and pre-process using ESA SNAP by pythonic implelementation.
 * Discussed regarding reasoning and arguments for the current approach towards the disseration project regarding data usage, and also discussed complications, solutions and potential alternatives.
 * Discussed the scaling up factor of the project for the future with the industry.
-* Usage of Planet's optical data was recommended, and the supervisor had helped me to setup an account with universities planet data. 
+* Usage of Planet's optical data was recommended, and the supervisor had helped me to setup an account with universities planet data [Planet explorer](https://www.planet.com/explorer/)
