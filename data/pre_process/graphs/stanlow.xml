@@ -7,7 +7,7 @@
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
       <bandNames/>
       <copyMetadata>true</copyMetadata>
-      <file>/mnt/disks/diss_dir/SAFE/stanlow/S1A_IW_GRDH_1SDV_20230327T062258_20230327T062323_047826_05BF02_706A.SAFE</file>
+      <file>$input_data</file>
       <formatName>SENTINEL-1</formatName>
       <geometryRegion/>
       <maskNames/>
@@ -151,7 +151,7 @@
     <parameters class="com.bc.ceres.binding.dom.XppDomElement">
       <clearCacheAfterRowWrite>false</clearCacheAfterRowWrite>
       <deleteOutputOnFailure>true</deleteOutputOnFailure>
-      <file>/home/vardh/gcp_project/oiltanks/data/pre_process/processed/stanlow/stanlow</file>
+      <file>$output_data</file>
       <formatName>BEAM-DIMAP</formatName>
       <writeEntireTileRows>false</writeEntireTileRows>
     </parameters>

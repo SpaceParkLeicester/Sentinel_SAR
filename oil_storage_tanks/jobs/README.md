@@ -7,3 +7,5 @@
 ```
 $ nohup bash <path/to/shell script> > output.log 2>&1 &
 ```
+
+* Graph runner - https://github.com/snap-contrib/cwl-snap-graph-runner

@@ -66,19 +66,6 @@ class preprocess_sar:
         graph.add_node()
         self.xml_filepath = graph.write_xml(graph_xml = self.location_name)
 
-    def preprocess(self)-> None:
-        """SAR-Preprocessing using SNAP gpt"""
-        gpt_path = '/home/vardh/miniconda3/envs/terradue_snapista/snap/bin/gpt'
-        process = subprocess.run([gpt_path, '-e', f'{self.xml_filepath}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)  
-        if process.returncode == 0:
-            self.log.debug("Command succeeded:")
-            self.log.debug(process.stdout.decode())
-            self.log.info(f"Removing {self.safe_folder_path}")
-            os.remove(self.safe_folder_path)
-        else:
-            self.log.debug("Command failed:")
-            self.log.debug(process.stderr.decode())
-
 
 if __name__ == "__main__":
     path_to_zip_file = '/mnt/disks/diss_dir/SAFE/stanlow/S1A_IW_GRDH_1SDV_20230327T062258_20230327T062323_047826_05BF02_706A.zip'
