@@ -29,15 +29,10 @@ def planet_auth()-> None:
     return req
 
 async def authenticate():
-    planet_apikey = os.environ.get("PLANET_APIKEY")
-    auth = Auth.from_key(planet_apikey)
+    auth = Auth.from_env()
     session = Session(auth = auth)
     await session.aclose()
+    print(session)
     return session
 
-async def main():
-    session = Session()
-    await session.aclose()
-
-
-asyncio.run(main())
+asyncio.run(authenticate())

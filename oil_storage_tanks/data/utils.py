@@ -17,7 +17,7 @@ class OilTerminals:
             half_side: np.int64 = 10, # in Km
             ):
         """
-        Function that gives WKT of a polygin from a center lon, lat
+        Function that gives WKT of a polygon from a center lon, lat
 
         Args:
             center_lat: Centre Latitude
@@ -32,9 +32,9 @@ class OilTerminals:
         # Km to m
         half_side = (half_side*1000)/sqrt(2)
 
-        # Geopandas geoseries
+        # Geopandas geo-series
         gs = gpd.GeoSeries(loads(f'POINT({center_lon} {center_lat})'))
-        # GeoDataframe
+        # GeoDataFrame
         gdf = gpd.GeoDataFrame(geometry=gs)
         # Projection
         gdf.crs='EPSG:4326'
