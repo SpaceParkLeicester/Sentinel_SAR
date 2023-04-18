@@ -74,25 +74,3 @@ class AuthCredentials():
         else:
             self.log.info("Authentication successful!")
             return self.api
-    
-    def planet_auth(self)-> None:
-        """Authenticating Planet with API KEY"""
-        try:
-            assert self.PLANET_APIKEY is not None
-        except AssertionError as e:
-            self.log.debug("Make sure to add PLANET APIKEY as the env variable")
-        
-        # Base URL
-        base_url = 'https://api.planet.com/data/v1'
-        session = requests.session()
-        session.auth = (self.PLANET_APIKEY, "")
-
-        # Making a request
-        req = session.get(base_url)
-
-        if req.status_code == 200:
-            self.log.info("Planet data Authentication successful")
-        else:
-            self.log.debug("Planet data authentication unsuccessful")
-        
-        return req.status_code

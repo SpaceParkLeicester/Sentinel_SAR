@@ -17,9 +17,3 @@ def test_scihub_auth():
     auth = AuthCredentials(log = logger())
     api = auth.scihub_auth()
     assert type(api) is SentinelAPI
-
-def test_planet_api():
-    """Testing Planet authentication"""
-    auth = AuthCredentials(log = logger())
-    api = auth.planet_auth()
-    assert api == 200
