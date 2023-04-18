@@ -4,6 +4,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from shapely.wkt import loads
+import csv
 
 class OilTerminals:
     """Class method for oil terminals data"""
@@ -65,9 +66,34 @@ class OilTerminals:
 
         # create a dictionary of of lat lon with location names
         self.terminal_dict = {}
+        self.terminal_bbox = {}
         for index, row in df.iterrows():
             location = row['Region']
             location = location.split(',')[0].lower()
             self.terminal_dict[location] = lat_lon[index]
+
+            # Getting the bounding box coords
+            wkt = OilTerminals.bounding_box(
+                center_lat = lat_lon[index][0],
+                center_lon = lat_lon[index][1])
+            polygon = loads(wkt)
+            vertices = list(polygon.exterior.coords)
+            self.terminal_bbox[location] = vertices
+
         return self.terminal_dict
+    
+    def write_csv(
+            self,
+            filepath:str = None)-> None:
+        """Writing CSV files with bounding box"""
+        with open(filepath, mode = 'w', newline = '') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['location', 'bounding_coords'])
+            for key , value in self.terminal_bbox.items():
+                writer.writerow([key, value])
+            csvfile.close()
         
+
+
+         
+

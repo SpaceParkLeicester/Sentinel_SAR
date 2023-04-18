@@ -1,8 +1,8 @@
 import os
-import asyncio
 import requests
 import logging
-from planet import Auth, Session
+import json
+from pprint import pprint
 
 def planet_auth()-> None:
     """Authenticating Planet with API KEY"""
@@ -28,11 +28,6 @@ def planet_auth()-> None:
     
     return req
 
-async def authenticate():
-    auth = Auth.from_env()
-    session = Session(auth = auth)
-    await session.aclose()
-    print(session)
-    return session
-
-asyncio.run(authenticate())
+if __name__ == "__main__":
+    p = planet_auth()
+    pprint(p.json())

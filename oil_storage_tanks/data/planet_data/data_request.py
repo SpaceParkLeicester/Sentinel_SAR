@@ -2,8 +2,8 @@ import os
 import planet
 from planet import Auth, Session
 import asyncio
-from pprint import pprint
 from typing import List
+
 
 def create_request(
         location_name: str = None,
