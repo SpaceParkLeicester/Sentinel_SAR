@@ -56,7 +56,7 @@ class OilTerminals:
 
     def read_data(self):
         """Read data from xlsx file"""
-        # Load the csv file
+        # Load the excel file
         df = pd.read_excel(
             self.terminal_file_path, 
             skiprows = 1)
@@ -92,6 +92,7 @@ class OilTerminals:
             for key , value in self.terminal_bbox.items():
                 writer.writerow([key, value])
             csvfile.close()
+        
         
 
 

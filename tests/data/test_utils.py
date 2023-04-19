@@ -5,9 +5,10 @@ from oil_storage_tanks.data import OilTerminals
 
 def test_oilterminals_dict():
     """Testing the oil terminal file"""
+    csv_filepath = "data/oil_terminals_bbox.csv"
     terminal_data = OilTerminals()
     data = terminal_data.read_data()
-
+    terminal_data.write_csv(filepath = csv_filepath)
     assert type(data) is dict
     assert data is not None
 
