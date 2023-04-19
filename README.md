@@ -4,9 +4,10 @@ Dissertation on automate detection and volume estimation of Storage Oil Tank
 ## Initialisation steps and Pytest Commands
 * Run `python setup.py install` from the root directory of the project.
     * This will install all the required libraries, packages, and dependencies in an environment.
+    * If you want to delete the package installed by `setup.py`, just delete `xxxx.egg-info` folder
 * Run `pip install -e .`
     * This will make the project editable to be able to develop and run tests.
-* To test the fucntions, datapipe lines, etc. using `pytest` package
+* To test the functions, datapipe lines, etc. using `pytest` package
     * Run `pytest -rA -s tests/run/test_data_download.py`
 * If not added, add project folder path to `sys.path` in order to use the relative paths while developing and testing
     * In python
@@ -44,8 +45,8 @@ Microsoft edge installation in Centos
 
 Add custom commands in linux
 * Create a shell script file and make sure it is executable `chmod u+x,g+x script.sh`
-* Create a `.bash_aliases` file in the root dir and add `alias 'customcommand'='/home/user/script.sh'`
-* Run `source ~/.bash_aliases` and `customcommand` is ready to go
+* Create a `.bash_aliases` file in the root dir and add `alias 'custom_command'='/home/user/script.sh'`
+* Run `source ~/.bash_aliases` and `custom_command` is ready to go
 
 
 ### TODO
@@ -53,7 +54,7 @@ Add custom commands in linux
 
 ## SAR Storage Oil Tank Datasets
 
-### ASF EARTDATA
+### ASF EARTHDATA
 * ASF along with NASA's EARTHDATA provides a visual interface [dashboard](https://search.earthdata.nasa.gov/search?fdc=Alaska%20Satellite%20Facility) to download the data
 
 ### UK Oil refineries datasets
