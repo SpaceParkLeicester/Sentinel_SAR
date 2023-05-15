@@ -1,5 +1,6 @@
 # SAR data processing
-Dissertation on automate detection and volume estimation of Storage Oil Tank
+
+
 
 ## Initialisation steps and Pytest Commands
 * Run `python setup.py install` from the root directory of the project.
