@@ -1,4 +1,4 @@
-"""Function to download the ASFDATA"""
+"""Function to download the ASF data"""
 import os
 from urllib.parse import urlparse
 import time 

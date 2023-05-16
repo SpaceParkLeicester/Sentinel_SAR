@@ -86,12 +86,12 @@ class OilTerminals:
             self,
             filepath:str = None)-> None:
         """Writing CSV files with bounding box"""
-        with open(filepath, mode = 'w', newline = '') as csvfile:
-            writer = csv.writer(csvfile)
+        with open(filepath, mode = 'w', newline = '') as csv_file:
+            writer = csv.writer(csv_file)
             writer.writerow(['location', 'bounding_coords'])
             for key , value in self.terminal_bbox.items():
                 writer.writerow([key, value])
-            csvfile.close()
+            csv_file.close()
         
         
 

@@ -4,8 +4,8 @@ import numpy as np
 from datetime import datetime
 
 import asf_search as asf
-from oil_storage_tanks.utils import stitch_strings
-from oil_storage_tanks.data import OilTerminals
+from src.utils import stitch_strings
+from src.data import OilTerminals
 
 
 class SearchEarthData:
@@ -44,12 +44,13 @@ class SearchEarthData:
         # Getting the WKT from center coordinates
         self.log.info(f"Getting metadata for {self.location_name}")
         self.log.info(f"from {self.start_date} to {self.end_date}")
-        # Initiating Oil Termianls function
-        self.oilterminals = OilTerminals(
-            location_name = self.location_name,
+        # Initiating Oil Terminals function
+        self.oilterminals = OilTerminals()
+        self.data = self.oilterminals.read_data()
+        self.wkt_aoi = self.oilterminals.bounding_box(
+            center_lat = self.data[self.location_name][0],
+            center_lon = self.data[self.location_name][1],
             half_side = half_side)
-        self.oilterminals.read_data()
-        self.wkt_aoi = self.oilterminals.polygon_coords()
 
         # Date objects
         self.start = datetime.strptime(self.start_date, "%Y-%m-%d")
@@ -80,19 +81,19 @@ class SearchEarthData:
     def save_search(
             self,
             csv_file_save_path: str):
-        """Fucntion to save the search results"""
-        # Definig the filename and the path
+        """Function to save the search results"""
+        # Defining the filename and the path
         start_date = self.start_date.replace('-', '')
         end_date = self.end_date.replace('-', '')
         filename = ["s1", self.location_name, start_date, end_date]
         filename = stitch_strings(filename, "_")
-        self.csv_folderpath = os.path.join(csv_file_save_path, self.location_name)
-        self.csv_filepath = os.path.join(self.csv_folderpath, filename + ".csv")
+        self.csv_folder_path = os.path.join(csv_file_save_path, self.location_name)
+        self.csv_filepath = os.path.join(self.csv_folder_path, filename + ".csv")
 
         # Writing the file
-        if not os.path.exists(self.csv_folderpath):
+        if not os.path.exists(self.csv_folder_path):
             self.log.info(f"Creating the folder {self.location_name}")
-            os.makedirs(self.csv_folderpath)
+            os.makedirs(self.csv_folder_path)
         else:
             self.log.debug(f"The folder '{self.location_name}' exists!")
 

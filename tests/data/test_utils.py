@@ -1,7 +1,7 @@
 """Test the utils functions"""
 from shapely.wkt import loads
 from shapely.geometry.polygon import Polygon
-from oil_storage_tanks.data import OilTerminals
+from src.data import OilTerminals
 
 def test_oilterminals_dict():
     """Testing the oil terminal file"""
