@@ -1,5 +1,4 @@
 """Testing the functions of the scihub"""
-import os
 from src.data import AuthCredentials
 from src.data.scihub import SearchSciHubData
 from sentinelsat import SentinelAPI
@@ -11,35 +10,15 @@ logger = logging.getLogger(__name__)
 
 def test_scihub_query():
     """Testing scihub authentication"""
-    path_to_cred_file = '.private/cred.json'
-    data_service = 'Copernicus scihub'
-    if not os.path.exists(path_to_cred_file):
-        username = os.environ.get('SCIHUB_USERNAME')
-        password = os.environ.get('SCIHUB_PASSWORD')
-        # Authenticating the username and password
-        auth = AuthCredentials(
-            username = username,
-            password = password,
-            log = logger)
-        api = auth.scihub_auth()
-        assert type(api) is SentinelAPI
-    else:
-        auth = AuthCredentials(
-            path_to_cred_file = path_to_cred_file,
-            data_service = 'Copernicus scihub',
-            log = logger
-        )
-        auth.credentials()
-        api = auth.scihub_auth()
-        assert type(api) is SentinelAPI
+
+    auth = AuthCredentials(log = logger)
+    api = auth.scihub_auth()
+    assert type(api) is SentinelAPI
 
     """Testing scihub footprint"""
     half_side = 10
     location_name = 'stanlow'
-    search = SearchSciHubData(
-        data_service = data_service,
-        path_to_cred_file = path_to_cred_file,
-        log = logger)
+    search = SearchSciHubData(log = logger)
     foot_print = search.footprint(
         half_side = half_side,
         location_name = location_name)
