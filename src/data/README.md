@@ -12,3 +12,8 @@ export SCIHUB_PASSWORD="xxxxxxx"
 export EARTHDATA_USERNAME="xxxxxx"
 export EARTHDATA_PASSWORD="xxxxxx"
 ```
+### ASF EARTHDATA
+* ASF along with NASA's EARTHDATA provides a visual interface [dashboard](https://search.earthdata.nasa.gov/search?fdc=Alaska%20Satellite%20Facility) to download the data.
+
+### Copernicus SCIHUB
+* ESA provides a dashboard to visulaise the data from their Copernicus program. To open the (dashboard)[https://scihub.copernicus.eu/dhus/#/home], click on the link.
