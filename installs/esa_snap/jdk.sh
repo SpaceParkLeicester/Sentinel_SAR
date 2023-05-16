@@ -40,7 +40,7 @@ else
     echo "Download the Oracle distribution from "
     echo "https://www.oracle.com/uk/java/technologies/javase/javase8u211-later-archive-downloads.html"
     echo "Direct download is not possible as you need to accept the license agreements"
-    echo "So, download manually, and move the file to /opt/"
+    echo "So, download manually, specifically 8u351 version, and move the file to /opt/"
     echo "Run this script again"
 fi
 

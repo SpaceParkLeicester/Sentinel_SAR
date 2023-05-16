@@ -12,9 +12,8 @@ else
     # Downloading the maven dource file
     # You can find the source file here: https://maven.apache.org/download.cgi
     echo "Downloading $apache_tar_file from https://maven.apache.org/download.cgi"
-    wget https://dlcdn.apache.org/maven/maven-3/3.9.1/binaries/apache-maven-3.9.1-bin.tar.gz
-    tar -zxvf $apache_tar_file
-    sudo cp -r apache-maven-3.9.1 /opt/
-    rm -rf apache-maven-3.9.1/
+    wget -P ~/apps/tmp https://dlcdn.apache.org/maven/maven-3/3.9.1/binaries/apache-maven-3.9.1-bin.tar.gz
+    tar -zxvf ~/apps/tmp/$apache_tar_file --directory ~/apps/tmp
+    sudo mv ~/apps/tmp/apache-maven-3.9.1 /opt/
 fi
 

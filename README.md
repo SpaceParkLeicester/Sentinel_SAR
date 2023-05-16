@@ -39,7 +39,11 @@ This repository consists of modules required to download, pre-process the Sentin
     ├── load
     └── utils
 ```
-    
+## Usage
+The datapipe line that needs to be followed is below.
+```
+data_download(src/data)----->unzip------>
+```
 ### Random
 **Earth Engine authentication**
 In a remote machine, without access to a browser, there is a way to authenticate earthengine.

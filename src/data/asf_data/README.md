@@ -1,33 +1,15 @@
-# Sentinel-1 Data
+# NASA Earth data ASF search API
 
-This folder consists of the data pipes and functions that are related to the Sentinel-1 SAR data search, data download through two different services, ESA's Copernicus Scihub and NASA's EARTHDATA. Make sure to add ESA Scihub username and password, and NASA EARTHDATA user email and password in `~/.bashrc` file.
-```
-# Adding credentials
-$ export SCIHUB_USERNAME="xxxxxxxx"
-$ export SCIHUB_PASSWORD="xxxxxxxx"
+This folder consists of functions and methods to download data from `asf_search` python API. Please follow the instructions to use the functions.
 
-$ export EARTHDATA_USERNAME="xxxxxxx"
-$ export EARTHDATA_PASSWORD="xxxxxxx"
-```
+**Search data**
+* Choose a location name from `data.uk_terminals.xlsx` or add information to the file along with an POI, select search start date and an end date.
+* Select a location to save the search results in `csv` file format.
 
-**Note: Before starting to use the functions, It is advised to add changes to the core `asf_search` `download.py` function by adding a progressbar. Run the following commands.**
-```
-$ sudo find / -name 'asf_search' # Assuming the python package in the conda env
-# Manually copy the path and and paste below
-$ cd <paste the path here>
-$ vim download/download.py # Or open with your fav editor
-```
-Add following lines to the python file, replace the commented with tqdm to add progressbar
-```
-from tqdm.auto import tqdm
-#with open(os.path.join(path, filename), 'wb') as f:
-with tqdm.wrapattr(open(os.path.join(path, filename),'wb'), 
-                    'write', miniters=1, desc=filename,
-                    total=int(response.headers.get('content-length', 0))) as f:
-    #for chunk in response.iter_content(chunk_size=8192):
-    for chunk in response.iter_content(chunk_size=31457280):
-        f.write(chunk)
-``` 
+**Download data**
+* Select a download path, and a url from with `.zip` extension, the download function saves the SAR data file in zip format in the given desired location.
+
+
 
 
 

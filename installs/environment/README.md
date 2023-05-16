@@ -1,9 +1,9 @@
-# Project developement environemnt
+# Project development environment
 
 ## Linux distribution - Ubuntu 22.04.2 LTS
 
 ### Python Kernel
-To check your linux distribuition, type `$ lsb_release -a` in CLI. It is of vital importance to install necessary package version for the project to run successfully and not let the code break. The packages and applications in this project depends on various versions of `python`. Hence, all the required `python` versions are recommended to be installed. Current latest version as of this writing is `python3.10`, but this project won't be utilising this version but `python3.9`. To installed desired python packages in the kernel, and after installation, to verify, run `$ whereis python3.9` and replace version with desired versions
+To check your linux distribution, type `$ lsb_release -a` in CLI. It is of vital importance to install necessary package version for the project to run successfully and not let the code break. The packages and applications in this project depends on various versions of `python`. Hence, all the required `python` versions are recommended to be installed. Current latest version as of this writing is `python3.10`, but this project won't be utilising this version but `python3.9`. To installed desired python packages in the kernel, and after installation, to verify, run `$ whereis python3.9` and replace version with desired versions
 ```
 $ sudo add-apt-repository ppa:deadsnakes/ppa
 $ sudo apt-get update
@@ -27,15 +27,15 @@ $ mamba init
 ```
 
 ### Required packages
-Creating a virual environment with `mamba`
+Creating a virtual environment with `mamba`
 ```
 $ mamba create -n <venv name>
 $ mamba init
-$ mamna activate <venv name> 
+$ mamba activate <venv name> 
 ```
 
-Each project requres set of packages with set of requirement versions. This project requires following packages from different `anaconda` channles.
-* Installing necessary packages from channel [`terradue`](https://anaconda.org/Terradue/repo) - `snap` and `snapista`. Note: These packages uses `python3.7` hence, it is advised to create a remote `venv` just for these package operations to avoid dependecy issues. 
+Each project requires set of packages with set of requirement versions. This project requires following packages from different `anaconda` channels.
+* Installing necessary packages from channel [`terradue`](https://anaconda.org/Terradue/repo) - `snap` and `snapista`. Note: These packages uses `python3.7` hence, it is advised to create a remote `venv` just for these package operations to avoid dependency issues. 
 ```
 $ mamba install -c conda-forge python_abi
 $ mamba install -c terradue snap

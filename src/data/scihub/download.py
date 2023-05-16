@@ -4,26 +4,14 @@ from src.data import AuthCredentials
 
 class DownloadSciHubData(AuthCredentials):
     """Function to download single scene"""
-    def __init__(
-            self, 
-            data_service: str = "Copernicus scihub service", 
-            path_to_cred_file: str = None,
-            username:str = None,
-            password:str = None,            
-            log=None) -> None:
+    def __init__(self, log: isinstance = None) -> None:
         """Inheriting and declaring variables
         
         Args:
             data_service: Name of the data service, eg: "Copernicus"
-            path_to_cred_file: Path to the credential file
-            username: Username of the data service account
-            password: Password of the data service account
             log: Custom logger function
         """
-        super().__init__(
-            data_service, path_to_cred_file,
-            username, password, log)
-        super().credentials()
+        super().__init__(log)        
         self.api = super().scihub_auth()
     
     def download_sensat(
