@@ -1,5 +1,4 @@
 """Testing the functions of ASF EARTHDATA"""
-
 import logging
 from logging import config
 config.fileConfig('logger.ini')

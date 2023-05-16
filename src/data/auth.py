@@ -1,6 +1,5 @@
 """Function to Authenticate EARTH DATA credentials"""
 import os
-import requests
 import asf_search as asf
 from sentinelsat import SentinelAPI, SentinelAPIError
 
