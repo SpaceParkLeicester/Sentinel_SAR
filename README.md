@@ -13,7 +13,7 @@ sys.path.append(path/to/Sentinel-SAR)
 ```
 ## Organisation
 This repository consists of modules required to download, pre-process the Sentinel-SAR data. The structure of the repository is shown below.
-.
+```
 ├── data
 │   ├── pre_process
 │   │   └── graphs
@@ -38,6 +38,8 @@ This repository consists of modules required to download, pre-process the Sentin
     ├── data
     ├── load
     └── utils
+```
+    
 ### Random
 **Earth Engine authentication**
 In a remote machine, without access to a browser, there is a way to authenticate earthengine.
