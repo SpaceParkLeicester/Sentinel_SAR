@@ -1,9 +1,13 @@
 """Testing the functions of the scihub"""
 import os
-from oil_storage_tanks.utils import logger
-from oil_storage_tanks.data import AuthCredentials
-from oil_storage_tanks.data.scihub import SearchSciHubData
+from src.data import AuthCredentials
+from src.data.scihub import SearchSciHubData
 from sentinelsat import SentinelAPI
+
+import logging
+from logging import config
+config.fileConfig('logger.ini')
+logger = logging.getLogger(__name__)
 
 def test_scihub_query():
     """Testing scihub authentication"""
@@ -16,14 +20,14 @@ def test_scihub_query():
         auth = AuthCredentials(
             username = username,
             password = password,
-            log = logger())
+            log = logger)
         api = auth.scihub_auth()
         assert type(api) is SentinelAPI
     else:
         auth = AuthCredentials(
             path_to_cred_file = path_to_cred_file,
             data_service = 'Copernicus scihub',
-            log = logger()
+            log = logger
         )
         auth.credentials()
         api = auth.scihub_auth()
@@ -35,7 +39,7 @@ def test_scihub_query():
     search = SearchSciHubData(
         data_service = data_service,
         path_to_cred_file = path_to_cred_file,
-        log = logger())
+        log = logger)
     foot_print = search.footprint(
         half_side = half_side,
         location_name = location_name)

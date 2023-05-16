@@ -14,8 +14,8 @@ class esa_snap_graph():
         """Defining variables
 
         Args:
-            xml_folder: folder to dave xml graphs
-            processed_data_folder: folder to the proccesed files
+            xml_folder: folder to save xml graphs
+            processed_data_folder: folder to the processed files
             safe_folder_path: Path to the SAFE folder
             manifest_path: Path to the manifest file GRD S1        
         """
@@ -59,14 +59,14 @@ class esa_snap_graph():
         """Sourcing bands
         
         Args:
-            band_type: Seleting a polarisation, eg: VV, VH, HH, HV
+            band_type: Selecting a polarisation, eg: VV, VH, HH, HV
         """
         if band_type in self.pols:
             self.sourcebands = f'Sigma0_{band_type}'
         else:
             self.sourcebands = None
             self.log.debug(f"Polarisation '{band_type}' is not present")
-            self.log.debuf(f"in the file {self.safe_folder_path}")
+            self.log.debug(f"in the file {self.safe_folder_path}")
     
     def apply_orbit_file(self)-> None:
         """Applying orbit file"""
