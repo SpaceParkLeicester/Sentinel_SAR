@@ -8,7 +8,11 @@ import csv
 
 class OilTerminals:
     """Class method for oil terminals data"""
-    terminal_file_path = 'data/uk_oil_terminals.xlsx'
+    terminal_file_path = 'Sentinel_SAR/data/uk_oil_terminals.xlsx'
+    current_file_path = os.path.abspath(__file__)
+    dirs = current_file_path.split(os.sep)
+    home_dir = os.sep.join(dirs[:4])
+    terminal_file_path = os.path.join(home_dir, terminal_file_path)
     assert os.path.exists(terminal_file_path) is True
     
     @staticmethod
