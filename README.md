@@ -35,11 +35,4 @@ The datapipe line that needs to be followed is below.
 ```
 data_search(src/data/asf_or_sci/search)---->data_download(src/data/asf_or_sci/download)----->unzip
 ```
-### Random
-**Earth Engine authentication**
-In a remote machine, without access to a browser, there is a way to authenticate earthengine.
-* First of all, make sure EarthEngine API is enabled for your project by clicking this [link](https://console.cloud.google.com/apis/library/earthengine.googleapis.com?project=gy7720)
-* Go the [IAM & Admin](https://console.cloud.google.com/iam-admin/iam?project=gy7720) page, and go the `Service Accounts` section on the side panel. 
-* Click on the `+ Create Service Account` and give necessary details. Make sure to Copy the `Service account email`. In the Keys section, create a new key and download the key in `JSON` to your workspace main directory with name `gcp_key.json`. Path to the key is, and the `Service email account` is needed for the initiation process, which you can find in `/Oil-Storage-Tanks/src/data/utils.py`
-
 
