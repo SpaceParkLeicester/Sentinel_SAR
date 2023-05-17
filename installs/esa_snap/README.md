@@ -4,7 +4,7 @@ This folder consists of instructions and shell scripts to install ESA's SNAP wit
 
 ## Instructions to install ESA SNAP and configure `snappy` in Ubuntu x86_64 system
 
-* Create a conda environment with `python3.9`. Later versions such as `python3.10` are not compatible with ESA SNAP yet.
+* Create a conda environment with `python3.7`. Later versions such as `python3.10` are not compatible with ESA SNAP yet.
 
 *  Install GDAL in Ubuntu by running the following commands.
 ```
@@ -79,12 +79,17 @@ alias snap64='$HOME/snap/bin/snap'
 alias gpt='$HOME/snap/bin/gpt'
 ```
 
-* Install `jpy`, a bi-direction java-python package by running the following commands.
+* Install `jpy`, a bi-direction java-python package by running the following commands. **Note**:Install the (jpy version 0.9.0)[https://github.com/jpy-consortium/jpy/archive/refs/tags/0.9.0.zip]
 ```
-$ git -C $HOME/apps/tmp clone https://github.com/jpy-consortium/jpy.git
-$ python $HOME/apps/tmp/jpy setup.py build maven bdist_wheel 
+$ wget -P ~/apps/tmp https://github.com/jpy-consortium/jpy/archive/refs/tags/0.9.0.zip
+$ unzip ~/apps/tmp/0.9.0.zip --directory ~/apps/tmp
+$ python $HOME/apps/tmp/jpy setup.py build maven bdist_wheel
+# If you encounter JAVA_HOME environment variable, run the following
+$ whereis java # Copy the location of Java
+$ export JAVA_HOME=/opt/jdk1.8.0_351
+$ export PATH=$JAVA_HOME/bin:$PATH
 # If there is any error, search for solutions in the STEP forum, add `LD_LIBRARY_PATH` to point out JDK8 in .bashrc
-$ cp ~/apps/tmp/jpy/dist/jpy-0.9.0-cp39-cp39-linux_x86_64.whl ~/.snap/snap-python/snappy
+$ cp ~/apps/tmp/jpy/dist/jpy-0.9.0-cp37-cp37-linux_x86_64.whl ~/.snap/snap-python/snappy
 ```
 
 * Configuring ESA SNAP for `snappy` and add the snappy package to `PYTHONPATH` in `.bashrc`
