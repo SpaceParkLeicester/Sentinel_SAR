@@ -43,7 +43,7 @@ class DownloadASFData(AuthCredentials):
             self.log.debug(f"File {self.uuid_zip} already exists!")
 
 if __name__ == "__main__":
-    asf_data_url = 'https://datapool.asf.alaska.edu/SLC/SA/S1A_IW_SLC__1SDV_20230112T175210_20230112T175237_046754_059AE5_4A45.zip'
+    asf_data_url = 'https://datapool.asf.alaska.edu/GRD_HD/SA/S1A_IW_GRDH_1SDV_20230313T175210_20230313T175235_047629_05B868_4E5C.zip'
     download_path = '/home/vardh/apps/tmp'
     download = DownloadASFData(log = logger)
     download.download_data(download_path,asf_data_url)
