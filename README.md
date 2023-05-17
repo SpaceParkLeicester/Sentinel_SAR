@@ -14,35 +14,26 @@ sys.path.append(path/to/Sentinel-SAR)
 ## Organisation
 This repository consists of modules required to download, pre-process the Sentinel-SAR data. The structure of the repository is shown below.
 ```
+.
 ├── data
-│   ├── pre_process
-│   │   └── graphs
-│   └── s1_data_search_results
-├── extras
+│   └── search_results
+│       └── flotta
 ├── installs
-│   ├── environment
-│   └── esa_snap
 ├── src
-│   ├── batch_preprocessing
-│   ├── config
 │   ├── data
 │   │   ├── asf_data
 │   │   └── scihub
-│   ├── datapipes
-│   ├── google_bucket
 │   ├── jobs
 │   │   └── sar_data
-│   ├── utils
-│   └── visuals
+│   └── utils
 └── tests
     ├── data
-    ├── load
     └── utils
 ```
 ## Usage
 The datapipe line that needs to be followed is below.
 ```
-data_download(src/data)----->unzip------>
+data_search(src/data/asf_or_sci/search)---->data_download(src/data/asf_or_sci/download)----->unzip
 ```
 ### Random
 **Earth Engine authentication**
