@@ -8,17 +8,17 @@ sudo apt-get install libc6-i386
 # Checking if the /usr/lib/jvm exists
 link=https://www.oracle.com/uk/java/technologies/javase/javase8u211-later-archive-downloads.html
 opt_jdk=/opt/jdk1.8.0_351
-cd
+
 if [ -d $opt_jdk ]; then
     echo "$opt_jdk exists!"
 else
     echo "$opt_jdk does not exist"
     echo "Download java source file from $opt_jdk"
-    if [ -d "apps/tmp" ]; then
+    if [ -d "~/apps/tmp" ]; then
         echo "Download the tar file in ~/apps/tmp/"
     else
         echo "Creating the folder ~/apps/tmp"
-        mkdir apps/tmp/
+        mkdir ~/apps/tmp/
     fi
 fi
 
@@ -27,7 +27,7 @@ fi
 # Direct download is not possible as you need to accept the license agreements
 # Run the script after downloading the file into $HOME/apps/tmp
 
-jdk8_file=apps/tmp/jdk-8u351-linux-x64.tar.gz
+jdk8_file="~/apps/tmp/jdk-8u351-linux-x64.tar.gz"
 cd
 if [ -f $jdk8_file ]; then
     echo "$jdk8_file file exists"

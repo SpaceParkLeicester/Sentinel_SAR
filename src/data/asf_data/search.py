@@ -7,6 +7,10 @@ import asf_search as asf
 from src.utils import stitch_strings
 from src.data import OilTerminals
 
+import logging
+from logging import config
+config.fileConfig('logger.ini')
+logger = logging.getLogger(__name__)
 
 class SearchEarthData:
     """Refine Search results from ASF EARTH DATA"""
@@ -106,3 +110,10 @@ class SearchEarthData:
             self.log.debug(f"The file already exists: {self.csv_filepath}")
         
         return self.csv_filepath
+
+if __name__ == "__main__":
+    csv_file_save_path = 'data/search_results'
+    search = SearchEarthData(log = logger)
+    search.metadata(half_side = 50)
+    search.save_search(csv_file_save_path)
+    

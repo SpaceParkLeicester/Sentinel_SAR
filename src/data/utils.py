@@ -67,6 +67,7 @@ class OilTerminals:
         # create a dictionary of of lat lon with location names
         self.terminal_dict = {}
         self.terminal_bbox = {}
+        self.wkt_poly_dict = {}
         for index, row in df.iterrows():
             location = row['Region']
             location = location.split(',')[0].lower()
@@ -77,10 +78,15 @@ class OilTerminals:
                 center_lat = lat_lon[index][0],
                 center_lon = lat_lon[index][1])
             polygon = loads(wkt)
+            self.wkt_poly_dict[location] = polygon
             vertices = list(polygon.exterior.coords)
             self.terminal_bbox[location] = vertices
 
         return self.terminal_dict
+    
+    def wkt_polygon(self):
+        """Getting the WKT polygon string"""
+        return self.wkt_poly_dict
     
     def write_csv(
             self,

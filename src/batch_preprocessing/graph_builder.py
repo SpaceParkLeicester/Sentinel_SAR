@@ -1,6 +1,12 @@
 import os
+from src.data import OilTerminals
 from snapista import Graph
 from snapista import Operator
+
+import logging
+from logging import config
+config.fileConfig('logger.ini')
+logger = logging.getLogger(__name__)
 
 
 class esa_snap_graph():
@@ -16,8 +22,7 @@ class esa_snap_graph():
         Args:
             xml_folder: folder to save xml graphs
             processed_data_folder: folder to the processed files
-            safe_folder_path: Path to the SAFE folder
-            manifest_path: Path to the manifest file GRD S1        
+            safe_folder_path: Path to the SAFE folder        
         """
         self.xml_folder = xml_folder
         self.safe_folder_path = safe_folder_path
@@ -93,7 +98,7 @@ class esa_snap_graph():
     def subset(
             self, 
             wkt_string)-> None:
-        """Subsetting (clipping) the data with WKT
+        """Sub-setting (clipping) the data with WKT
         
         Args:
             wkt_string: Polygon string of an AOI
@@ -198,13 +203,20 @@ class esa_snap_graph():
 
 
 if __name__ == "__main__":
-    xml_folder = 'data/pre_process/graphs'
-    filename = 'data.xml'
-    wkt_string = 'POLYGON ((-0.1906563590715226 53.68193630164516, -0.1906563590715226 53.60662686944885, -0.3176973248804094 53.60662686944885, -0.3176973248804094 53.68193630164516, -0.1906563590715226 53.68193630164516))'
+    safe_folder = "/home/vardh/apps/tmp/S1A_IW_SLC__1SDV_20230112T175210_20230112T175237_046754_059AE5_4A45.SAFE/"
+    # Getting the WKT string
+    terminals = OilTerminals()
+    data_dict = terminals.read_data()
+    data_dict = terminals.wkt_polygon()
+
+    filename = 'flotta.xml'
+    wkt_string = data_dict["flotta"] 
     create_graph = esa_snap_graph(
-        xml_folder = xml_folder)
+        safe_folder_path = safe_folder,
+        log = logger)
     create_graph.read_grd()
     create_graph.polarisation_stamp()
+    create_graph.sourcing_polarisation()
     create_graph.apply_orbit_file()
     create_graph.remove_grd_border_noise()
     create_graph.calibration()

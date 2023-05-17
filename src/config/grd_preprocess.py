@@ -84,7 +84,7 @@ class pre_process():
         """Initiating the variables
         
         Args:
-            grd_file_path: Folder path to GRD whcih ends with .SAFE
+            grd_file_path: Folder path to GRD which ends with .SAFE
             processed_folder: Folder to save processed files
             wkr_string: Polygon WKT string of desired AOI
         """
@@ -110,7 +110,7 @@ class pre_process():
             self.productstamp = self.safe_folder.split("_")[2]
             self.polstamp = self.safe_folder.split("_")[3]
         else:
-            self.log.error(f"No such file exsists {self.manifest_safe_file}")
+            self.log.error(f"No such file exists {self.manifest_safe_file}")
             self.log.debug("Check the unzipped SAR data")
     
     def polarisation(self)-> None:
