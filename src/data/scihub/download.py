@@ -1,6 +1,13 @@
 """Downloading data from Copernicus Data Hub"""
 import os
 from src.data import AuthCredentials
+from src.data.scihub import SearchSciHubData
+
+import logging
+from logging import config
+config.fileConfig('logger.ini')
+logger = logging.getLogger(__name__)
+
 
 class DownloadSciHubData(AuthCredentials):
     """Function to download single scene"""
@@ -35,4 +42,18 @@ class DownloadSciHubData(AuthCredentials):
         else:
             self.log.debug("File already exists!")
         return zip_filepath
-    
+
+if __name__ == "__main__":
+    download_path = 'downloads/S1_data/'
+    download_path = os.path.join(os.path.expanduser('~'), download_path)
+
+    search = SearchSciHubData(log = logger)
+    search.footprint(location_name = 'stanlow')
+    search.query()
+    title, uuid = search.swath_aoi_check()
+
+    download = DownloadSciHubData(log = logger)
+    download.download_sensat(
+        uuid = uuid,
+        title = title,
+        download_path = download_path)
