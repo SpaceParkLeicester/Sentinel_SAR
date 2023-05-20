@@ -1,7 +1,7 @@
 # Installation instructions
 
 ## ASF search python package
-To visulalise the progress bar when downloading data through `asf_search` python package, as it is one of the requirements in `requirements.txt`, follow the instructions.
+To visualise the progress bar when downloading data through `asf_search` python package, as it is one of the requirements in `requirements.txt`, follow the instructions.
 
 ```
 # Find the asf search package, which should be installed in a virtual env
@@ -13,7 +13,7 @@ Add these lines in the file, source - (link)[https://github.com/asfadmin/Discove
 ```
 # Import tqdm
 from tqdm.auto import tqdm
-# In the download_url function, replace with statement with the follwing with statement
+# In the download_url function, replace with statement with the following with statement
 #with open(os.path.join(path, filename), 'wb') as f:
 with tqdm.wrapattr(open(os.path.join(path, filename),'wb'), 
                     'write', miniters=1, 
