@@ -8,7 +8,7 @@ This folder consists of functions and modules that deals with the data download 
 * ASF along with NASA's EARTHDATA provides a visual interface [dashboard](https://search.earthdata.nasa.gov/search?fdc=Alaska%20Satellite%20Facility) to download the data.
 
 ### Copernicus SCIHUB
-* ESA provides a dashboard to visulaise the data from their Copernicus program. To open the (dashboard)[https://scihub.copernicus.eu/dhus/#/home], click on the link.
+* ESA provides a dashboard to visualise the data from their Copernicus program. To open the (dashboard)[https://scihub.copernicus.eu/dhus/#/home], click on the link.
 
 This folder consists of the data pipes and functions that are related to the Sentinel-1 SAR data search, data download through two different services, ESA's Copernicus Scihub and NASA's EARTHDATA. Make sure to add ESA Scihub username and password, and NASA EARTHDATA user email and password in `~/.bashrc` file.
 ```
