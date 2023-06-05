@@ -1,7 +1,7 @@
-# SAR data processing
+# Sentinel-1 data download
 
 ## Initialisation steps and Pytest Commands
-* Install all requirements in a virtual environment with `conda create -f environment.yml` and with `requirements.txt` file by running `pip install -r requirements.txt`
+* Install all requirements in a virtual environment with `conda create -f environment.yml`.
 * Run `pip install -e -v .`
     * This will make the project editable to be able to develop and run tests.
 * To test the functions, datapipe lines, etc. using `pytest` package
